@@ -12,6 +12,15 @@ public class GestionnaireDemandeurs {
 	
 	private ArrayList<Demandeur> listeDemandeurs = new ArrayList();
 	
+	
+	public ArrayList<Demandeur> getListeDemandeurs() {
+		return listeDemandeurs;
+	}
+
+	public void setListeDemandeurs(ArrayList<Demandeur> listeDemandeurs) {
+		this.listeDemandeurs = listeDemandeurs;
+	}
+
 	/**
 	 * 
 	 * @param no_dem
@@ -70,7 +79,7 @@ public class GestionnaireDemandeurs {
 	 * @param titre
 	 * @throws Exception
 	 */
-	public void nouveauDemandeur(int no_dem, String nom, Adresse adresse, Origine origine, Titre titre) throws Exception{
+	public void ajoutDemandeur(int no_dem, String nom, Adresse adresse, Origine origine, Titre titre) throws Exception{
 		if(no_dem < 0){
 			throw new Exception("Numéro incorrect");
 		}
@@ -104,4 +113,7 @@ public class GestionnaireDemandeurs {
 			listeDemandeurs.remove(demandeur);
 		}
 	}
+	
+	
+	
 }
