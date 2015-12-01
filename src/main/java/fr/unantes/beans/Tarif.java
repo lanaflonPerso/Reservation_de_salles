@@ -14,7 +14,6 @@ public abstract class Tarif {
 		this.code = code;
 		this.libelle = libelle;
 		this.tarif = tarif;
-		
 	}
 	
 	public int getCode() {

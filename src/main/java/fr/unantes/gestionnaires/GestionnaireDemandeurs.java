@@ -61,7 +61,7 @@ public class GestionnaireDemandeurs {
 	 * @return
 	 * @throws Exception
 	 */
-	public Demandeur rechrcheDemandeurParNumero(int no_dem) throws Exception{
+	public Demandeur rechercheDemandeurParNumero(int no_dem) throws Exception{
 		for(int i=0; i<listeDemandeurs.size(); i++){
 			if(listeDemandeurs.get(i).getNo_dem() == no_dem){
 				return listeDemandeurs.get(i);
@@ -83,6 +83,9 @@ public class GestionnaireDemandeurs {
 		if(no_dem < 0){
 			throw new Exception("Numéro incorrect");
 		}
+		if(demandeurExists(no_dem)){
+			throw new Exception("Ce demandeur existe déjà");
+		}
 		else if(nom.equals("")){
 			throw new Exception("nom vide");
 		}
@@ -103,11 +106,6 @@ public class GestionnaireDemandeurs {
 	public void supprimerDemandeur(Demandeur demandeur) throws Exception{
 		if(!demandeurExists(demandeur.getNo_dem())){
 			throw new Exception("Demandeur innexistant");
-		}
-		if(!demandeur.getListeReservation().isEmpty()){
-			for(Reservation reservation : demandeur.getListeReservation()){
-				//TODO : si l'evenement est en cours
-			}
 		}
 		else{
 			listeDemandeurs.remove(demandeur);
