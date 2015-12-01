@@ -1,0 +1,1 @@
+INDEX VERSION 1.127+C:\Users\Utlisateur\Documents\fac\GL\Projet_salle\.metadata\.plugins\org.eclipse.jdt.core

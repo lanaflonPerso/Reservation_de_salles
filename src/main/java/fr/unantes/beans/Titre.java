@@ -1,7 +1,11 @@
 package fr.unantes.beans;
 
-public class Titre extends Tarif{
+import fr.unantes.gestionnaires.GestionnaireTarifs;
 
+public class Titre extends Tarif{
+	
+	int tarif;
+	
 	public Titre() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -9,7 +13,13 @@ public class Titre extends Tarif{
 
 	public Titre(int code, String libelle, double tarif) {
 		super(code, libelle, tarif);
+		GestionnaireTarifs.addPrixTitre(libelle, (float) tarif);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	protected double calcul() {
+		return tarif;
 	}
    
 }

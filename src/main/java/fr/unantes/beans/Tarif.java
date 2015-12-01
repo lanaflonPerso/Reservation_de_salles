@@ -2,9 +2,9 @@ package fr.unantes.beans;
 
 public abstract class Tarif {
 
-	private int code;
-	private String libelle;
-	private double tarif;
+	protected int code;
+	protected String libelle;
+	protected double tarif;
 	public Tarif() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -14,7 +14,9 @@ public abstract class Tarif {
 		this.code = code;
 		this.libelle = libelle;
 		this.tarif = tarif;
+		
 	}
+	
 	public int getCode() {
 		return code;
 	}
@@ -34,9 +36,5 @@ public abstract class Tarif {
 		this.tarif = tarif;
 	}
 	
-	public double calcul(){
-		this.tarif = 2.0;
-		
-		return tarif;
-	}
+	abstract protected double calcul();
 }

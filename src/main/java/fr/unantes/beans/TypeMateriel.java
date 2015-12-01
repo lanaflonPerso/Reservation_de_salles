@@ -1,29 +1,22 @@
 package fr.unantes.beans;
 
+import fr.unantes.gestionnaires.GestionnaireTarifs;
+
 public class TypeMateriel extends Tarif{
 	
-	private int id;
-	private String nom;
 	public TypeMateriel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TypeMateriel(int id, String nom) {
-		super();
-		this.id = id;
-		this.nom = nom;
+	public TypeMateriel(int id, String nom,float tarif) {
+		super(id,nom,tarif);
+		GestionnaireTarifs.addPrixTypeMateriel(libelle, (float) tarif);
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getNom() {
-		return nom;
-	}
-	public void setNom(String nom) {
-		this.nom = nom;
+	
+	@Override
+	protected double calcul() {
+		// TODO Auto-generated method stub
+		return tarif;
 	}
 	
 	
