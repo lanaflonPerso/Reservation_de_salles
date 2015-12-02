@@ -14,8 +14,35 @@ import fr.unantes.beans.TypeMateriel;
 import fr.unantes.beans.TypeSalle;
 
 public class GestionnaireLocaux {
-	private static ArrayList<Batiment> listeBatiments = new ArrayList<Batiment>();
-	private static ArrayList<TypeSalle> listeTypes = new ArrayList<TypeSalle>();
+	private static volatile GestionnaireLocaux instance = null;
+	
+	private static ArrayList<Batiment> listeBatiments;
+	private static ArrayList<TypeSalle> listeTypes;
+	
+	/**
+	 * 
+	 * @return une instance du gestionnaire de locaux si elle n'existe pas
+	 */
+	public final static GestionnaireLocaux getInstance(){
+		
+		if (GestionnaireLocaux.instance == null){
+			synchronized(GestionnaireLocaux.class){
+				if(GestionnaireLocaux.instance==null){
+					GestionnaireLocaux.instance = new GestionnaireLocaux();
+				}
+				
+			}
+		}
+		return GestionnaireLocaux.instance;
+	}
+	
+	/**
+	 * initialise les listes de données
+	 */
+	private GestionnaireLocaux(){
+		listeBatiments = new ArrayList<Batiment>();
+		listeTypes = new ArrayList<TypeSalle>();
+	}
 
 	public static ArrayList<Batiment> getListeBatiments() {
 		return listeBatiments;

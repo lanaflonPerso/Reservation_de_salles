@@ -7,7 +7,6 @@ public class Reservation {
 	private String ref_resa;
 	private Date date_resa;
 	private double montant;
-	//private Demandeur demandeur;
 	private Salle salle;
 	private ArrayList<MaterielMobile> listeMateriels;
 	private Duree duree;

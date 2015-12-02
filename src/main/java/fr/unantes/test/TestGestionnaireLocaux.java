@@ -12,10 +12,14 @@ import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Salle;
 import fr.unantes.beans.TypeSalle;
 import fr.unantes.gestionnaires.GestionnaireLocaux;
+import fr.unantes.gestionnaires.GestionnaireReservations;
+import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 
 public class TestGestionnaireLocaux{
-	GestionnaireLocaux gestionnaire = new GestionnaireLocaux();
+	GestionnaireLocaux gestionnaire = GestionnaireLocaux.getInstance();
+	GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+	GestionnaireReservations gestionnaireR = GestionnaireReservations.getInstance();
 	Adresse adresse;
 	Adresse adresse2;
 	Batiment batiment;

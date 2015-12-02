@@ -14,10 +14,12 @@ import fr.unantes.beans.Salle;
 import fr.unantes.beans.Titre;
 import fr.unantes.beans.TypeSalle;
 import fr.unantes.gestionnaires.GestionnaireDemandeurs;
+import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class TestGestionnaireDemandeurs {
 	
-	GestionnaireDemandeurs gestionnaire = new GestionnaireDemandeurs();
+	GestionnaireDemandeurs gestionnaire = GestionnaireDemandeurs.getInstance();
+	GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
 	Demandeur demandeur;
 	Adresse adresse;
 	Origine origine;

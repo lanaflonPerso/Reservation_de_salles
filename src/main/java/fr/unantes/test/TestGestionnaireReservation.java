@@ -19,9 +19,13 @@ import fr.unantes.beans.Reservation;
 import fr.unantes.beans.Salle;
 import fr.unantes.beans.Titre;
 import fr.unantes.beans.TypeSalle;
+import fr.unantes.gestionnaires.GestionnaireReservations;
+import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class TestGestionnaireReservation {
 	
+	GestionnaireReservations gestionnaire = GestionnaireReservations.getInstance();
+	GestionnaireTarifs gestionnairet = GestionnaireTarifs.getInstance();
 	Adresse adresse;
 	Batiment batiment;
 	Date date;
@@ -50,7 +54,7 @@ public class TestGestionnaireReservation {
 		typeSalle = new TypeSalle(1,"reunion", 4);
 		demandeur = new Demandeur(1, "Geoffrou", adresse, origine, titre);
 		salle = new Salle(2, 23, 1, 20, typeSalle);
-		reservation = new Reservation("1A448", date, 100.0, demandeur, salle, duree, manifestation);
+		reservation = new Reservation("1A448", date, 100.0, salle, duree, manifestation);
 	}
 
 	@After
@@ -62,33 +66,33 @@ public class TestGestionnaireReservation {
 	
 	@Test
 	public void testAjoutReservation(){
-		demandeur.reserver(salle, date, duree);
+		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutReservationSallePrise(){
-		demandeur.reserver(salle, date, duree);
+		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
 		Demandeur demandeur2 = new Demandeur(2, "Philippe", adresse, origine, titre);
-		demandeur2.reserver(salle, date, duree);
+		gestionnaire.reserveSalle(demandeur2, salle, manifestation, duree);
 	}
 	
 	@Test
 	public void testAjoutReservationAutreSalle(){
-		demandeur.reserver(salle, date, duree);
+		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
 		Demandeur demandeur2 = new Demandeur(2, "Estelle", adresse, origine, titre);
 		Salle salle2 = new Salle(2, 24, 1, 20, typeSalle);
-		demandeur2.reserver(salle2, date, duree);
+		gestionnaire.reserveSalle(demandeur2, salle2, manifestation, duree);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAnnulerReservationNulle(){
-		demandeur.annuler(reservation);
+		gestionnaire.AnnulationReserv(demandeur, reservation);
 	}
 	
 	@Test
 	public void testAnnulerReservation(){
-		demandeur.reserver(salle, date, duree);
-		demandeur.annuler(reservation);
+		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
+		gestionnaire.AnnulationReserv(demandeur, reservation);
 	}
 	
 }

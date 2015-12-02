@@ -3,15 +3,42 @@ package fr.unantes.gestionnaires;
 import java.util.ArrayList;
 
 import fr.unantes.beans.Adresse;
+import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Origine;
 import fr.unantes.beans.Reservation;
 import fr.unantes.beans.Titre;
+import fr.unantes.beans.TypeSalle;
 
 public class GestionnaireDemandeurs {
+	private static volatile GestionnaireDemandeurs instance = null;
 	
-	private ArrayList<Demandeur> listeDemandeurs = new ArrayList();
+	private ArrayList<Demandeur> listeDemandeurs;
 	
+	
+	/**
+	 * 
+	 * @return une instance du gestionnaire de demandeurs si elle n'existe pas
+	 */
+	public final static GestionnaireDemandeurs getInstance(){
+		
+		if (GestionnaireDemandeurs.instance == null){
+			synchronized(GestionnaireDemandeurs.class){
+				if(GestionnaireDemandeurs.instance==null){
+					GestionnaireDemandeurs.instance = new GestionnaireDemandeurs();
+				}
+				
+			}
+		}
+		return GestionnaireDemandeurs.instance;
+	}
+	
+	/**
+	 * initialise les listes de données
+	 */
+	private GestionnaireDemandeurs(){
+		listeDemandeurs = new ArrayList();
+	}
 	
 	public ArrayList<Demandeur> getListeDemandeurs() {
 		return listeDemandeurs;
@@ -38,7 +65,7 @@ public class GestionnaireDemandeurs {
 	
 	/**
 	 * @param titre
-	 * @return
+	 * @return la liste de demandeurs qui correpondent au titre passé en paramètre
 	 * @throws Exception
 	 */
 	public ArrayList<Demandeur> rechercheDemandeurParTitre(Titre titre) throws Exception{

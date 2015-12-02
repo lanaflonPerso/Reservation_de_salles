@@ -41,6 +41,59 @@ public class GestionnaireTarifs {
 		Duree = new HashMap<String, Float>();
 	}
 	
+	
+	public static Map<String, Float> getTitre() {
+		return Titre;
+	}
+
+	public static void setTitre(Map<String, Float> titre) {
+		Titre = titre;
+	}
+
+	public static Map<String, Float> getOrigine() {
+		return Origine;
+	}
+
+	public static void setOrigine(Map<String, Float> origine) {
+		Origine = origine;
+	}
+
+	public static Map<String, Float> getTypeMateriel() {
+		return TypeMateriel;
+	}
+
+	public static void setTypeMateriel(Map<String, Float> typeMateriel) {
+		TypeMateriel = typeMateriel;
+	}
+
+	public static Map<String, Float> getTypeSalle() {
+		return TypeSalle;
+	}
+
+	public static void setTypeSalle(Map<String, Float> typeSalle) {
+		TypeSalle = typeSalle;
+	}
+
+	public static Map<String, Float> getManifestation() {
+		return Manifestation;
+	}
+
+	public static void setManifestation(Map<String, Float> manifestation) {
+		Manifestation = manifestation;
+	}
+
+	public static Map<String, Float> getDuree() {
+		return Duree;
+	}
+
+	public static void setDuree(Map<String, Float> duree) {
+		Duree = duree;
+	}
+
+	public static void setInstance(GestionnaireTarifs instance) {
+		GestionnaireTarifs.instance = instance;
+	}
+
 	public static void addPrixTitre(String nom,float prix){
 		Titre.put(nom, prix);
 	}
