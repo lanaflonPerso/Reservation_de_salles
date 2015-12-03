@@ -46,9 +46,9 @@ public class TestGestionnaireReservation {
 		adresse = new Adresse("13", "Boulevard Michelet Sciences", "44000", "Nantes");
 		batiment = new Batiment(1, "Faculté", adresse);
 		duree = new Duree(1, "Demi journée", 4);
-		duree.setMillisecondes(36000000); // 10heures
+		long temps = 36000000; // 10heures
 		duree2 = new Duree(1, "une milliseconde", 4);
-		duree2.setMillisecondes(1); //1milliseconde
+		long temps2 = 1; //1milliseconde
 		date = new Date();
 		date.setTime((long) 1449145513010.0);//03/12/2015 - 13:25:00
 		manifestation = new Manifestation(1, "Anniversaire", 4);
@@ -57,7 +57,7 @@ public class TestGestionnaireReservation {
 		typeSalle = new TypeSalle(1,"reunion", 4);
 		demandeur = new Demandeur(1, "Geoffrou", adresse, origine, titre);
 		salle = new Salle(2, 23, 1, 20, typeSalle);
-		reservation = new Reservation("1A448", date, 100.0, salle, duree, manifestation);
+		reservation = new Reservation("1A448", date, 100.0, salle, temps, duree, manifestation);
 		salle.ajoutReservation(reservation);
 
 	}
@@ -73,14 +73,13 @@ public class TestGestionnaireReservation {
 	
 	@Test(expected = Exception.class)
 	public void testSalleDispoDureeNegative() throws Exception{
-		duree.setMillisecondes(-1);
-		assertTrue(gestionnaire.salleDispo(salle, date, duree));
+		assertTrue(gestionnaire.salleDispo(salle, date, -1));
 	}
 	
 	@Test
 	public void testSalleDispoAucuneReservation() throws Exception{
 		salle.getListeReservation().clear();
-		assertTrue(gestionnaire.salleDispo(salle, date, duree));
+		assertTrue(gestionnaire.salleDispo(salle, date, 10));
 	}
 	
 	//Test si une salle est disponible avant une autre réservation
@@ -88,8 +87,7 @@ public class TestGestionnaireReservation {
 	public void testSalleDispoAvant() throws Exception{
 		Date date2 = new Date();
 		date2.setTime((long) 1449145513008.0); //2millisecondes avant une autre reservation
-		duree2.setMillisecondes(1); //1milliseconde
-		assertTrue(gestionnaire.salleDispo(salle, date2, duree2));
+		assertTrue(gestionnaire.salleDispo(salle, date2, 1));
 	}
 	
 	//Test de reservation qui déborde avant
@@ -97,14 +95,13 @@ public class TestGestionnaireReservation {
 	public void testSalleNonDispo1() throws Exception{
 		Date date = new Date();
 		date.setTime((long) 1449145513009.0); //03/12/2015 - 13:25:00 -1 milliseconde
-		duree.setMillisecondes(2); // 2millisecondes
-		assertFalse(gestionnaire.salleDispo(salle, date, duree));
+		assertFalse(gestionnaire.salleDispo(salle, date, 2));
 	}
 	
 	//Test de réservation pour la même date et la même durée
 	@Test
 	public void testSalleNonDispoMemeDate() throws Exception{
-		assertFalse(gestionnaire.salleDispo(salle, date, duree));
+		assertFalse(gestionnaire.salleDispo(salle, date, 36000000));
 	}
 	
 	//Test de réservation avec un créneau qui est dans le crénau d'une autre réservation
@@ -112,39 +109,38 @@ public class TestGestionnaireReservation {
 	public void testSalleNonDispo2() throws Exception{
 		Date date = new Date();
 		date.setTime((long) 1449145513011.0); //03/12/2015 - 13:25:00 +1 milliseconde
-		duree.setMillisecondes(35999998); // 9:59:58
-		assertFalse(gestionnaire.salleDispo(salle, date, duree));
+		assertFalse(gestionnaire.salleDispo(salle, date, 35999998));
 	}
 	
 	//Test de reservation qui déborder après
 	@Test
 	public void testSalleNonDispo3() throws Exception{
-		long fin_prec = (long) (1449145513010.0 + 36000000.0);
+		long fin_prec = (long) (1449145513010.0 + 36000000.0 - 1);
 		Date date = new Date();
 		date.setTime(fin_prec - 1); //03/12/2015 - 23:25:00 -1milliseconde
-		assertFalse(gestionnaire.salleDispo(salle, date, duree));
+		assertFalse(gestionnaire.salleDispo(salle, date, fin_prec));
 	}
 	
 	//Test de reservation après la fin d'une autre réservation
 	@Test
 	public void testSalleDispoApres() throws Exception{
 		Date date = new Date();
-		long fin_prec = (long) (1449145513010.0 + 36000000.0);
+		long fin_prec = (long) (1449145513010.0 + 36000000.0 );
 		date.setTime(fin_prec +1); //03/12/2015 - 23:25:00+1milliseconde
-		assertTrue(gestionnaire.salleDispo(salle, date, duree));
+		assertTrue(gestionnaire.salleDispo(salle, date, 36000000));
 	}
 	
 	@Test
 	public void testAjoutReservation() throws Exception{
 		salle.getListeReservation().clear();
-		gestionnaire.reserver("A1", demandeur, salle, date, duree, manifestation, 2.0);
+		gestionnaire.reserver("A1",10, demandeur, salle, date, duree, manifestation, 2.0);
 		assertTrue(salle.getListeReservation().size() == 1);
 
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutReservationN() throws Exception{
-		gestionnaire.reserver("A1", demandeur, salle, date, duree, manifestation, 2.0);
+		gestionnaire.reserver("A1",36000000, demandeur, salle, date, duree, manifestation, 2.0);
 		assertTrue(salle.getListeReservation().size() == 1);
 	}
 	/*

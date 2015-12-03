@@ -65,8 +65,8 @@ public class GestionnaireReservations {
 	 * @return true si la salle est disponible, false sinon.
 	 * On compare les dates et durées de réservation pour savoir si la salle possède déjà une réservation pour un créneau donné.
 	 */
-	public boolean salleDispo(Salle salle, Date date, Duree duree) throws Exception{
-		if(duree.getMillisecondes()<0){
+	public boolean salleDispo(Salle salle, Date date, long duree) throws Exception{
+		if(duree < 0){
 			throw new Exception("Durée négative");
 		}
 		ArrayList<Reservation> liste = salle.getListeReservation();
@@ -78,11 +78,11 @@ public class GestionnaireReservations {
 		
 		//Créneaux de notre nouvelle réservation
 		long debut_creation = date.getTime();
-		long fin_creation = date.getTime() + duree.getMillisecondes();
+		long fin_creation = date.getTime() + duree;
 
 		for(int i=0; i<liste.size(); i++){
 			//Créneau d'une réservation déjà existante
-			long fin_existante = liste.get(i).getDate_resa().getTime() + liste.get(i).getDuree().getMillisecondes();
+			long fin_existante = liste.get(i).getDate_resa().getTime() + liste.get(i).getTemps();
 			long debut_existante = liste.get(i).getDate_resa().getTime();
 
 			//Si la nouvelle réservation se finit après le début d'une ancienne
@@ -112,11 +112,11 @@ public class GestionnaireReservations {
 	 * @param tarif
 	 * @throws Exception
 	 */
-	public void reserver(String ref_resa, Demandeur demandeur, Salle salle, Date date_resa, Duree duree, Manifestation manifestation, double prix) throws Exception{
-		if(!salleDispo(salle, date_resa, duree)){
+	public void reserver(String ref_resa, long temps,  Demandeur demandeur, Salle salle, Date date_resa, Duree duree, Manifestation manifestation, double prix) throws Exception{
+		if(!salleDispo(salle, date_resa, temps)){
 			throw new Exception("Salle indisponible");
 		}
-		Reservation reservation = new Reservation(ref_resa, date_resa, prix, salle, duree, manifestation);
+		Reservation reservation = new Reservation(ref_resa, date_resa, prix, salle, temps, duree, manifestation);
 		salle.ajoutReservation(reservation);
 		listeReserv.add(reservation);
 	}
@@ -145,10 +145,10 @@ public class GestionnaireReservations {
 	 * @param mater MatÃ©riel utilisÃ©
 	 * @return une nouvelle reservation si les diffÃ©rentes contraintes ont Ã©tÃ© respectÃ©es et null avec un message d'erreur sinon
 	 */
-	public Reservation reserveSalle(Demandeur demand,Salle salle,Manifestation manif, Duree duree){
+	public Reservation reserveSalle(Demandeur demand,Salle salle,Manifestation manif, Duree duree, long temps){
 		if(dispoSalle(salle)){
 			
-			Reservation reservation = new Reservation(refReserv, new Date(), calculPrixReserv(demand,salle,manif,duree), salle,  duree, manif);
+			Reservation reservation = new Reservation(refReserv, new Date(), calculPrixReserv(demand,salle,manif,duree), salle, temps, duree, manif);
 		//	refReserv++; //TODO cast
 			return reservation;
 		

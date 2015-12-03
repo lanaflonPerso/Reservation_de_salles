@@ -8,6 +8,7 @@ public class Reservation {
 	private Date date_resa;
 	private double montant;
 	private Salle salle;
+	private long temps;
 	private ArrayList<MaterielMobile> listeMateriels;
 	private Duree duree;
 	private Manifestation manifestation;
@@ -18,30 +19,30 @@ public class Reservation {
 		// TODO Auto-generated constructor stub
 	}
 
-	
+
 	public Reservation(String ref_resa, Date date_resa, double montant,
-		 Salle salle,
-			ArrayList<MaterielMobile> listeMateriels, Duree duree,
-			Manifestation manifestation) {
+			Salle salle, long temps, ArrayList<MaterielMobile> listeMateriels,
+			Duree duree, Manifestation manifestation) {
 		super();
 		this.ref_resa = ref_resa;
 		this.date_resa = date_resa;
 		this.montant = montant;
 		this.salle = salle;
+		this.temps = temps;
 		this.listeMateriels = listeMateriels;
 		this.duree = duree;
 		this.manifestation = manifestation;
 	}
-
 	
-
 	public Reservation(String ref_resa, Date date_resa, double montant,
-			 Salle salle, Duree duree, Manifestation manifestation) {
+			Salle salle, long temps, Duree duree, Manifestation manifestation) {
 		super();
 		this.ref_resa = ref_resa;
 		this.date_resa = date_resa;
 		this.montant = montant;
 		this.salle = salle;
+		this.temps = temps;
+		this.listeMateriels = listeMateriels;
 		this.duree = duree;
 		this.manifestation = manifestation;
 	}
@@ -87,6 +88,16 @@ public class Reservation {
 	}
 
 
+	public long getTemps() {
+		return temps;
+	}
+
+
+	public void setTemps(long temps) {
+		this.temps = temps;
+	}
+
+
 	public ArrayList<MaterielMobile> getListeMateriels() {
 		return listeMateriels;
 	}
@@ -117,14 +128,6 @@ public class Reservation {
 	}
 
 	
-	public void ajoutMateriel(MaterielMobile materiel){
-		this.listeMateriels.add(materiel);
-	}
-	
-	public void retirerMateriel(MaterielMobile materiel){
-		this.listeMateriels.remove(materiel);
-
-	}
 	
 
 }

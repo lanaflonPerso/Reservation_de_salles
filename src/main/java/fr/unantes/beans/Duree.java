@@ -4,8 +4,6 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class Duree extends Tarif{
 
-	private long millisecondes;
-	
 	
 	public Duree() {
 		super();
@@ -20,19 +18,7 @@ public class Duree extends Tarif{
 	}
 	
 
-	public Duree(long millisecondes) {
-		super();
-		this.millisecondes = millisecondes;
-	}
-
-	public long getMillisecondes() {
-		return millisecondes;
-	}
-
-	public void setMillisecondes(long millisecondes) {
-		this.millisecondes = millisecondes;
-	}
-
+	
 	@Override
 	public double calcul() {
 		// TODO Auto-generated method stub
