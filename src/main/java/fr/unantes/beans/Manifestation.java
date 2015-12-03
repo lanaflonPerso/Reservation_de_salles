@@ -11,7 +11,8 @@ public class Manifestation extends Tarif{
 
 	public Manifestation(int code, String libelle, double tarif) {
 		super(code, libelle, tarif);
-		GestionnaireTarifs.addPrixManifestation(libelle, (float) tarif);
+		GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+		gestionnaireT.addPrixManifestation(libelle, (float) tarif);
 		// TODO Auto-generated constructor stub
 	}
 

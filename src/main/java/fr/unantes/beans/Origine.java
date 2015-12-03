@@ -16,7 +16,8 @@ public class Origine extends Tarif{
 
 	public Origine(int code, String libelle, double tarif) {
 		super(code, libelle, tarif);
-		GestionnaireTarifs.addPrixOrigine(libelle, (float) tarif);
+		GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+		gestionnaireT.addPrixManifestation(libelle, (float) tarif);
 	}
 	
 	

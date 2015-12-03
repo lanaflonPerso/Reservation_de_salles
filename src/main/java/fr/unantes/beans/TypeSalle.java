@@ -11,7 +11,8 @@ public class TypeSalle extends Tarif{
 
 	public TypeSalle(int code, String libelle, double tarif) {
 		super(code, libelle, tarif);
-		GestionnaireTarifs.addPrixTypeSalle(libelle, (float) tarif);
+		GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+		gestionnaireT.addPrixManifestation(libelle, (float) tarif);
 		// TODO Auto-generated constructor stub
 	}
 

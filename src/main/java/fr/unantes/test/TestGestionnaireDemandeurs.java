@@ -53,7 +53,6 @@ public class TestGestionnaireDemandeurs {
 	
 	@Test
 	public void testsupprimerDemandeur() throws Exception{
-		System.out.println("ici : ");
 		gestionnaire.supprimerDemandeur(demandeur);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==0);
 	}

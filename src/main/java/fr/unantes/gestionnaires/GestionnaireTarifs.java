@@ -42,127 +42,127 @@ public class GestionnaireTarifs {
 	}
 	
 	
-	public static Map<String, Float> getTitre() {
+	public Map<String, Float> getTitre() {
 		return Titre;
 	}
 
-	public static void setTitre(Map<String, Float> titre) {
+	public void setTitre(Map<String, Float> titre) {
 		Titre = titre;
 	}
 
-	public static Map<String, Float> getOrigine() {
+	public Map<String, Float> getOrigine() {
 		return Origine;
 	}
 
-	public static void setOrigine(Map<String, Float> origine) {
+	public void setOrigine(Map<String, Float> origine) {
 		Origine = origine;
 	}
 
-	public static Map<String, Float> getTypeMateriel() {
+	public Map<String, Float> getTypeMateriel() {
 		return TypeMateriel;
 	}
 
-	public static void setTypeMateriel(Map<String, Float> typeMateriel) {
+	public void setTypeMateriel(Map<String, Float> typeMateriel) {
 		TypeMateriel = typeMateriel;
 	}
 
-	public static Map<String, Float> getTypeSalle() {
+	public Map<String, Float> getTypeSalle() {
 		return TypeSalle;
 	}
 
-	public static void setTypeSalle(Map<String, Float> typeSalle) {
+	public void setTypeSalle(Map<String, Float> typeSalle) {
 		TypeSalle = typeSalle;
 	}
 
-	public static Map<String, Float> getManifestation() {
+	public Map<String, Float> getManifestation() {
 		return Manifestation;
 	}
 
-	public static void setManifestation(Map<String, Float> manifestation) {
+	public void setManifestation(Map<String, Float> manifestation) {
 		Manifestation = manifestation;
 	}
 
-	public static Map<String, Float> getDuree() {
+	public Map<String, Float> getDuree() {
 		return Duree;
 	}
 
-	public static void setDuree(Map<String, Float> duree) {
+	public void setDuree(Map<String, Float> duree) {
 		Duree = duree;
 	}
 
-	public static void setInstance(GestionnaireTarifs instance) {
+	public void setInstance(GestionnaireTarifs instance) {
 		GestionnaireTarifs.instance = instance;
 	}
 
-	public static void addPrixTitre(String nom,float prix){
+	public void addPrixTitre(String nom,float prix){
 		Titre.put(nom, prix);
 	}
 	
-	public static void addPrixOrigine(String nom,float prix){
+	public void addPrixOrigine(String nom,float prix){
 		Origine.put(nom, prix);
 	}
 	
-	public static void addPrixTypeMateriel(String nom,float prix){
+	public void addPrixTypeMateriel(String nom,float prix){
 		TypeMateriel.put(nom, prix);
 	}
 	
-	public static void addPrixTypeSalle(String nom,float prix){
+	public void addPrixTypeSalle(String nom,float prix){
 		TypeSalle.put(nom, prix);
 	}
 	
-	public static void addPrixManifestation(String nom,float prix){
+	public void addPrixManifestation(String nom,float prix){
 		Manifestation.put(nom, prix);
 	}
 	
-	public static void addPrixDuree(String nom,float prix){
+	public void addPrixDuree(String nom,float prix){
 		Duree.put(nom, prix);
 	}
 	
-	public static float getPrixTitre(String nom){
+	public float getPrixTitre(String nom){
 		return Titre.get(nom);
 	}
 	
-	public static float getPrixOrigine(String nom){
+	public float getPrixOrigine(String nom){
 		return Origine.get(nom);
 	}
 	
-	public static float getPrixTypeMateriel(String nom){
+	public float getPrixTypeMateriel(String nom){
 		return TypeMateriel.get(nom);
 	}
 	
-	public static float getPrixTypeSalle(String nom){
+	public float getPrixTypeSalle(String nom){
 		return TypeSalle.get(nom);
 	}
 	
-	public static float getPrixManifestation(String nom){
+	public float getPrixManifestation(String nom){
 		return Manifestation.get(nom);
 	}
 	
-	public static float getPrixDuree(String nom){
+	public float getPrixDuree(String nom){
 		return Duree.get(nom);
 	}
 	
-	public static boolean contientTitre(String nom){
+	public boolean contientTitre(String nom){
 		return Titre.containsKey(nom);
 	}
 	
-	public static boolean contientOrigine(String nom){
+	public boolean contientOrigine(String nom){
 		return Origine.containsKey(nom);
 	}
 	
-	public static boolean contientTypeMateriel(String nom){
+	public boolean contientTypeMateriel(String nom){
 		return TypeMateriel.containsKey(nom);
 	}
 	
-	public static boolean contientTypeSalle(String nom){
+	public boolean contientTypeSalle(String nom){
 		return TypeSalle.containsKey(nom);
 	}
 	
-	public static boolean contientManifestation(String nom){
+	public boolean contientManifestation(String nom){
 		return Manifestation.containsKey(nom);
 	}
 	
-	public static boolean contientDuree(String nom){
+	public boolean contientDuree(String nom){
 		return Duree.containsKey(nom);
 	}
 	
@@ -178,7 +178,7 @@ public class GestionnaireTarifs {
 	 * @return Float res
 	 * 
 	 * */
-	public static float calculTarif(Titre t,Origine o,TypeMateriel tm,TypeSalle ts,Manifestation manif,Duree dur){
+	public float calculTarif(Titre t,Origine o,TypeMateriel tm,TypeSalle ts,Manifestation manif,Duree dur){
 		float res = Titre.get(t.getLibelle()) + Origine.get(o.getLibelle()) + TypeMateriel.get(tm.getLibelle()) + 
 		TypeSalle.get(ts.getLibelle()) + Manifestation.get(manif.getLibelle()) + Duree.get(dur.getLibelle());
 		return res;

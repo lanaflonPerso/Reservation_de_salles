@@ -51,7 +51,7 @@ public class GestionnaireReservations {
 	 * @param mater MatÃ©riel utilisÃ© 
 	 * @return un float reprÃ©sentant le prix d'une reservation en fonction des paramÃ¨tres passÃ©s en entrÃ©
 	 */
-	public static double calculPrixReserv(Demandeur demand,Salle salle,Manifestation manif, Duree duree){
+	public double calculPrixReserv(Demandeur demand,Salle salle,Manifestation manif, Duree duree){
 		double prix = demand.tarifOrigine() + demand.tarifTitre();
 		//TODO : compléter
 		return prix;
@@ -126,7 +126,7 @@ public class GestionnaireReservations {
 	 * @param s
 	 * @return
 	 */
-	private static boolean dispoSalle(Salle s){		
+	private boolean dispoSalle(Salle s){		
 		for(Reservation r:listeReserv){
 			if(r.getSalle().compareSalle(s)){
 				return false;
@@ -145,7 +145,7 @@ public class GestionnaireReservations {
 	 * @param mater MatÃ©riel utilisÃ©
 	 * @return une nouvelle reservation si les diffÃ©rentes contraintes ont Ã©tÃ© respectÃ©es et null avec un message d'erreur sinon
 	 */
-	public static Reservation reserveSalle(Demandeur demand,Salle salle,Manifestation manif, Duree duree){
+	public Reservation reserveSalle(Demandeur demand,Salle salle,Manifestation manif, Duree duree){
 		if(dispoSalle(salle)){
 			
 			Reservation reservation = new Reservation(refReserv, new Date(), calculPrixReserv(demand,salle,manif,duree), salle,  duree, manif);

@@ -10,7 +10,8 @@ public class TypeMateriel extends Tarif{
 	}
 	public TypeMateriel(int id, String nom,float tarif) {
 		super(id,nom,tarif);
-		GestionnaireTarifs.addPrixTypeMateriel(libelle, (float) tarif);
+		GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+		gestionnaireT.addPrixManifestation(libelle, (float) tarif);
 	}
 	
 	@Override

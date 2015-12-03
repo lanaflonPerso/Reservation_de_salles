@@ -7,8 +7,8 @@ import fr.unantes.dao.DAOFactory;
 
 public class Administrateur extends Demandeur {
 
-	private final String motDePasse = "a";
-	private final String login = "a";
+	private final String motDePasse = "admin";
+	private final String login = "admin";
 
 	public Administrateur() {
 		super();
@@ -35,88 +35,7 @@ public class Administrateur extends Demandeur {
 		return result;
 	}
 
-	// Ajout d'un batiment en base
-	public Batiment ajoutBatiment(Batiment batiment) {
-		try {
-			DAO<Batiment> batimentDao = DAOFactory.getBatimentDAO();
-			batimentDao.create(batiment);
 
-		} catch (Exception e) {
-			e.getMessage();
-		}
-		return batiment;
-	}
-	
-	//Supression d'un batiment en base
-	public void deleteBatiment(Batiment batiment) {
-		try {
-			DAO<Batiment> batimentDao = DAOFactory.getBatimentDAO();
-			batimentDao.delete(batiment);
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-	
-	//Modification d'un batiment en base
-	public void updateBatiment(Batiment batiment){
-		try{
-			DAO<Batiment> batimentDao = DAOFactory.getBatimentDAO();
-			batimentDao.update(batiment);
-		}
-		catch(Exception e){
-			e.getMessage();
-		}
-	}
-	
-	// Ajout d'une salle en base
-	public Salle ajoutSalle(Salle salle) {
-		try {
-			DAO<Salle> salleDao = DAOFactory.getSalleDAO();
-			salleDao.create(salle);
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-		return salle;
-	}
-	
-	// Suppression d'une salle en base
-	public Salle deleteSalle(Salle salle) {
-		try {
-			DAO<Salle> salleDao = DAOFactory.getSalleDAO();
-			salleDao.delete(salle);
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-		return salle;
-	}
-	
-	//Ajout d'un nouveau type de salle
-	public TypeSalle ajoutType(TypeSalle type){
-		try{
-			DAO<TypeSalle> typeDao = DAOFactory.getTypeSalleDAO();
-			ArrayList<TypeSalle> liste = typeDao.list();
-			boolean existe = false;
-			
-			for(int i=0; i<liste.size(); i++){
-				if(liste.get(i).getNom().equals(type.getNom())){
-					System.out.println("Ce type de salle existe déjà");
-					existe = true;
-				}
-			}
-			
-			if(existe == false){
-				typeDao.create(type);
-			}
-		}
-		catch(Exception e){
-			e.getMessage();
-		}
-		return type;
-	}
-	
 
 
 }
