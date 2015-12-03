@@ -4,6 +4,9 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class Duree extends Tarif{
 
+	private long millisecondes;
+	
+	
 	public Duree() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -13,6 +16,20 @@ public class Duree extends Tarif{
 		super(code, libelle, tarif);
 		GestionnaireTarifs.addPrixDuree(libelle, (float) tarif);
 		// TODO Auto-generated constructor stub
+	}
+	
+
+	public Duree(long millisecondes) {
+		super();
+		this.millisecondes = millisecondes;
+	}
+
+	public long getMillisecondes() {
+		return millisecondes;
+	}
+
+	public void setMillisecondes(long millisecondes) {
+		this.millisecondes = millisecondes;
 	}
 
 	@Override

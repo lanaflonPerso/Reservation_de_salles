@@ -57,13 +57,76 @@ public class GestionnaireReservations {
 		return prix;
 	}
 	
+	/**
+	 * renvoie true si la salle est disponible pour une réservation à une date et pour une durée précise.
+	 * @param salle la salle disponible ou non.
+	 * @param date la date à laquelel on veut savoir la disponibilité.
+	 * @param duree la durée pour laquelle on veut savoir si la salle est disponible.
+	 * @return true si la salle est disponible, false sinon.
+	 * On compare les dates et durées de réservation pour savoir si la salle possède déjà une réservation pour un créneau donné.
+	 */
+	public boolean salleDispo(Salle salle, Date date, Duree duree) throws Exception{
+		if(duree.getMillisecondes()<0){
+			throw new Exception("Durée négative");
+		}
+		ArrayList<Reservation> liste = salle.getListeReservation();
+		
+		//Si aucune reservation pour cette salle
+		if(liste.isEmpty()){
+			return true;
+		}
+		
+		//Créneaux de notre nouvelle réservation
+		long debut_creation = date.getTime();
+		long fin_creation = date.getTime() + duree.getMillisecondes();
+
+		for(int i=0; i<liste.size(); i++){
+			//Créneau d'une réservation déjà existante
+			long fin_existante = liste.get(i).getDate_resa().getTime() + liste.get(i).getDuree().getMillisecondes();
+			long debut_existante = liste.get(i).getDate_resa().getTime();
+
+			//Si la nouvelle réservation se finit après le début d'une ancienne
+			if(fin_creation >= debut_existante && debut_creation <= debut_existante){
+				return false;
+			}
+			//Si la nouvelle réservation commence avant la fin d'une ancienne
+			if(debut_creation <= fin_existante && fin_creation >= fin_existante){
+				return false;
+			}
+			//Si la nouvelel réservation est en plein dans une réservation existante
+			if(debut_creation >= debut_existante && fin_creation <= fin_existante){
+				return false;
+			}
+		}	
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param ref_resa
+	 * @param demandeur
+	 * @param salle
+	 * @param date_resa
+	 * @param duree
+	 * @param manifestation
+	 * @param tarif
+	 * @throws Exception
+	 */
+	public void reserver(String ref_resa, Demandeur demandeur, Salle salle, Date date_resa, Duree duree, Manifestation manifestation, double prix) throws Exception{
+		if(!salleDispo(salle, date_resa, duree)){
+			throw new Exception("Salle indisponible");
+		}
+		Reservation reservation = new Reservation(ref_resa, date_resa, prix, salle, duree, manifestation);
+		salle.ajoutReservation(reservation);
+		listeReserv.add(reservation);
+	}
 	
 	/**
 	 * 
 	 * @param s
 	 * @return
 	 */
-	private static boolean dispoSalle(Salle s){
+	private static boolean dispoSalle(Salle s){		
 		for(Reservation r:listeReserv){
 			if(r.getSalle().compareSalle(s)){
 				return false;
