@@ -166,22 +166,9 @@ public class GestionnaireTarifs {
 		return Duree.containsKey(nom);
 	}
 	
-	/**
-	 * On calcul un tarif à partir des diffenrentes sous classe de tarif servant à determiner un tarif 
-	 * 
-	 * @param Titre
-	 * @param Origine
-	 * @param TypeMateriel
-	 * @param TypeSalle
-	 * @param Manifestation
-	 * @param Duree
-	 * @return Float res
-	 * 
-	 * */
-	public float calculTarif(Titre t,Origine o,TypeMateriel tm,TypeSalle ts,Manifestation manif,Duree dur){
-		float res = Titre.get(t.getLibelle()) + Origine.get(o.getLibelle()) + TypeMateriel.get(tm.getLibelle()) + 
-		TypeSalle.get(ts.getLibelle()) + Manifestation.get(manif.getLibelle()) + Duree.get(dur.getLibelle());
-		return res;
+	public double calculTarif(Reservation reservation){
+		return reservation.getSalle().calculerTarif() + reservation.getDemandeur().calculTarif() + reservation.calculTarif();
+		
 	}
 	
 }

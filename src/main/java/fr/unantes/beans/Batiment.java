@@ -31,6 +31,7 @@ public class Batiment {
 		this.no_bat = no_bat;
 		this.nom = nom;
 		this.adresse = adresse;
+		this.listeSalle = new ArrayList<Salle>();
 	}
 	public int getNo_bat() {
 		return no_bat;

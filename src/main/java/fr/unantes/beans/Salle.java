@@ -137,11 +137,17 @@ public class Salle {
 	}
 	
 	public double calculerTarif(){
-		return this.type.getTarif();
+		double tarif = 0;
+		for(int i=0; i<this.listeMateriel.size(); i++){
+			tarif = tarif + this.listeMateriel.get(i).calculerTarif();
+		}
+		return this.type.getTarif() + tarif;
 	}
 	
 	public boolean compareSalle(Salle s){
 		return (this.no_salle == s.getNo_salle() && this.no_bat == s.getNo_bat() && this.no_etage == s.getNo_etage());
 	}
+	
+
 
 }

@@ -6,6 +6,7 @@ import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Materiel;
+import fr.unantes.beans.MaterielFixe;
 import fr.unantes.beans.Origine;
 import fr.unantes.beans.Reservation;
 import fr.unantes.beans.Salle;
@@ -17,7 +18,8 @@ public class GestionnaireLocaux {
 	private static volatile GestionnaireLocaux instance = null;
 	
 	private static ArrayList<Batiment> listeBatiments;
-	private static ArrayList<TypeSalle> listeTypes;
+	private static ArrayList<TypeSalle> listeTypeSalle;
+	private static ArrayList<TypeMateriel> listeTypeMateriel;
 	
 	/**
 	 * 
@@ -41,7 +43,8 @@ public class GestionnaireLocaux {
 	 */
 	private GestionnaireLocaux(){
 		listeBatiments = new ArrayList<Batiment>();
-		listeTypes = new ArrayList<TypeSalle>();
+		listeTypeSalle = new ArrayList<TypeSalle>();
+		listeTypeMateriel = new ArrayList<TypeMateriel>();
 	}
 
 	public static ArrayList<Batiment> getListeBatiments() {
@@ -53,14 +56,22 @@ public class GestionnaireLocaux {
 	}
 
 	public static ArrayList<TypeSalle> getListeTypes() {
-		return listeTypes;
+		return listeTypeSalle;
 	}
 
 	public static void setListeTypes(ArrayList<TypeSalle> listeTypes) {
-		GestionnaireLocaux.listeTypes = listeTypes;
+		GestionnaireLocaux.listeTypeSalle = listeTypes;
+	}
+		
+	public static ArrayList<TypeMateriel> getListeTypeMateriel() {
+		return listeTypeMateriel;
 	}
 
-	
+	public static void setListeTypeMateriel(
+			ArrayList<TypeMateriel> listeTypeMateriel) {
+		GestionnaireLocaux.listeTypeMateriel = listeTypeMateriel;
+	}
+
 	/**
 	 * 
 	 * @param no
@@ -96,26 +107,86 @@ public class GestionnaireLocaux {
 		}
 		return exists;
 	}
+	
+	/**
+	 * 
+	 * @param no_etage l'etage de la salle
+	 * @param no_salle le numero de la salle
+	 * @param no_bat le numero du batiment
+	 * @return true si la salel existe, false sinon
+	 */
+	public boolean salleExists(int no_etage, int no_salle, int no_bat){
+		if(!batimentExists(no_bat)){
+			return false;
+		}
+		
+		for(int i=0; i<listeBatiments.size(); i++){
+			if(listeBatiments.get(i).getNo_bat() == no_bat){
+				Batiment batiment = listeBatiments.get(i);
+				for(int j=0; j<batiment.getListeSalle().size(); j++){
+					if(batiment.getListeSalle().get(j).getNo_etage() == no_etage
+							&& batiment.getListeSalle().get(j).getNo_salle() == no_salle){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param code_inv le code du materiel 
+	 * @return true si la materiel existe, false sinon
+	 */
+	public boolean materielExists(int code_inv){
+		//On recherche dans toutes les salles de tous les batiments
+		for(int i=0; i<listeBatiments.size(); i++){
+			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
+				for(int k=0; k<listeBatiments.get(j).getListeSalle().get(j).getListeMateriel().size(); k++){
+					if(listeBatiments.get(j).getListeSalle().get(j).getListeMateriel().get(k).getCode_inv() == code_inv){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param code le code du type de materiel
+	 * @return true si le materiel existe, false sinon
+	 */
+	public boolean typeMaterielExists(int code){
+		for(int i=0; i<listeTypeMateriel.size(); i++){
+			if(listeTypeMateriel.get(i).getCode() == code){
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 	/**
-	 * @param nom
-	 * @return le batiment dont le nom est égal à nom
-	 * @throws Exception
+	 * 
+	 * @param nom le nom du batiment
+	 * @return la liste des batiments ayant pour nom le paramètre
 	 */
-	public Batiment rechercheBatimentParNom(String nom) throws Exception{
+	public ArrayList<Batiment> rechercheBatimentParNom(String nom){
+		ArrayList<Batiment> liste = new ArrayList();
 		for (int i = 0; i < listeBatiments.size(); i++) {
 			if (listeBatiments.get(i).getNom().equals(nom)) {
-				return listeBatiments.get(i);
+				liste.add(listeBatiments.get(i));
 			}
 		}
-		throw new Exception("Aucun batiment avec ce nom");
+		return liste;
 	}
 
 	/**
 	 * @param no_bat
 	 * @return le batiment dont le numéro est egal a no_bat
-	 * @throws Exception
+	 * @throws Exception si aucun batiment ne possède ce numéro
 	 */
 	public Batiment rechercheBatimentParNumero(int no_bat) throws Exception{
 		for (int i = 0; i < listeBatiments.size(); i++) {
@@ -128,9 +199,9 @@ public class GestionnaireLocaux {
 	}
 
 	/**
-	 * @param adresse
+	 * @param adresse l'adresse du batiment a chercher
 	 * @return le batiment qui possède l'adresse passée en paramètre
-	 * @throws Exception 
+	 * @throws Exception si aucun batiment n'a cette adresse
 	 */
 	public Batiment rechercheBatimentParAdresse(Adresse adresse) throws Exception {
 		for (int i = 0; i < listeBatiments.size(); i++) {
@@ -142,10 +213,10 @@ public class GestionnaireLocaux {
 	}
 
 	/**
-	 * @param no
-	 * @param nom
-	 * @param adresse
-	 * @throws Exception
+	 * @param no le numero du batiment
+	 * @param nom le nom du batiment
+	 * @param adresse l'adresse du batiment
+	 * @throws Exception si le batiment existe déjà
 	 */
 	public void ajoutBatiment(int no, String nom, Adresse adresse) throws Exception {
 		if (batimentExists(no)) {
@@ -161,8 +232,8 @@ public class GestionnaireLocaux {
 	}
 
 	/**
-	 * @param batiment
-	 * @throws Exception
+	 * @param batiment le batiment à supprimer
+	 * @throws Exception si le batiment n'existe pas
 	 */
 	public void supprimerBatiment(Batiment batiment) throws Exception{
 		if (!batimentExists(batiment.getNo_bat())) {
@@ -172,13 +243,13 @@ public class GestionnaireLocaux {
 	}
 	
 	/**
-	 * @param type
+	 * @param code le code tarif du type de salle
 	 * @return true si le type de salle existe
 	 */
-	public boolean typeExists(int code) {
+	public boolean typeSalleExists(int code) {
 		boolean exists = false;
-		for (int i = 0; i < listeTypes.size(); i++) {
-			if (listeTypes.get(i).getCode() == code) {
+		for (int i = 0; i < listeTypeSalle.size(); i++) {
+			if (listeTypeSalle.get(i).getCode() == code) {
 				exists = true;
 			}
 		}
@@ -187,29 +258,29 @@ public class GestionnaireLocaux {
 	}
 	
 	
-/**
- * 
- * @param code
- * @param libelle
- * @param tarif
- * @throws Exception
- */
-	public void ajoutType(int code, String libelle, double tarif) throws Exception{
+	/**
+	 * 
+	 * @param code le code du type de salle
+	 * @param libelle le libelel du type de salle
+	 * @param tarif le tarif du type de salle
+	 * @throws Exception si le tarif est négatif ou s'il existe déjà
+	 */
+	public void ajoutTypeSalle(int code, String libelle, double tarif) throws Exception{
 		if(tarif < 0){
 			throw new Exception("Le tarif ne peut pas être inférieur à 0.");
 		}
-		if (typeExists(code)) {
+		if (typeSalleExists(code)) {
 			throw new Exception("Code de type de salle déjà existant.");
 		}
 		TypeSalle type = new TypeSalle(code, libelle, tarif);
-		listeTypes.add(type);
+		listeTypeSalle.add(type);
 	}
 
 	/**
 	 * 
-	 * @param type
+	 * @param type le type de salle 
 	 * @return la liste des salles dont le type de salle correspond à l'entrée
-	 * @throws Exception
+	 * @throws Exception si aucune salle n'a ce type
 	 */
 	public ArrayList<Salle> rechercheSalleParType(TypeSalle type) throws Exception{
 		ArrayList<Salle> liste = new ArrayList();
@@ -229,11 +300,10 @@ public class GestionnaireLocaux {
 	
 	/**
 	 * 
-	 * @param no_bat
+	 * @param no_bat le numéro du batiment
 	 * @return la liste des salles dans le batiment d'entrée
-	 * @throws Exception
 	 */
-	public ArrayList<Salle> rechercheSalleParBatiment(int no_bat) throws Exception{
+	public ArrayList<Salle> rechercheSalleParBatiment(int no_bat){
 		ArrayList<Salle> liste = new ArrayList();
 		for (int i = 0; i < listeBatiments.size(); i++) {
 			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
@@ -242,19 +312,16 @@ public class GestionnaireLocaux {
 				}
 			}
 		}
-		if(liste.size() == 0){
-			throw new Exception("Aucune salle dans ce batiment");
-		}
 		return liste;
 	}
 	
 	/**
 	 * 
-	 * @param etage
+	 * @param etage l'etage de la salle à rechercher
 	 * @return la liste des salles à l'étage mis en entrée
-	 * @throws Exception
+	 * @throws Exception si aucune salel n'est à cet étage
 	 */
-	public ArrayList<Salle> rechercheSalleParEtage(int etage) throws Exception{
+	public ArrayList<Salle> rechercheSalleParEtage(int etage){
 		ArrayList<Salle> liste = new ArrayList();
 		for (int i = 0; i < listeBatiments.size(); i++) {
 			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
@@ -263,19 +330,16 @@ public class GestionnaireLocaux {
 				}
 			}
 		}
-		if(liste.size() == 0){
-			throw new Exception("Aucune salle à cet étage");
-		}
 		return liste;
 	}
 	
 	/**
 	 * 
-	 * @param numero
+	 * @param numero le numero de la salle
 	 * @return la liste des salles dont le numer correspond à l'entrée
-	 * @throws Exception
+	 * @throws Exceptionsi aucune salle n'a ce numero
 	 */
-	public ArrayList<Salle> rechercheSalleParNumero(int numero) throws Exception{
+	public ArrayList<Salle> rechercheSalleParNumero(int numero){
 		ArrayList<Salle> liste = new ArrayList();
 		for (int i = 0; i < listeBatiments.size(); i++) {
 			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
@@ -283,9 +347,6 @@ public class GestionnaireLocaux {
 					liste.add(listeBatiments.get(i).getListeSalle().get(j));
 				}
 			}
-		}
-		if(liste.size() == 0){
-			throw new Exception("Aucune salle avec ce numéro");
 		}
 		return liste;
 	}
@@ -296,13 +357,23 @@ public class GestionnaireLocaux {
 	 * @param no_bat
 	 * @param superficie
 	 * @param type
-	 * @throws Exception 
+	 * @throws Exception si le batiment n'existe pas, si la salle existe déjà ou si la superficie est nulle
 	 */
 	public void ajoutSalle(int no_etage, int no_salle, int no_bat, int superficie, TypeSalle type) throws Exception {
-		Salle salle = new Salle(no_etage, no_salle, no_bat, superficie, type);		
+		Salle salle = new Salle(no_etage, no_salle, no_bat, superficie, type);	
+		boolean type_ok = false;
 		
 		if(!batimentExists(no_bat)){
 			throw new Exception("Batiment inexistant");
+		}
+		for(int i=0; i<listeTypeSalle.size(); i++){
+			if(type.equals(listeTypeSalle.get(i))){
+				type_ok = true;
+				break;
+			}
+		}
+		if(!type_ok){
+			throw new Exception("Ce type de salle n'existe pas");
 		}
 		ArrayList<Salle> listeSalle = rechercheSalleParBatiment(no_bat);
 		if(!listeSalle.isEmpty()){
@@ -315,22 +386,70 @@ public class GestionnaireLocaux {
 		if(superficie <= 0){
 			throw new Exception("Superficie impossible");
 		}
-		Batiment batiment = rechercheBatimentParNumero(no_bat);
-		batiment.ajoutSalle(salle);
+			Batiment batiment = rechercheBatimentParNumero(no_bat);
+			batiment.ajoutSalle(salle);
 
 	}
 
 	/**
-	 * @param salle
+	 * @param salle la salle à supprimer
 	 */
-	public void supprimerSalle(Salle salle){
+	public void supprimerSalle(Salle salle) throws Exception{
+		if(!salleExists(salle.getNo_etage(), salle.getNo_salle(), salle.getNo_bat())){
+			throw new Exception("Cette salle n'existe pas");
+		}
 		for (int i = 0; i < listeBatiments.size(); i++) {
 			if (listeBatiments.get(i).getNo_bat() == salle.getNo_bat()) {
 				listeBatiments.get(i).enleveSalle(salle);
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param salle
+	 * @param code_inv
+	 * @param nom
+	 * @param type
+	 * @throws Exception
+	 */
+	public void ajoutMaterielFixe(Salle salle, int code_inv, String nom, TypeMateriel type) throws Exception{
+		if(materielExists(code_inv)){
+			throw new Exception("Materiel déjà existant");
+		}
+		MaterielFixe materiel = new MaterielFixe(code_inv, nom, type);
+		salle.ajoutMateriel(materiel);
+	}
 
-
-
+	/**
+	 * Méthode qui enlève un materiel fixe à une salle
+	 * @param materiel le materiel fixe à supprimer
+	 * @throws Exception si le materiel n'existe pas ou s'il est en cours d'utilisation
+	 */
+	public void supprimerMaterielFixe(MaterielFixe materiel) throws Exception{
+		if(!materielExists(materiel.getCode_inv())){
+			throw new Exception("Ce materiel n'existe pas");
+		}
+		materiel.getSalle().retirerMateriel(materiel);
+	}
+	
+	/**
+	 * 
+	 * @param code le code du type de salle
+	 * @param libelle le libelel du type de salle
+	 * @param tarif le tarif du type de salle
+	 * @throws Exception si le tarif est négatif ou s'il existe déjà
+	 */
+	public void ajoutTypeMateriel(int code, String libelle, double tarif) throws Exception{
+		if(tarif < 0){
+			throw new Exception("Le tarif ne peut pas être inférieur à 0.");
+		}
+		if (typeSalleExists(code)) {
+			throw new Exception("Code de type de materiel déjà existant.");
+		}
+		TypeMateriel type = new TypeMateriel(code, libelle, tarif);
+		listeTypeMateriel.add(type);
+	}
+	
+	
 }

@@ -8,7 +8,7 @@ public class TypeMateriel extends Tarif{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TypeMateriel(int id, String nom,float tarif) {
+	public TypeMateriel(int id, String nom, double tarif) {
 		super(id,nom,tarif);
 		GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
 		gestionnaireT.addPrixManifestation(libelle, (float) tarif);

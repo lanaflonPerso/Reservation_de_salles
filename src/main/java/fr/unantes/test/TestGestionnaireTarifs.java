@@ -174,7 +174,7 @@ public class TestGestionnaireTarifs {
 	
 	@Test
 	public void calculTarif(){
-		assertTrue(gestionnaire.calculTarif(titre, origine, typeMateriel, typeSalle, manifestation, duree) == 12);
+		
 	}
 	
 	

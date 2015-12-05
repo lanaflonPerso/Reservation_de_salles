@@ -16,8 +16,7 @@ public class GestionnaireMateriels {
 	private ArrayList<MaterielFixe> listeFixe;
 	private ArrayList<MaterielMobile> listeMobile;
 	private ArrayList<TypeMateriel> listeType;
-	private GestionnaireLocaux gestionnaireLocaux = GestionnaireLocaux.getInstance();
-	private GestionnaireReservations gestionnaireReservations = GestionnaireReservations.getInstance();
+	
 	
 	/**
 	 * MÃ©thode qui crÃ©er une instance de GestionnaireMateriels s'il n'en existe pas et retourne l'instance existante sinon (il ne peut y avoir qu'une seul instance de la classe GestionnaireMateriels 
@@ -102,13 +101,19 @@ public class GestionnaireMateriels {
 	 * @param materiel le materiel fixe à supprimer
 	 * @throws Exception si le materiel n'existe pas ou s'il est en cours d'utilisation
 	 */
-	public void supperimerMaterielFixe(MaterielFixe materiel) throws Exception{
+	public void supprimerMaterielFixe(MaterielFixe materiel) throws Exception{
 		if(!MaterielExists(materiel.getCode_inv())){
 			throw new Exception("Ce materiel n'existe pas");
 		}
-		//if(materiel.getSalle())) //TODO : si la salle est en cours d'utilisation
 		materiel.getSalle().retirerMateriel(materiel);
 		listeFixe.remove(materiel);
+	}
+	
+	public void supprimerMaterielMobile(MaterielMobile materiel) throws Exception{
+		if(!MaterielExists(materiel.getCode_inv())){
+			throw new Exception("Ce materiel n'existe pas");
+		}
+		listeMobile.remove(materiel);
 	}
 
 }

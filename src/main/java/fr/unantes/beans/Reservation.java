@@ -12,6 +12,7 @@ public class Reservation {
 	private ArrayList<MaterielMobile> listeMateriels;
 	private Duree duree;
 	private Manifestation manifestation;
+	private Demandeur demandeur;
 	
 	
 	public Reservation() {
@@ -22,7 +23,7 @@ public class Reservation {
 
 	public Reservation(String ref_resa, Date date_resa, double montant,
 			Salle salle, long temps, ArrayList<MaterielMobile> listeMateriels,
-			Duree duree, Manifestation manifestation) {
+			Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
 		this.ref_resa = ref_resa;
 		this.date_resa = date_resa;
@@ -32,10 +33,11 @@ public class Reservation {
 		this.listeMateriels = listeMateriels;
 		this.duree = duree;
 		this.manifestation = manifestation;
+		this.demandeur = demandeur;
 	}
 	
 	public Reservation(String ref_resa, Date date_resa, double montant,
-			Salle salle, long temps, Duree duree, Manifestation manifestation) {
+			Salle salle, long temps, Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
 		this.ref_resa = ref_resa;
 		this.date_resa = date_resa;
@@ -45,6 +47,7 @@ public class Reservation {
 		this.listeMateriels = listeMateriels;
 		this.duree = duree;
 		this.manifestation = manifestation;
+		this.demandeur = demandeur;
 	}
 
 
@@ -122,12 +125,27 @@ public class Reservation {
 		return manifestation;
 	}
 
+	
+
+	public Demandeur getDemandeur() {
+		return demandeur;
+	}
+
+
+	public void setDemandeur(Demandeur demandeur) {
+		this.demandeur = demandeur;
+	}
+
 
 	public void setManifestation(Manifestation manifestation) {
 		this.manifestation = manifestation;
 	}
 
+	public void ajoutMateriel(MaterielMobile materiel){
+		this.listeMateriels.add(materiel);
+	}
 	
-	
-
+	public double calculTarif(){
+		return this.manifestation.getTarif() + this.duree.getTarif() + montant;
+	}
 }

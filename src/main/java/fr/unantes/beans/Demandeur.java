@@ -40,6 +40,7 @@ public class Demandeur {
 		this.adresse = adresse;
 		this.origine = origine;
 		this.titre = titre;
+		this.listeReservation = new ArrayList();
 	}
 
 	public int getNo_dem() {
@@ -98,4 +99,11 @@ public class Demandeur {
 		return titre.getTarif();
 	}
 	
+	public void annulerReservation(Reservation reservation){
+		this.listeReservation.remove(reservation);
+	}
+	
+	public double calculTarif(){
+		return this.origine.getTarif() + this.titre.getTarif();
+	}
 }

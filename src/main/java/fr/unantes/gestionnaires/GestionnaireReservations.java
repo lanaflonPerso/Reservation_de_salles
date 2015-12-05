@@ -2,13 +2,16 @@ package fr.unantes.gestionnaires;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Duree;
 import fr.unantes.beans.Manifestation;
 import fr.unantes.beans.Materiel;
+import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Reservation;
 import fr.unantes.beans.Salle;
+import fr.unantes.beans.TypeMateriel;
 
 public class GestionnaireReservations {
 
@@ -42,20 +45,25 @@ public class GestionnaireReservations {
 		listeReserv = new ArrayList<Reservation>();
 		
 	}
+
+	
 	/**
-	 * MÃ©thode qui calcul le prix d'une reservation spÃ©cifique celon les diffÃ©rents paramÃ¨tre passÃ©s en paramÃ¨tre
-	 * @param demand Demandeur qui souhaite calculer le prix d'une reservation 
-	 * @param salle Salle qui le demandeur choisis 
-	 * @param manif Type de manifestation
-	 * @param duree Duree de la manifestation
-	 * @param mater MatÃ©riel utilisÃ© 
-	 * @return un float reprÃ©sentant le prix d'une reservation en fonction des paramÃ¨tres passÃ©s en entrÃ©
+	 * 
+	 * @param code_inv le code du materiel 
+	 * @return true si la materiel existe, false sinon
 	 */
-	public double calculPrixReserv(Demandeur demand,Salle salle,Manifestation manif, Duree duree){
-		double prix = demand.tarifOrigine() + demand.tarifTitre();
-		//TODO : compléter
-		return prix;
+	public boolean materielExists(int code_inv){
+		//On recherche dans toutes les salles de tous les batiments
+		for(int i=0; i<listeReserv.size(); i++){
+			for(int j=0; j<listeReserv.get(i).getListeMateriels().size(); j++){
+				if(listeReserv.get(i).getListeMateriels().get(j).getCode_inv() == code_inv){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
+	
 	
 	/**
 	 * renvoie true si la salle est disponible pour une réservation à une date et pour une durée précise.
@@ -70,8 +78,6 @@ public class GestionnaireReservations {
 			throw new Exception("Durée négative");
 		}
 		ArrayList<Reservation> liste = salle.getListeReservation();
-		
-		//Si aucune reservation pour cette salle
 		if(liste.isEmpty()){
 			return true;
 		}
@@ -116,95 +122,92 @@ public class GestionnaireReservations {
 		if(!salleDispo(salle, date_resa, temps)){
 			throw new Exception("Salle indisponible");
 		}
-		Reservation reservation = new Reservation(ref_resa, date_resa, prix, salle, temps, duree, manifestation);
+		Reservation reservation = new Reservation(ref_resa, date_resa, prix, salle, temps, duree, manifestation, demandeur);
 		salle.ajoutReservation(reservation);
 		listeReserv.add(reservation);
 	}
 	
+
 	/**
 	 * 
-	 * @param s
-	 * @return
+	 * @param idReserv le numero de reservation
+	 * Renvoie la réservation 
 	 */
-	private boolean dispoSalle(Salle s){		
-		for(Reservation r:listeReserv){
-			if(r.getSalle().compareSalle(s)){
-				return false;
-			}
-		}	
-		return true;
-	}
-	
-	
-	/**
-	 * MÃ©thode qui reserve une salle pour une date et un demandeur passÃ© en paramÃ¨tre
-	 * @param demand Demandeur qui souhaite effectuer une reservation
-	 * @param salle Salle qui le demandeur souhaite reserver
-	 * @param manif type de manifestation
-	 * @param duree Duree de la reservation
-	 * @param mater MatÃ©riel utilisÃ©
-	 * @return une nouvelle reservation si les diffÃ©rentes contraintes ont Ã©tÃ© respectÃ©es et null avec un message d'erreur sinon
-	 */
-	public Reservation reserveSalle(Demandeur demand,Salle salle,Manifestation manif, Duree duree, long temps){
-		if(dispoSalle(salle)){
-			
-			Reservation reservation = new Reservation(refReserv, new Date(), calculPrixReserv(demand,salle,manif,duree), salle, temps, duree, manif);
-		//	refReserv++; //TODO cast
-			return reservation;
-		
-		}
-		System.err.println("La salle demandÃ©e n'est pas disponible pour ces dates  ");
-		return null;	
-	}
-	
-	
-	
-	public void ConsultationReserv(String idReserv){
+	public Reservation ConsultationReserv(String idReserv) throws Exception{
 		for (Reservation reserv: listeReserv){
 			if(reserv.getRef_resa().equals(idReserv)){
-				reserv.toString();
-				break;
+				return reserv;
 			}
 		}
-		System.out.println("Pas de reservation avec ce numÃ©ro de reservation");
-		
+		throw new Exception("Aucune réservation avec ce numero");
 	}
 	
 	/**
 	 * 
-	 * @param d
+	 * @param demandeur
+	 * @return
 	 */
-	public void ConsultationReserv(Demandeur d){
-		for(Reservation reserv :d.getListeReservation()){
-			reserv.toString();
+	public ArrayList<Reservation> ConsultationReserv(Demandeur demandeur){
+		ArrayList<Reservation> liste = new ArrayList();
+		for(Reservation reserv :demandeur.getListeReservation()){
+			liste.add(reserv);
 		}
-		
+		return liste;
 	}
 	
-	public void ConsultationReserv(Date d){
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public ArrayList<Reservation> ConsultationReserv(Date date){
+		ArrayList<Reservation> liste = new ArrayList();
 		for (Reservation reserv: listeReserv){
-			if(reserv.getDate_resa() == d){
-				
+			if(reserv.getDate_resa().equals(date)){
+				liste.add(reserv);
 			}
 		}
+		return liste;
 	}
 	
-	public void ConsultationReserv(Salle s){
-		for (Reservation reserv: listeReserv){
-			if (reserv.getSalle() == s){
-				reserv.toString();
+	/**
+	 * 
+	 * @param salle
+	 * @return
+	 */
+	public ArrayList<Reservation> ConsultationReserv(Salle salle){
+		return salle.getListeReservation();
+	}
+
+	/**
+	 * 
+	 * @param demandeur
+	 * @param reservation
+	 * @throws Exception
+	 */
+	public void AnnulationReserv(Demandeur demandeur, Reservation reservation) throws Exception{
+		for(int i=0; i<demandeur.getListeReservation().size(); i++){
+			if(demandeur.getListeReservation().get(i).equals(reservation)){
+				demandeur.annulerReservation(reservation);
 			}
 		}
-	}
-	
-	
-	
-	public void AnnulationReserv(Demandeur d, Reservation r){
-		d.getListeReservation();
-		if(!listeReserv.remove(r)){
-			System.out.println("ProblÃ¨me: ce n'est pas votre reservation");
-		}
+		throw new Exception("Cette réservation n'appartient pas à ce demandeur");
 		
+	}	
+	
+	/**
+	 * 
+	 * @param code_inv
+	 * @param nom
+	 * @param type
+	 * @throws Exception
+	 */
+	public void ajoutMaterielMobile(int code_inv, String nom, Reservation reservation, TypeMateriel type) throws Exception{
+		if(materielExists(code_inv)){
+			throw new Exception("Materiel déjà existant");
+		}
+		MaterielMobile materiel = new MaterielMobile(code_inv, nom, type);
+		reservation.ajoutMateriel(materiel);
 	}
 
 	

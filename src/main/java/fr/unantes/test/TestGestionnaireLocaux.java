@@ -36,6 +36,7 @@ public class TestGestionnaireLocaux{
 		salle = new Salle(2, 23, 1, 60, type);
 		batiment.ajoutSalle(salle);
 		gestionnaire.getListeBatiments().add(batiment);
+		gestionnaire.getListeTypes().add(type);
 		
 		//Données à emprunter
 		adresse2 = new Adresse("10", "Boulevard Amiral Courbet", "44000", "Nantes");
@@ -66,6 +67,14 @@ public class TestGestionnaireLocaux{
 	public void testAjoutSalleExistante() throws Exception{
 		gestionnaire.ajoutSalle(2, 23, 1, 60, type);
 		assertTrue(batiment.getListeSalle().size()==1);
+	}
+	
+	@Test
+	public void testAjoutSalleBatimentVide()throws Exception{
+		gestionnaire.getListeBatiments().clear();
+		gestionnaire.ajoutBatiment(2, "fac", adresse);
+		gestionnaire.ajoutSalle(2, 23, 2, 60, type);
+		assertTrue(gestionnaire.getListeBatiments().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
@@ -129,12 +138,12 @@ public class TestGestionnaireLocaux{
 	
 	@Test
 	public void testRechercheBatimentParNom() throws Exception{
-		assertTrue(batiment == gestionnaire.rechercheBatimentParNom("Faculté"));
+		assertTrue(batiment.equals(gestionnaire.rechercheBatimentParNom("Faculté").get(0)));
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testAucunRechercheBatimentParNom() throws Exception{
-		gestionnaire.rechercheBatimentParNom("Batiment inexistant");
+		assertTrue(gestionnaire.rechercheBatimentParNom("Batiment inexistant").isEmpty());
 	}
 	
 	@Test
@@ -162,7 +171,7 @@ public class TestGestionnaireLocaux{
 		assertTrue(salle == gestionnaire.rechercheSalleParBatiment(1).get(0));
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testAucunRechercheSalleParBatiment() throws Exception{
 		assertTrue(gestionnaire.rechercheSalleParBatiment(12).isEmpty());
 	}
@@ -172,7 +181,7 @@ public class TestGestionnaireLocaux{
 		assertTrue(salle == gestionnaire.rechercheSalleParEtage(2).get(0));
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testAucunRechercheSalleParEtage() throws Exception{
 		assertTrue(gestionnaire.rechercheSalleParEtage(12).isEmpty());
 	}
@@ -182,7 +191,7 @@ public class TestGestionnaireLocaux{
 		assertTrue(salle == gestionnaire.rechercheSalleParNumero(23).get(0));
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testAucunRechercheSalleParNumero() throws Exception{
 		assertTrue(gestionnaire.rechercheSalleParNumero(12).isEmpty());
 	}

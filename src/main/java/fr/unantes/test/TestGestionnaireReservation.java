@@ -57,9 +57,8 @@ public class TestGestionnaireReservation {
 		typeSalle = new TypeSalle(1,"reunion", 4);
 		demandeur = new Demandeur(1, "Geoffrou", adresse, origine, titre);
 		salle = new Salle(2, 23, 1, 20, typeSalle);
-		reservation = new Reservation("1A448", date, 100.0, salle, temps, duree, manifestation);
+		reservation = new Reservation("1A448", date, 100.0, salle, temps, duree, manifestation, demandeur);
 		salle.ajoutReservation(reservation);
-
 	}
 
 	@After
