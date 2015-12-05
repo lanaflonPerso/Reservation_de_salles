@@ -14,6 +14,7 @@ import fr.unantes.beans.Duree;
 import fr.unantes.beans.Manifestation;
 import fr.unantes.beans.Origine;
 import fr.unantes.beans.Salle;
+import fr.unantes.beans.TarifEnumeration;
 import fr.unantes.beans.Titre;
 import fr.unantes.beans.TypeMateriel;
 import fr.unantes.beans.TypeSalle;
@@ -175,6 +176,12 @@ public class TestGestionnaireTarifs {
 	@Test
 	public void calculTarif(){
 		
+	}
+	
+	@Test
+	public void testAjoutTarif() throws Exception{
+		gestionnaire.ajoutTarif(1, "Longtemps", 30, TarifEnumeration.Duree);
+		System.out.println(gestionnaire.getListeTarif().size());
 	}
 	
 	

@@ -1,7 +1,9 @@
 package fr.unantes.gestionnaires;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 
 import fr.unantes.beans.*;
@@ -17,6 +19,7 @@ public class GestionnaireTarifs {
 	private static Map<String,Float> TypeSalle;
 	private static Map<String,Float> Manifestation;
 	private static Map<String,Float> Duree;
+	
 	
 	
 	public final static GestionnaireTarifs getInstance(){
@@ -166,6 +169,73 @@ public class GestionnaireTarifs {
 		return Duree.containsKey(nom);
 	}
 	
+	
+	//Geoffrey
+	private ArrayList<Tarif> listeTarif = new ArrayList();
+	
+	public ArrayList<Tarif> getListeTarif() {
+		return listeTarif;
+	}
+
+	public void setListeTarif(ArrayList<Tarif> listeTarif) {
+		this.listeTarif = listeTarif;
+	}
+
+	/**
+	 * 
+	 * @param code le code tarifaire
+	 * @return true si le tarif existe déjà, false sinon
+	 */
+	public boolean TarifExists(int code){
+		for(int i=0; i<listeTarif.size(); i++){
+			if(listeTarif.get(i).getCode() == code){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param code code tarifaire
+	 * @param libelle le nom du tarif
+	 * @param tarif le prix 
+	 * @param typeTarif le type de tarif à ajouter, correspond à l'enumeration de tous les types de tarifs
+	 * @throws Exception si le tarif existe déjà ou si le prix est négatif
+	 */
+	public void ajoutTarif(int code, String libelle, double tarif, TarifEnumeration typeTarif) throws Exception{
+		if(TarifExists(code)){
+			throw new Exception("Code tarifaire déjà existant");
+		}
+		if(tarif < 0){
+			throw new Exception("Prix négatif");
+		}
+
+		if(typeTarif.name().equals(TarifEnumeration.Duree.name())){
+			listeTarif.add(new Duree(code, libelle, tarif));
+		}
+		if(typeTarif.name().equals(TarifEnumeration.Manifestation.name())){
+			listeTarif.add(new Manifestation(code, libelle, tarif));
+		}
+		if(typeTarif.name().equals(TarifEnumeration.TypeMateriel.name())){
+			listeTarif.add(new TypeMateriel(code, libelle, tarif));
+		}
+		if(typeTarif.name().equals(TarifEnumeration.TypeSalle.name())){
+			listeTarif.add(new TypeSalle(code, libelle, tarif));
+		}
+		if(typeTarif.name().equals(TarifEnumeration.Titre.name())){
+			listeTarif.add(new Titre(code, libelle, tarif));
+		}
+		if(typeTarif.name().equals(TarifEnumeration.Origine.name())){
+			listeTarif.add(new Origine(code, libelle, tarif));
+		}
+	}
+	
+	/**
+	 * 
+	 * @param reservation la réservation a calculer le prix
+	 * @return le prix de la réservation
+	 */
 	public double calculTarif(Reservation reservation){
 		return reservation.getSalle().calculerTarif() + reservation.getDemandeur().calculTarif() + reservation.calculTarif();
 		
