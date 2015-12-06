@@ -18,8 +18,7 @@ public class GestionnaireLocaux {
 	private static volatile GestionnaireLocaux instance = null;
 	
 	private static ArrayList<Batiment> listeBatiments;
-	private static ArrayList<TypeSalle> listeTypeSalle;
-	private static ArrayList<TypeMateriel> listeTypeMateriel;
+
 	
 	/**
 	 * 
@@ -43,8 +42,6 @@ public class GestionnaireLocaux {
 	 */
 	private GestionnaireLocaux(){
 		listeBatiments = new ArrayList<Batiment>();
-		listeTypeSalle = new ArrayList<TypeSalle>();
-		listeTypeMateriel = new ArrayList<TypeMateriel>();
 	}
 
 	public static ArrayList<Batiment> getListeBatiments() {
@@ -55,22 +52,7 @@ public class GestionnaireLocaux {
 		GestionnaireLocaux.listeBatiments = listeBatiments;
 	}
 
-	public static ArrayList<TypeSalle> getListeTypes() {
-		return listeTypeSalle;
-	}
 
-	public static void setListeTypes(ArrayList<TypeSalle> listeTypes) {
-		GestionnaireLocaux.listeTypeSalle = listeTypes;
-	}
-		
-	public static ArrayList<TypeMateriel> getListeTypeMateriel() {
-		return listeTypeMateriel;
-	}
-
-	public static void setListeTypeMateriel(
-			ArrayList<TypeMateriel> listeTypeMateriel) {
-		GestionnaireLocaux.listeTypeMateriel = listeTypeMateriel;
-	}
 
 	/**
 	 * 
@@ -153,20 +135,6 @@ public class GestionnaireLocaux {
 		return false;
 	}
 	
-	/**
-	 * 
-	 * @param code le code du type de materiel
-	 * @return true si le materiel existe, false sinon
-	 */
-	public boolean typeMaterielExists(int code){
-		for(int i=0; i<listeTypeMateriel.size(); i++){
-			if(listeTypeMateriel.get(i).getCode() == code){
-				return true;
-			}
-		}
-		return false;
-	}
-
 
 	/**
 	 * 
@@ -240,40 +208,6 @@ public class GestionnaireLocaux {
 			throw new Exception("Batiment inexistant");
 		}
 		listeBatiments.remove(batiment);
-	}
-	
-	/**
-	 * @param code le code tarif du type de salle
-	 * @return true si le type de salle existe
-	 */
-	public boolean typeSalleExists(int code) {
-		boolean exists = false;
-		for (int i = 0; i < listeTypeSalle.size(); i++) {
-			if (listeTypeSalle.get(i).getCode() == code) {
-				exists = true;
-			}
-		}
-		return exists;
-
-	}
-	
-	
-	/**
-	 * 
-	 * @param code le code du type de salle
-	 * @param libelle le libelel du type de salle
-	 * @param tarif le tarif du type de salle
-	 * @throws Exception si le tarif est négatif ou s'il existe déjà
-	 */
-	public void ajoutTypeSalle(int code, String libelle, double tarif) throws Exception{
-		if(tarif < 0){
-			throw new Exception("Le tarif ne peut pas être inférieur à 0.");
-		}
-		if (typeSalleExists(code)) {
-			throw new Exception("Code de type de salle déjà existant.");
-		}
-		TypeSalle type = new TypeSalle(code, libelle, tarif);
-		listeTypeSalle.add(type);
 	}
 
 	/**
@@ -361,20 +295,11 @@ public class GestionnaireLocaux {
 	 */
 	public void ajoutSalle(int no_etage, int no_salle, int no_bat, int superficie, TypeSalle type) throws Exception {
 		Salle salle = new Salle(no_etage, no_salle, no_bat, superficie, type);	
-		boolean type_ok = false;
 		
 		if(!batimentExists(no_bat)){
 			throw new Exception("Batiment inexistant");
 		}
-		for(int i=0; i<listeTypeSalle.size(); i++){
-			if(type.equals(listeTypeSalle.get(i))){
-				type_ok = true;
-				break;
-			}
-		}
-		if(!type_ok){
-			throw new Exception("Ce type de salle n'existe pas");
-		}
+
 		ArrayList<Salle> listeSalle = rechercheSalleParBatiment(no_bat);
 		if(!listeSalle.isEmpty()){
 			for(int i=0; i<listeSalle.size(); i++){
@@ -433,23 +358,6 @@ public class GestionnaireLocaux {
 		materiel.getSalle().retirerMateriel(materiel);
 	}
 	
-	/**
-	 * 
-	 * @param code le code du type de salle
-	 * @param libelle le libelel du type de salle
-	 * @param tarif le tarif du type de salle
-	 * @throws Exception si le tarif est négatif ou s'il existe déjà
-	 */
-	public void ajoutTypeMateriel(int code, String libelle, double tarif) throws Exception{
-		if(tarif < 0){
-			throw new Exception("Le tarif ne peut pas être inférieur à 0.");
-		}
-		if (typeSalleExists(code)) {
-			throw new Exception("Code de type de materiel déjà existant.");
-		}
-		TypeMateriel type = new TypeMateriel(code, libelle, tarif);
-		listeTypeMateriel.add(type);
-	}
 	
-	
+
 }

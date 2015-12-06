@@ -145,7 +145,11 @@ public class Reservation {
 		this.listeMateriels.add(materiel);
 	}
 	
+	public void retirerMateriel(MaterielMobile materiel){
+		this.listeMateriels.remove(materiel);
+	}
+	
 	public double calculTarif(){
-		return this.manifestation.getTarif() + this.duree.getTarif() + montant;
+		return this.manifestation.getTarif() + this.duree.getTarif();
 	}
 }

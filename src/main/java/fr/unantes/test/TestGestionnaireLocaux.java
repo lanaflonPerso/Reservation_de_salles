@@ -5,11 +5,13 @@ import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Salle;
+import fr.unantes.beans.TarifEnumeration;
 import fr.unantes.beans.TypeSalle;
 import fr.unantes.gestionnaires.GestionnaireLocaux;
 import fr.unantes.gestionnaires.GestionnaireReservations;
@@ -18,25 +20,31 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class TestGestionnaireLocaux{
 	GestionnaireLocaux gestionnaire = GestionnaireLocaux.getInstance();
-	GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
-	GestionnaireReservations gestionnaireR = GestionnaireReservations.getInstance();
+	static GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+
 	Adresse adresse;
 	Adresse adresse2;
 	Batiment batiment;
-	TypeSalle type;
+	TypeSalle typeSalle;
 	Salle salle;
 
+	@BeforeClass
+	public static void init() throws Exception{
+		System.out.println("Test de la classe GestionnaireLocaux");
+		gestionnaireT.ajoutTarif(1, "reunion", 30, TarifEnumeration.TypeSalle);
+		gestionnaireT.ajoutTarif(2, "meuble", 4, TarifEnumeration.TypeMateriel);
+		gestionnaireT.ajoutTarif(3, "electronique", 6, TarifEnumeration.TypeMateriel);
+	}
 	
 	@Before
 	public void setUp() throws Exception {
 		//Objets existants
 		adresse = new Adresse("13", "Boulevard Michelet Sciences", "44000", "Nantes");
 		batiment = new Batiment(1, "Faculté", adresse);
-		type = new TypeSalle(1, "salle de reunion", 4);
-		salle = new Salle(2, 23, 1, 60, type);
+		typeSalle = (TypeSalle) gestionnaireT.getListeTarif().get(0);
+		salle = new Salle(2, 23, 1, 60, typeSalle);
 		batiment.ajoutSalle(salle);
 		gestionnaire.getListeBatiments().add(batiment);
-		gestionnaire.getListeTypes().add(type);
 		
 		//Données à emprunter
 		adresse2 = new Adresse("10", "Boulevard Amiral Courbet", "44000", "Nantes");
@@ -60,12 +68,12 @@ public class TestGestionnaireLocaux{
 	
 	@Test
 	public void testAjoutSalle() throws Exception{
-		batiment.ajoutSalle(new Salle(2, 24, 1, 60, type));
+		batiment.ajoutSalle(new Salle(2, 24, 1, 60, typeSalle));
 	}
 
 	@Test(expected = Exception.class)
 	public void testAjoutSalleExistante() throws Exception{
-		gestionnaire.ajoutSalle(2, 23, 1, 60, type);
+		gestionnaire.ajoutSalle(2, 23, 1, 60, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
@@ -73,25 +81,25 @@ public class TestGestionnaireLocaux{
 	public void testAjoutSalleBatimentVide()throws Exception{
 		gestionnaire.getListeBatiments().clear();
 		gestionnaire.ajoutBatiment(2, "fac", adresse);
-		gestionnaire.ajoutSalle(2, 23, 2, 60, type);
+		gestionnaire.ajoutSalle(2, 23, 2, 60, typeSalle);
 		assertTrue(gestionnaire.getListeBatiments().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutSalleBatimentInexistante() throws Exception{
-		gestionnaire.ajoutSalle(1, 1, 100, 50, type);
+		gestionnaire.ajoutSalle(1, 1, 100, 50, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutSalleSuperficieNegative() throws Exception{
-		gestionnaire.ajoutSalle(1, 1, 1, -1, type);
+		gestionnaire.ajoutSalle(1, 1, 1, -1, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutSalleSuperficieNull() throws Exception{
-		gestionnaire.ajoutSalle(1, 1, 1, 0, type);
+		gestionnaire.ajoutSalle(1, 1, 1, 0, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
@@ -198,7 +206,7 @@ public class TestGestionnaireLocaux{
 	
 	@Test
 	public void testRechercheSalleParType() throws Exception{
-		assertTrue(salle == gestionnaire.rechercheSalleParType(type).get(0));
+		assertTrue(salle == gestionnaire.rechercheSalleParType(typeSalle).get(0));
 	}
 	
 	@Test(expected = Exception.class)

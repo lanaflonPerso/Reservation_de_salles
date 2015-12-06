@@ -50,25 +50,23 @@ public class GestionnaireDemandeurs {
 
 	/**
 	 * 
-	 * @param no_dem
-	 * @return
+	 * @param no_dem le numéro unique du demandeur
+	 * @return true si le demandeur existe, false sinon
 	 */
 	public boolean demandeurExists(int no_dem){
-		boolean exists = false;
 		for(int i=0; i<this.listeDemandeurs.size(); i++){
 			if(this.listeDemandeurs.get(i).getNo_dem() == no_dem){
-				exists = true;
+				return true;
 			}
 		}
-		return exists;
+		return false;
 	}
 	
 	/**
 	 * @param titre
 	 * @return la liste de demandeurs qui correpondent au titre passé en paramètre
-	 * @throws Exception
 	 */
-	public ArrayList<Demandeur> rechercheDemandeurParTitre(Titre titre) throws Exception{
+	public ArrayList<Demandeur> rechercheDemandeurParTitre(Titre titre){
 		ArrayList<Demandeur> liste = new ArrayList();
 		
 		for(int i=0; i<listeDemandeurs.size(); i++){
@@ -76,17 +74,14 @@ public class GestionnaireDemandeurs {
 				liste.add(listeDemandeurs.get(i));
 			}
 		}
-		if(liste.isEmpty()){
-			throw new Exception("Aucun demandeur avec ce titre");
-		}
 		return liste;
 	}
 	
 	/**
 	 * 
-	 * @param no_dem
-	 * @return
-	 * @throws Exception
+	 * @param no_dem le numéro de demandeur
+	 * @return le demandeur correspondant au no_dem
+	 * @throws Exception si aucun demandeur n'a ce numero
 	 */
 	public Demandeur rechercheDemandeurParNumero(int no_dem) throws Exception{
 		for(int i=0; i<listeDemandeurs.size(); i++){
@@ -99,12 +94,12 @@ public class GestionnaireDemandeurs {
 	
 	/**
 	 * 
-	 * @param no_dem
-	 * @param nom
-	 * @param adresse
-	 * @param origine
-	 * @param titre
-	 * @throws Exception
+	 * @param no_dem le numero unique du demandeur
+	 * @param nom ne nom du demandeur
+	 * @param adresse l'adresse du demandeur
+	 * @param origine l'origine du demandeur
+	 * @param titre le titre du demandeur
+	 * @throws Exception si le numero est negatif ou s'il correspond déjà a un autre demandeur
 	 */
 	public void ajoutDemandeur(int no_dem, String nom, Adresse adresse, Origine origine, Titre titre) throws Exception{
 		if(no_dem < 0){
@@ -113,16 +108,8 @@ public class GestionnaireDemandeurs {
 		if(demandeurExists(no_dem)){
 			throw new Exception("Ce demandeur existe déjà");
 		}
-		else if(nom.equals("")){
-			throw new Exception("nom vide");
-		}
-		else if(adresse.equals(null)){
-			throw new Exception("Mais où habite t il ?");
-		}
-		else{
 			Demandeur demandeur = new Demandeur(no_dem, nom, adresse, origine, titre);
 			this.listeDemandeurs.add(demandeur);
-		}
 	}
 	
 	/**
@@ -130,13 +117,11 @@ public class GestionnaireDemandeurs {
 	 * @param demandeur
 	 * @throws Exception
 	 */
-	public void supprimerDemandeur(Demandeur demandeur) throws Exception{
-		if(!demandeurExists(demandeur.getNo_dem())){
+	public void supprimerDemandeur(int no_dem) throws Exception{
+		if(!demandeurExists(no_dem)){
 			throw new Exception("Demandeur innexistant");
 		}
-		else{
-			listeDemandeurs.remove(demandeur);
-		}
+		listeDemandeurs.remove(rechercheDemandeurParNumero(no_dem));
 	}
 	
 	

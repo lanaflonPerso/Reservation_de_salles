@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
@@ -11,6 +12,7 @@ import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Origine;
 import fr.unantes.beans.Salle;
+import fr.unantes.beans.TarifEnumeration;
 import fr.unantes.beans.Titre;
 import fr.unantes.beans.TypeSalle;
 import fr.unantes.gestionnaires.GestionnaireDemandeurs;
@@ -19,17 +21,24 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 public class TestGestionnaireDemandeurs {
 	
 	GestionnaireDemandeurs gestionnaire = GestionnaireDemandeurs.getInstance();
-	GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
+	static GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
 	Demandeur demandeur;
 	Adresse adresse;
 	Origine origine;
 	Titre titre;
 
+	@BeforeClass
+	public static void init() throws Exception{
+		System.out.println("Test de la classe GestionnaireDemandeurs");
+		gestionnaireT.ajoutTarif(1, "monsieur", 30, TarifEnumeration.Titre);
+		gestionnaireT.ajoutTarif(2, "européen", 4, TarifEnumeration.Origine);
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 		adresse = new Adresse("13", "Boulevard Michelet Sciences", "44000", "Nantes");
-		origine = new Origine(1, "Européen", 2);
-		titre = new Titre(1, "Monsieur", 2);
+		origine = (Origine) gestionnaireT.getListeTarif().get(1);
+		titre = (Titre) gestionnaireT.getListeTarif().get(0);
 		demandeur = new Demandeur(1, "geoffrou", adresse, origine, titre);
 		gestionnaire.getListeDemandeurs().add(demandeur);
 	}
@@ -53,28 +62,28 @@ public class TestGestionnaireDemandeurs {
 	
 	@Test
 	public void testsupprimerDemandeur() throws Exception{
-		gestionnaire.supprimerDemandeur(demandeur);
+		gestionnaire.supprimerDemandeur(1);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==0);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testSupprimerMemeDemandeur() throws Exception{
-		gestionnaire.supprimerDemandeur(demandeur);
-		gestionnaire.supprimerDemandeur(demandeur);
+		gestionnaire.supprimerDemandeur(1);
+		gestionnaire.supprimerDemandeur(1);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==0);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testSupprimerDemandeurInexistant() throws Exception{
 		Demandeur demandeur2 = new Demandeur(2, "ugo", adresse, origine, titre);
-		gestionnaire.supprimerDemandeur(demandeur2);
+		gestionnaire.supprimerDemandeur(2);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testSupprimerDemandeurListeVide() throws Exception{
 		gestionnaire.getListeDemandeurs().clear();
-		gestionnaire.supprimerDemandeur(demandeur);
+		gestionnaire.supprimerDemandeur(1);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==0);
 	}
 	
@@ -103,9 +112,9 @@ public class TestGestionnaireDemandeurs {
 		assertFalse(gestionnaire.rechercheDemandeurParTitre(titre).equals(null));
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testRechercheDemandeurParTitreNull() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParTitre(new Titre(2,"Madame", 3)).equals(null));
+		assertTrue(gestionnaire.rechercheDemandeurParTitre(new Titre(1,"Madame", 3)).size() == 0);
 	}
 	
 	
