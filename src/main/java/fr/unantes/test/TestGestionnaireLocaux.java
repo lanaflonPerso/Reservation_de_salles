@@ -57,13 +57,13 @@ public class TestGestionnaireLocaux{
 
 	@Test
 	public void testAjoutBatiment() throws Exception{
-		gestionnaire.ajoutBatiment(2, "salle des fêtes", adresse2);	
+		gestionnaire.ajouterBatiment(2, "salle des fêtes", adresse2);	
 		assertTrue(gestionnaire.getListeBatiments().size() == 2);
 	}
 		
 	@Test(expected = Exception.class)
 	public void testAjoutBatimentExistant() throws Exception {
-		gestionnaire.ajoutBatiment(1, "Faculté", adresse2);
+		gestionnaire.ajouterBatiment(1, "Faculté", adresse2);
 	}
 	
 	@Test
@@ -73,39 +73,39 @@ public class TestGestionnaireLocaux{
 
 	@Test(expected = Exception.class)
 	public void testAjoutSalleExistante() throws Exception{
-		gestionnaire.ajoutSalle(2, 23, 1, 60, typeSalle);
+		gestionnaire.ajouterSalle(2, 23, 1, 60, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
 	@Test
 	public void testAjoutSalleBatimentVide()throws Exception{
 		gestionnaire.getListeBatiments().clear();
-		gestionnaire.ajoutBatiment(2, "fac", adresse);
-		gestionnaire.ajoutSalle(2, 23, 2, 60, typeSalle);
+		gestionnaire.ajouterBatiment(2, "fac", adresse);
+		gestionnaire.ajouterSalle(2, 23, 2, 60, typeSalle);
 		assertTrue(gestionnaire.getListeBatiments().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutSalleBatimentInexistante() throws Exception{
-		gestionnaire.ajoutSalle(1, 1, 100, 50, typeSalle);
+		gestionnaire.ajouterSalle(1, 1, 100, 50, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutSalleSuperficieNegative() throws Exception{
-		gestionnaire.ajoutSalle(1, 1, 1, -1, typeSalle);
+		gestionnaire.ajouterSalle(1, 1, 1, -1, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutSalleSuperficieNull() throws Exception{
-		gestionnaire.ajoutSalle(1, 1, 1, 0, typeSalle);
+		gestionnaire.ajouterSalle(1, 1, 1, 0, typeSalle);
 		assertTrue(batiment.getListeSalle().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutAdresseExistante() throws Exception {
-		gestionnaire.ajoutBatiment(2, "salle des fêtes", adresse);
+		gestionnaire.ajouterBatiment(2, "salle des fêtes", adresse);
 	}
 	
 	
@@ -146,72 +146,72 @@ public class TestGestionnaireLocaux{
 	
 	@Test
 	public void testRechercheBatimentParNom() throws Exception{
-		assertTrue(batiment.equals(gestionnaire.rechercheBatimentParNom("Faculté").get(0)));
+		assertTrue(batiment.equals(gestionnaire.getBatiments("Faculté").get(0)));
 	}
 	
 	@Test
 	public void testAucunRechercheBatimentParNom() throws Exception{
-		assertTrue(gestionnaire.rechercheBatimentParNom("Batiment inexistant").isEmpty());
+		assertTrue(gestionnaire.getBatiments("Batiment inexistant").isEmpty());
 	}
 	
 	@Test
 	public void testRechercheBatimentParNumero() throws Exception{
-		assertTrue(batiment == gestionnaire.rechercheBatimentParNumero(1));
+		assertTrue(batiment == gestionnaire.getBatiment(1));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAucunRechercheBatimentParNumero() throws Exception{
-		assertTrue(batiment == gestionnaire.rechercheBatimentParNumero(22));
+		assertTrue(batiment == gestionnaire.getBatiment(22));
 	}
 	
 	@Test
 	public void testRechercheBatimentParAdresse() throws Exception{
-		assertTrue(batiment == gestionnaire.rechercheBatimentParAdresse(adresse));
+		assertTrue(batiment == gestionnaire.getBatiment(adresse));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAucunRechercheBatimentParAdresse() throws Exception{
-		assertTrue(batiment == gestionnaire.rechercheBatimentParAdresse(adresse2));
+		assertTrue(batiment == gestionnaire.getBatiment(adresse2));
 	}
 	
 	@Test
 	public void testRechercheSalleParBatiment() throws Exception{
-		assertTrue(salle == gestionnaire.rechercheSalleParBatiment(1).get(0));
+		assertTrue(salle == gestionnaire.getSallesParBatiment(1).get(0));
 	}
 	
 	@Test
 	public void testAucunRechercheSalleParBatiment() throws Exception{
-		assertTrue(gestionnaire.rechercheSalleParBatiment(12).isEmpty());
+		assertTrue(gestionnaire.getSallesParBatiment(12).isEmpty());
 	}
 	
 	@Test
 	public void testRechercheSalleParEtage() throws Exception{
-		assertTrue(salle == gestionnaire.rechercheSalleParEtage(2).get(0));
+		assertTrue(salle == gestionnaire.getSallesParEtage(2).get(0));
 	}
 	
 	@Test
 	public void testAucunRechercheSalleParEtage() throws Exception{
-		assertTrue(gestionnaire.rechercheSalleParEtage(12).isEmpty());
+		assertTrue(gestionnaire.getSallesParEtage(12).isEmpty());
 	}
 	
 	@Test
 	public void testRechercheSalleParNumero() throws Exception{
-		assertTrue(salle == gestionnaire.rechercheSalleParNumero(23).get(0));
+		assertTrue(salle == gestionnaire.getSallesParNumero(23).get(0));
 	}
 	
 	@Test
 	public void testAucunRechercheSalleParNumero() throws Exception{
-		assertTrue(gestionnaire.rechercheSalleParNumero(12).isEmpty());
+		assertTrue(gestionnaire.getSallesParNumero(12).isEmpty());
 	}
 	
 	@Test
 	public void testRechercheSalleParType() throws Exception{
-		assertTrue(salle == gestionnaire.rechercheSalleParType(typeSalle).get(0));
+		assertTrue(salle == gestionnaire.getSalles(typeSalle).get(0));
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testAucunRechercheSalleParType() throws Exception{
-		assertTrue(gestionnaire.rechercheSalleParType(new TypeSalle()).isEmpty());
+		assertTrue(gestionnaire.getSalles(new TypeSalle()).isEmpty());
 	}
 	
 }

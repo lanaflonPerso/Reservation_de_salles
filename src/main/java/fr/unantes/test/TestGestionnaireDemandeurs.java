@@ -21,7 +21,6 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 public class TestGestionnaireDemandeurs {
 	
 	GestionnaireDemandeurs gestionnaire = GestionnaireDemandeurs.getInstance();
-	static GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
 	Demandeur demandeur;
 	Adresse adresse;
 	Origine origine;
@@ -30,15 +29,13 @@ public class TestGestionnaireDemandeurs {
 	@BeforeClass
 	public static void init() throws Exception{
 		System.out.println("Test de la classe GestionnaireDemandeurs");
-		gestionnaireT.ajoutTarif(1, "monsieur", 30, TarifEnumeration.Titre);
-		gestionnaireT.ajoutTarif(2, "européen", 4, TarifEnumeration.Origine);
 	}
 	
 	@Before
 	public void setUp() throws Exception {
 		adresse = new Adresse("13", "Boulevard Michelet Sciences", "44000", "Nantes");
-		origine = (Origine) gestionnaireT.getListeTarif().get(1);
-		titre = (Titre) gestionnaireT.getListeTarif().get(0);
+		origine = new Origine(1,"européen", 2);
+		titre = new Titre(1, "monsieur", 2);
 		demandeur = new Demandeur(1, "geoffrou", adresse, origine, titre);
 		gestionnaire.getListeDemandeurs().add(demandeur);
 	}
@@ -58,6 +55,11 @@ public class TestGestionnaireDemandeurs {
 	public void testAjoutMemeDemandeur() throws Exception{
 		gestionnaire.ajoutDemandeur(1, "geoffrou", adresse, origine, titre);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==1);
+	}
+	
+	@Test(expected = Exception.class)
+	public void testAjoutDemandeurNumIncorrect() throws Exception{
+		gestionnaire.ajoutDemandeur(-1, "geoffrou", adresse, origine, titre);
 	}
 	
 	@Test
@@ -88,6 +90,46 @@ public class TestGestionnaireDemandeurs {
 	}
 	
 	@Test
+	public void testModifierDemandeur() throws Exception{
+		gestionnaire.modifierDemandeur(new Adresse("1","rue de l'ecole","44000","Nantes"), 1);
+	}
+	
+	@Test(expected = Exception.class)
+	public void testModifierDemandeurInexistant() throws Exception{
+		gestionnaire.modifierDemandeur(new Adresse("1","rue de l'ecole","44000","Nantes"), 3);
+	}
+	
+	@Test
+	public void testRechercheDemandeurParTitre() throws Exception{
+		assertTrue(gestionnaire.rechercheDemandeurParTitre(titre).size() == 1);
+	}
+	
+	@Test
+	public void testRechercheDemandeurParTitreNull() throws Exception{
+		assertTrue(gestionnaire.rechercheDemandeurParTitre(new Titre(1,"Madame", 3)).size() == 0);
+	}
+	
+	@Test
+	public void testRechercheDemandeurParOrigine() throws Exception{
+		assertTrue(gestionnaire.rechercheDemandeurParOrigine(origine).size()==1);
+	}
+	
+	@Test
+	public void testRechercheDemandeurParOrigineNull() throws Exception{
+		assertTrue(gestionnaire.rechercheDemandeurParOrigine(new Origine(1,"européen", 3)).size() == 0);
+	}
+	
+	@Test
+	public void testRechercheDemandeur() throws Exception{
+		assertTrue(gestionnaire.rechercheDemandeur(1).equals(demandeur));
+	}
+	
+	@Test(expected = Exception.class)
+	public void testRechercheDemandeurNull() throws Exception{
+		assertTrue(gestionnaire.rechercheDemandeur(2).equals(null));
+	}
+	
+	@Test
 	public void testDemandeurExists() throws Exception{
 		assertTrue(gestionnaire.demandeurExists(1));
 	}
@@ -97,25 +139,9 @@ public class TestGestionnaireDemandeurs {
 		assertFalse(gestionnaire.demandeurExists(2));
 	}
 	
-	@Test
-	public void testRechercheDemandeurParNumero() throws Exception{
-		assertFalse(gestionnaire.rechercheDemandeurParNumero(1).equals(null));
-	}
+
 	
-	@Test(expected = Exception.class)
-	public void testRechercheDemandeurParNumeroNull() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParNumero(2).equals(null));
-	}
-	
-	@Test
-	public void testRechercheDemandeurParTitre() throws Exception{
-		assertFalse(gestionnaire.rechercheDemandeurParTitre(titre).equals(null));
-	}
-	
-	@Test
-	public void testRechercheDemandeurParTitreNull() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParTitre(new Titre(1,"Madame", 3)).size() == 0);
-	}
+
 	
 	
 	

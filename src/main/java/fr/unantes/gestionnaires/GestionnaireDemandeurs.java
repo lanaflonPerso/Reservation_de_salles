@@ -47,50 +47,6 @@ public class GestionnaireDemandeurs {
 	public void setListeDemandeurs(ArrayList<Demandeur> listeDemandeurs) {
 		this.listeDemandeurs = listeDemandeurs;
 	}
-
-	/**
-	 * 
-	 * @param no_dem le numéro unique du demandeur
-	 * @return true si le demandeur existe, false sinon
-	 */
-	public boolean demandeurExists(int no_dem){
-		for(int i=0; i<this.listeDemandeurs.size(); i++){
-			if(this.listeDemandeurs.get(i).getNo_dem() == no_dem){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * @param titre
-	 * @return la liste de demandeurs qui correpondent au titre passé en paramètre
-	 */
-	public ArrayList<Demandeur> rechercheDemandeurParTitre(Titre titre){
-		ArrayList<Demandeur> liste = new ArrayList();
-		
-		for(int i=0; i<listeDemandeurs.size(); i++){
-			if(titre.equals(listeDemandeurs.get(i).getTitre())){
-				liste.add(listeDemandeurs.get(i));
-			}
-		}
-		return liste;
-	}
-	
-	/**
-	 * 
-	 * @param no_dem le numéro de demandeur
-	 * @return le demandeur correspondant au no_dem
-	 * @throws Exception si aucun demandeur n'a ce numero
-	 */
-	public Demandeur rechercheDemandeurParNumero(int no_dem) throws Exception{
-		for(int i=0; i<listeDemandeurs.size(); i++){
-			if(listeDemandeurs.get(i).getNo_dem() == no_dem){
-				return listeDemandeurs.get(i);
-			}
-		}
-		throw new Exception("Aucun demandeur avec ce numéro");
-	}
 	
 	/**
 	 * 
@@ -121,8 +77,84 @@ public class GestionnaireDemandeurs {
 		if(!demandeurExists(no_dem)){
 			throw new Exception("Demandeur innexistant");
 		}
-		listeDemandeurs.remove(rechercheDemandeurParNumero(no_dem));
+		listeDemandeurs.remove(rechercheDemandeur(no_dem));
 	}
+	
+	/**
+	 * 
+	 * @param adresse la nouvelel adresse du demandeur
+	 * @param no_dem le numer odu demandeur
+	 * @throws Exception si le demandeur n'existe pas
+	 */
+	public void modifierDemandeur(Adresse adresse, int no_dem) throws Exception{
+		if(!demandeurExists(no_dem)){
+			throw new Exception("Demandeur innexistant");
+		}
+		rechercheDemandeur(no_dem).setAdresse(adresse);
+	}
+
+
+	
+	/**
+	 * @param titre le titre des demandeurs à rechercher
+	 * @return la liste de demandeurs qui correpondent au titre passé en paramètre
+	 */
+	public ArrayList<Demandeur> rechercheDemandeurParTitre(Titre titre){
+		ArrayList<Demandeur> liste = new ArrayList();
+		
+		for(int i=0; i<listeDemandeurs.size(); i++){
+			if(titre.equals(listeDemandeurs.get(i).getTitre())){
+				liste.add(listeDemandeurs.get(i));
+			}
+		}
+		return liste;
+	}
+	
+	/**
+	 * @param origine l'origine des demandeurs a rechercher
+	 * @return la liste de demandeurs qui correpondent a l'origine passée en paramètre
+	 */
+	public ArrayList<Demandeur> rechercheDemandeurParOrigine(Origine origine){
+		ArrayList<Demandeur> liste = new ArrayList();
+		
+		for(int i=0; i<listeDemandeurs.size(); i++){
+			if(origine.equals(listeDemandeurs.get(i).getOrigine())){
+				liste.add(listeDemandeurs.get(i));
+			}
+		}
+		return liste;
+	}
+	
+	/**
+	 * 
+	 * @param no_dem le numéro de demandeur
+	 * @return le demandeur correspondant au no_dem
+	 * @throws Exception si aucun demandeur n'a ce numero
+	 */
+	public Demandeur rechercheDemandeur(int no_dem) throws Exception{
+		for(int i=0; i<listeDemandeurs.size(); i++){
+			if(listeDemandeurs.get(i).getNo_dem() == no_dem){
+				return listeDemandeurs.get(i);
+			}
+		}
+		throw new Exception("Aucun demandeur avec ce numéro");
+	}
+	
+
+	/**
+	 * 
+	 * @param no_dem le numéro unique du demandeur
+	 * @return true si le demandeur existe, false sinon
+	 */
+	public boolean demandeurExists(int no_dem){
+		for(int i=0; i<this.listeDemandeurs.size(); i++){
+			if(this.listeDemandeurs.get(i).getNo_dem() == no_dem){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	
 	

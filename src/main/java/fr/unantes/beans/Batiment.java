@@ -75,7 +75,15 @@ public class Batiment {
 	  	this.listeSalle.remove(salle);
 	  }
 	  
-	  
+	  public Salle getSalle(int no_etage, int no_salle) throws Exception{
+		  for(int i=0; i<this.listeSalle.size(); i++){
+			  if(this.listeSalle.get(i).getNo_salle() == no_salle
+					  && this.listeSalle.get(i).getNo_etage() == no_etage){
+				  return this.listeSalle.get(i);
+			  }
+		  }
+		  throw new Exception("Salle inexistante");
+	  }
 	  
 	  
 	  

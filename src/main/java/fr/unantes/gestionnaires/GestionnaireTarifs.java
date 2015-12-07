@@ -44,7 +44,7 @@ public class GestionnaireTarifs {
 		Duree = new HashMap<String, Float>();
 	}
 	
-	
+	/*
 	public Map<String, Float> getTitre() {
 		return Titre;
 	}
@@ -168,7 +168,7 @@ public class GestionnaireTarifs {
 	public boolean contientDuree(String nom){
 		return Duree.containsKey(nom);
 	}
-	
+	*/
 	
 	//Geoffrey
 	private ArrayList<Tarif> listeTarif = new ArrayList();

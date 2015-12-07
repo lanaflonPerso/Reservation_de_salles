@@ -27,7 +27,6 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 public class TestGestionnaireReservation {
 	
 	GestionnaireReservations gestionnaire = GestionnaireReservations.getInstance();
-	GestionnaireTarifs gestionnairet = GestionnaireTarifs.getInstance();
 	Adresse adresse;
 	Batiment batiment;
 	Date date;
@@ -57,7 +56,7 @@ public class TestGestionnaireReservation {
 		typeSalle = new TypeSalle(1,"reunion", 4);
 		demandeur = new Demandeur(1, "Geoffrou", adresse, origine, titre);
 		salle = new Salle(2, 23, 1, 20, typeSalle);
-		reservation = new Reservation("1A448", date, 100.0, salle, temps, duree, manifestation, demandeur);
+		reservation = new Reservation(1, date, 100.0, salle, temps, duree, manifestation, demandeur);
 		salle.ajoutReservation(reservation);
 	}
 
@@ -66,6 +65,7 @@ public class TestGestionnaireReservation {
 		//reservation.getListeMateriels().clear();
 		salle.getListeMateriel().clear();
 		salle.getListeReservation().clear();
+		gestionnaire.getListeReservation().clear();
 	}
 	
 
@@ -132,41 +132,34 @@ public class TestGestionnaireReservation {
 	@Test
 	public void testAjoutReservation() throws Exception{
 		salle.getListeReservation().clear();
-		gestionnaire.reserver("A1",10, demandeur, salle, date, duree, manifestation, 2.0);
+		gestionnaire.reserver(10, demandeur, salle, date, duree, manifestation, 2.0);
 		assertTrue(salle.getListeReservation().size() == 1);
-
+	}
+	
+	@Test
+	public void testAjoutReservations() throws Exception{
+		salle.getListeReservation().clear();
+		gestionnaire.reserver(10, demandeur, salle, date, duree, manifestation, 2.0);
+		assertTrue(salle.getListeReservation().size() == 1);
+		gestionnaire.reserver(10, demandeur, salle, new Date(), duree, manifestation, 2.0);
+		assertTrue(salle.getListeReservation().size() == 2);
+	}
+	
+	@Test
+	public void testAjoutReservationAnnulee() throws Exception{
+		salle.getListeReservation().clear();
+		gestionnaire.reserver(10, demandeur, salle, date, duree, manifestation, 2.0);
+		assertTrue(salle.getListeReservation().size() == 1);
+		gestionnaire.annuler(salle.getListeReservation().get(0).getRef_resa());
+		assertTrue(salle.getListeReservation().size() == 0);
+		gestionnaire.reserver(10, demandeur, salle, date, duree, manifestation, 2.0);
+		assertTrue(salle.getListeReservation().size() == 1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutReservationN() throws Exception{
-		gestionnaire.reserver("A1",36000000, demandeur, salle, date, duree, manifestation, 2.0);
+		gestionnaire.reserver(36000000, demandeur, salle, date, duree, manifestation, 2.0);
 		assertTrue(salle.getListeReservation().size() == 1);
 	}
-	/*
-	@Test(expected = Exception.class)
-	public void testAjoutReservationSallePrise(){
-		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
-		Demandeur demandeur2 = new Demandeur(2, "Philippe", adresse, origine, titre);
-		gestionnaire.reserveSalle(demandeur2, salle, manifestation, duree);
-	}
 	
-	@Test
-	public void testAjoutReservationAutreSalle(){
-		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
-		Demandeur demandeur2 = new Demandeur(2, "Estelle", adresse, origine, titre);
-		Salle salle2 = new Salle(2, 24, 1, 20, typeSalle);
-		gestionnaire.reserveSalle(demandeur2, salle2, manifestation, duree);
-	}
-	
-	@Test(expected = Exception.class)
-	public void testAnnulerReservationNulle(){
-		gestionnaire.AnnulationReserv(demandeur, reservation);
-	}
-	
-	@Test
-	public void testAnnulerReservation(){
-		gestionnaire.reserveSalle(demandeur, salle, manifestation, duree);
-		gestionnaire.AnnulationReserv(demandeur, reservation);
-	}
-	*/
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Reservation {
-	private String ref_resa;
+	private int ref_resa;
 	private Date date_resa;
 	private double montant;
 	private Salle salle;
@@ -21,7 +21,7 @@ public class Reservation {
 	}
 
 
-	public Reservation(String ref_resa, Date date_resa, double montant,
+	public Reservation(int ref_resa, Date date_resa, double montant,
 			Salle salle, long temps, ArrayList<MaterielMobile> listeMateriels,
 			Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
@@ -36,7 +36,7 @@ public class Reservation {
 		this.demandeur = demandeur;
 	}
 	
-	public Reservation(String ref_resa, Date date_resa, double montant,
+	public Reservation(int ref_resa, Date date_resa, double montant,
 			Salle salle, long temps, Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
 		this.ref_resa = ref_resa;
@@ -51,12 +51,12 @@ public class Reservation {
 	}
 
 
-	public String getRef_resa() {
+	public int getRef_resa() {
 		return ref_resa;
 	}
 
 
-	public void setRef_resa(String ref_resa) {
+	public void setRef_resa(int ref_resa) {
 		this.ref_resa = ref_resa;
 	}
 
@@ -147,6 +147,10 @@ public class Reservation {
 	
 	public void retirerMateriel(MaterielMobile materiel){
 		this.listeMateriels.remove(materiel);
+	}
+	
+	public void annuler(){
+		this.salle.retirerReservation(this);
 	}
 	
 	public double calculTarif(){
