@@ -6,20 +6,24 @@ import java.util.Map;
 
 
 
-import fr.unantes.beans.*;
 
-public class GestionnaireTarifs {
+
+import fr.unantes.beans.*;
+import fr.unantes.gestionnaires.interfaces.InterfaceTarifs;
+
+public class GestionnaireTarifs implements InterfaceTarifs{
 	
-	private static volatile GestionnaireTarifs instance = null;
+private static volatile GestionnaireTarifs instance = null;
 	
-	//Pour chaque sous classe de Tarif on attribut une hashMap qui va contenir le nom de la classe associé à sa valeur
-	private static Map<String,Float> Titre;
-	private static Map<String,Float> Origine;
-	private static Map<String,Float> TypeMateriel;
-	private static Map<String,Float> TypeSalle;
-	private static Map<String,Float> Manifestation;
-	private static Map<String,Float> Duree;
+	private ArrayList<Tarif> listeTarif;
 	
+	public ArrayList<Tarif> getListeTarif() {
+		return listeTarif;
+	}
+
+	public void setListeTarif(ArrayList<Tarif> listeTarif) {
+		this.listeTarif = listeTarif;
+	}
 	
 	
 	public final static GestionnaireTarifs getInstance(){
@@ -36,149 +40,7 @@ public class GestionnaireTarifs {
 	}
 	
 	private GestionnaireTarifs(){
-		Titre = new HashMap<String, Float>();
-		Origine = new HashMap<String, Float>();
-		TypeMateriel = new HashMap<String, Float>();
-		TypeSalle = new HashMap<String, Float>();
-		Manifestation = new HashMap<String, Float>();
-		Duree = new HashMap<String, Float>();
-	}
-	
-	/*
-	public Map<String, Float> getTitre() {
-		return Titre;
-	}
-
-	public void setTitre(Map<String, Float> titre) {
-		Titre = titre;
-	}
-
-	public Map<String, Float> getOrigine() {
-		return Origine;
-	}
-
-	public void setOrigine(Map<String, Float> origine) {
-		Origine = origine;
-	}
-
-	public Map<String, Float> getTypeMateriel() {
-		return TypeMateriel;
-	}
-
-	public void setTypeMateriel(Map<String, Float> typeMateriel) {
-		TypeMateriel = typeMateriel;
-	}
-
-	public Map<String, Float> getTypeSalle() {
-		return TypeSalle;
-	}
-
-	public void setTypeSalle(Map<String, Float> typeSalle) {
-		TypeSalle = typeSalle;
-	}
-
-	public Map<String, Float> getManifestation() {
-		return Manifestation;
-	}
-
-	public void setManifestation(Map<String, Float> manifestation) {
-		Manifestation = manifestation;
-	}
-
-	public Map<String, Float> getDuree() {
-		return Duree;
-	}
-
-	public void setDuree(Map<String, Float> duree) {
-		Duree = duree;
-	}
-
-	public void setInstance(GestionnaireTarifs instance) {
-		GestionnaireTarifs.instance = instance;
-	}
-
-	public void addPrixTitre(String nom,float prix){
-		Titre.put(nom, prix);
-	}
-	
-	public void addPrixOrigine(String nom,float prix){
-		Origine.put(nom, prix);
-	}
-	
-	public void addPrixTypeMateriel(String nom,float prix){
-		TypeMateriel.put(nom, prix);
-	}
-	
-	public void addPrixTypeSalle(String nom,float prix){
-		TypeSalle.put(nom, prix);
-	}
-	
-	public void addPrixManifestation(String nom,float prix){
-		Manifestation.put(nom, prix);
-	}
-	
-	public void addPrixDuree(String nom,float prix){
-		Duree.put(nom, prix);
-	}
-	
-	public float getPrixTitre(String nom){
-		return Titre.get(nom);
-	}
-	
-	public float getPrixOrigine(String nom){
-		return Origine.get(nom);
-	}
-	
-	public float getPrixTypeMateriel(String nom){
-		return TypeMateriel.get(nom);
-	}
-	
-	public float getPrixTypeSalle(String nom){
-		return TypeSalle.get(nom);
-	}
-	
-	public float getPrixManifestation(String nom){
-		return Manifestation.get(nom);
-	}
-	
-	public float getPrixDuree(String nom){
-		return Duree.get(nom);
-	}
-	
-	public boolean contientTitre(String nom){
-		return Titre.containsKey(nom);
-	}
-	
-	public boolean contientOrigine(String nom){
-		return Origine.containsKey(nom);
-	}
-	
-	public boolean contientTypeMateriel(String nom){
-		return TypeMateriel.containsKey(nom);
-	}
-	
-	public boolean contientTypeSalle(String nom){
-		return TypeSalle.containsKey(nom);
-	}
-	
-	public boolean contientManifestation(String nom){
-		return Manifestation.containsKey(nom);
-	}
-	
-	public boolean contientDuree(String nom){
-		return Duree.containsKey(nom);
-	}
-	*/
-	
-	//Geoffrey
-	private ArrayList<Tarif> listeTarif = new ArrayList();
-	
-	public ArrayList<Tarif> getListeTarif() {
-		return listeTarif;
-	}
-
-	public void setListeTarif(ArrayList<Tarif> listeTarif) {
-		this.listeTarif = listeTarif;
+		listeTarif = new ArrayList();
 	}
 
 	/**
@@ -186,7 +48,9 @@ public class GestionnaireTarifs {
 	 * @param code le code tarifaire
 	 * @return true si le tarif existe déjà, false sinon
 	 */
-	public boolean TarifExists(int code){
+	@Override
+	public boolean tarifExists(int code) {
+		// TODO Auto-generated method stub
 		for(int i=0; i<listeTarif.size(); i++){
 			if(listeTarif.get(i).getCode() == code){
 				return true;
@@ -194,7 +58,30 @@ public class GestionnaireTarifs {
 		}
 		return false;
 	}
-	
+
+	@Override
+	public Tarif getTarif(int code) throws Exception {
+		// TODO Auto-generated method stub
+		for(int i=0; i<listeTarif.size(); i++){
+			if(listeTarif.get(i).getCode() == code){
+				return listeTarif.get(i);
+			}
+		}
+		throw new Exception("Aucun tarif avec ce code tarifaire");
+	}
+
+	@Override
+	public ArrayList<Tarif> getTarifs(TarifEnumeration type) {
+		// TODO Auto-generated method stub
+		ArrayList liste = new ArrayList();
+		for(int i=0; i<listeTarif.size(); i++){
+			if(listeTarif.get(i).getClass().getName().equals(type.name())){
+				liste.add(listeTarif.get(i));
+			}
+		}
+		return liste;
+	}
+
 	/**
 	 * 
 	 * @param code code tarifaire
@@ -203,42 +90,74 @@ public class GestionnaireTarifs {
 	 * @param typeTarif le type de tarif à ajouter, correspond à l'enumeration de tous les types de tarifs
 	 * @throws Exception si le tarif existe déjà ou si le prix est négatif
 	 */
-	public void ajoutTarif(int code, String libelle, double tarif, TarifEnumeration typeTarif) throws Exception{
-		if(TarifExists(code)){
+	@Override
+	public void ajouterTarif(int code, String libelle, double tarif,
+			TarifEnumeration type) throws Exception {
+		// TODO Auto-generated method stub
+		if(tarifExists(code)){
 			throw new Exception("Code tarifaire déjà existant");
 		}
 		if(tarif < 0){
 			throw new Exception("Prix négatif");
 		}
 
-		if(typeTarif.name().equals(TarifEnumeration.Duree.name())){
+		if(type.name().equals(TarifEnumeration.Duree.name())){
 			listeTarif.add(new Duree(code, libelle, tarif));
 		}
-		if(typeTarif.name().equals(TarifEnumeration.Manifestation.name())){
+		if(type.name().equals(TarifEnumeration.Manifestation.name())){
 			listeTarif.add(new Manifestation(code, libelle, tarif));
 		}
-		if(typeTarif.name().equals(TarifEnumeration.TypeMateriel.name())){
+		if(type.name().equals(TarifEnumeration.TypeMateriel.name())){
 			listeTarif.add(new TypeMateriel(code, libelle, tarif));
 		}
-		if(typeTarif.name().equals(TarifEnumeration.TypeSalle.name())){
+		if(type.name().equals(TarifEnumeration.TypeSalle.name())){
 			listeTarif.add(new TypeSalle(code, libelle, tarif));
 		}
-		if(typeTarif.name().equals(TarifEnumeration.Titre.name())){
+		if(type.name().equals(TarifEnumeration.Titre.name())){
 			listeTarif.add(new Titre(code, libelle, tarif));
 		}
-		if(typeTarif.name().equals(TarifEnumeration.Origine.name())){
+		if(type.name().equals(TarifEnumeration.Origine.name())){
 			listeTarif.add(new Origine(code, libelle, tarif));
 		}
 	}
-	
+
+	@Override
+	public void supprimerTarif(int code) throws Exception {
+		// TODO Auto-generated method stub
+		if(!tarifExists(code)){
+			throw new Exception("Tarif innexistant");
+		}
+		listeTarif.remove(getTarif(code));
+	}
+
+	@Override
+	public void modifierTarif(int code, String libelle, double tarif)
+			throws Exception {
+		// TODO Auto-generated method stub
+		if(!tarifExists(code)){
+			throw new Exception("Tarif innexistant");
+		}
+		if(tarif < 0){
+			throw new Exception("Pris négatif");
+		}
+		getTarif(code).setLibelle(libelle);
+		getTarif(code).setTarif(tarif);
+	}
+
 	/**
 	 * 
 	 * @param reservation la réservation a calculer le prix
 	 * @return le prix de la réservation
 	 */
-	public double calculTarif(Reservation reservation){
+	@Override
+	public double calculTarif(Reservation reservation) {
+		// TODO Auto-generated method stub
 		return reservation.getSalle().calculerTarif() + reservation.getDemandeur().calculTarif() + reservation.calculTarif();
-		
 	}
+	
+
+
+	
+	
 	
 }

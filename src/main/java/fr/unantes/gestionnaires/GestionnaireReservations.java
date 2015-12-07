@@ -221,7 +221,7 @@ public class GestionnaireReservations {
 		if(!materielExists(code_inv)){
 			throw new Exception("Materiel inexistant");
 		}
-		reservation.ajoutMateriel(materiel);
+		//reservation.ajoutMateriel(materiel);
 	}
 
 	
