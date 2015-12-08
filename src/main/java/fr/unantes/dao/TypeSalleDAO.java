@@ -20,21 +20,7 @@ public class TypeSalleDAO extends DAO<TypeSalle>{
 	@Override
 	public TypeSalle create(TypeSalle obj) {
 		// TODO Auto-generated method stub
-		try {
-			
-			//Insertion du type
-			PreparedStatement prepare = this.connect
-					.prepareStatement("INSERT INTO type_salle (id, nom) VALUES(?,?)");
-
-			prepare.setInt(1, obj.getId());
-			prepare.setString(2, obj.getNom());
-			prepare.executeUpdate();
-		}
-			catch(Exception e){
-				e.getMessage();
-				System.out.println("Erreur lors de l'insertion d'un nouveau type de salle");
-			}
-		return obj;
+		return null;
 	}
 
 	@Override
@@ -52,42 +38,15 @@ public class TypeSalleDAO extends DAO<TypeSalle>{
 	@Override
 	public TypeSalle find(int id) {
 		// TODO Auto-generated method stub
-		TypeSalle type = new TypeSalle();
-		try {
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery(
-					"select * from type_salle where id='" + id + "'");
-
-			if (result.first()) {
-				type = new TypeSalle(id, result.getString("nom"));
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return type;
+		return null;
 	}
 
 	@Override
 	public ArrayList<TypeSalle> list() {
 		// TODO Auto-generated method stub
-		ArrayList<TypeSalle> liste = new ArrayList();
-		TypeSalle type = new TypeSalle();
-		try {
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery(
-					"select * from type_salle");
-			
-			while(result.next()) {
-				type = new TypeSalle(result.getInt("id"), result.getString("nom"));
-				liste.add(type);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return liste;
+		return null;
 	}
+
+	
 
 }

@@ -31,9 +31,9 @@ public class TestGestionnaireLocaux{
 	@BeforeClass
 	public static void init() throws Exception{
 		System.out.println("Test de la classe GestionnaireLocaux");
-		gestionnaireT.ajoutTarif(1, "reunion", 30, TarifEnumeration.TypeSalle);
-		gestionnaireT.ajoutTarif(2, "meuble", 4, TarifEnumeration.TypeMateriel);
-		gestionnaireT.ajoutTarif(3, "electronique", 6, TarifEnumeration.TypeMateriel);
+		gestionnaireT.ajouterTarif(1, "reunion", 30, TarifEnumeration.TypeSalle);
+		gestionnaireT.ajouterTarif(2, "meuble", 4, TarifEnumeration.TypeMateriel);
+		gestionnaireT.ajouterTarif(3, "electronique", 6, TarifEnumeration.TypeMateriel);
 	}
 	
 	@Before

@@ -34,17 +34,7 @@ public class App {
 		GestionnaireReservations gestionnaireR = GestionnaireReservations.getInstance();
 		GestionnaireDemandeurs gestionnaireD = GestionnaireDemandeurs.getInstance();
 
-		try {
-			gestionnaireL.ajoutBatiment(1, "universite", new Adresse("1","rue porte cote","41000","Blois"));
-			gestionnaireL.ajoutTypeSalle(1, "reunion", 34);
-			gestionnaireL.ajoutSalle(1, 2, 1, 60, new TypeSalle());
-			//gestionnaireR.reserver("1", 36000, new Demandeur, salle, date_resa, duree, manifestation, prix);
-			System.out.println(gestionnaireL.getListeBatiments().get(0).getListeSalle().size());
-			gestionnaireR.ConsultationReserv(new Date());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		
 
 	}

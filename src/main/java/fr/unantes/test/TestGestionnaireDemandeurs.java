@@ -47,19 +47,19 @@ public class TestGestionnaireDemandeurs {
 
 	@Test
 	public void testAjoutDemandeur() throws Exception{
-		gestionnaire.ajoutDemandeur(2, "ugo", adresse, origine, titre);	
+		gestionnaire.ajouterDemandeur(2, "ugo", adresse, origine, titre);	
 		assertTrue(gestionnaire.getListeDemandeurs().size() == 2);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutMemeDemandeur() throws Exception{
-		gestionnaire.ajoutDemandeur(1, "geoffrou", adresse, origine, titre);
+		gestionnaire.ajouterDemandeur(1, "geoffrou", adresse, origine, titre);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==1);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutDemandeurNumIncorrect() throws Exception{
-		gestionnaire.ajoutDemandeur(-1, "geoffrou", adresse, origine, titre);
+		gestionnaire.ajouterDemandeur(-1, "geoffrou", adresse, origine, titre);
 	}
 	
 	@Test
@@ -91,42 +91,42 @@ public class TestGestionnaireDemandeurs {
 	
 	@Test
 	public void testModifierDemandeur() throws Exception{
-		gestionnaire.modifierDemandeur(new Adresse("1","rue de l'ecole","44000","Nantes"), 1);
+		gestionnaire.modifierDemandeur(1, new Adresse("1","rue de l'ecole","44000","Nantes"));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testModifierDemandeurInexistant() throws Exception{
-		gestionnaire.modifierDemandeur(new Adresse("1","rue de l'ecole","44000","Nantes"), 3);
+		gestionnaire.modifierDemandeur(3, new Adresse("1","rue de l'ecole","44000","Nantes"));
 	}
 	
 	@Test
 	public void testRechercheDemandeurParTitre() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParTitre(titre).size() == 1);
+		assertTrue(gestionnaire.getDemandeurs(titre).size() == 1);
 	}
 	
 	@Test
 	public void testRechercheDemandeurParTitreNull() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParTitre(new Titre(1,"Madame", 3)).size() == 0);
+		assertTrue(gestionnaire.getDemandeurs(new Titre(1,"Madame", 3)).size() == 0);
 	}
 	
 	@Test
 	public void testRechercheDemandeurParOrigine() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParOrigine(origine).size()==1);
+		assertTrue(gestionnaire.getDemandeurs(origine).size()==1);
 	}
 	
 	@Test
 	public void testRechercheDemandeurParOrigineNull() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeurParOrigine(new Origine(1,"européen", 3)).size() == 0);
+		assertTrue(gestionnaire.getDemandeurs(new Origine(1,"européen", 3)).size() == 0);
 	}
 	
 	@Test
 	public void testRechercheDemandeur() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeur(1).equals(demandeur));
+		assertTrue(gestionnaire.getDemandeur(1).equals(demandeur));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testRechercheDemandeurNull() throws Exception{
-		assertTrue(gestionnaire.rechercheDemandeur(2).equals(null));
+		assertTrue(gestionnaire.getDemandeur(2).equals(null));
 	}
 	
 	@Test

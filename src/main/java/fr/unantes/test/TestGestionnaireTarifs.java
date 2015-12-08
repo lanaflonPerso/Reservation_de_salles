@@ -54,18 +54,18 @@ public class TestGestionnaireTarifs {
 	
 	@Test
 	public void testTarifExists() throws Exception{
-		gestionnaire.ajoutTarif(1, "journee", 20, TarifEnumeration.Duree);
-		assertTrue(gestionnaire.TarifExists(1));
+		gestionnaire.ajouterTarif(1, "journee", 20, TarifEnumeration.Duree);
+		assertTrue(gestionnaire.tarifExists(1));
 	}
 	
 	@Test
 	public void testTarifNotExists(){
-		assertFalse(gestionnaire.TarifExists(1));
+		assertFalse(gestionnaire.tarifExists(1));
 	}
 	
 	@Test
 	public void testAjoutDuree()throws Exception{
-		gestionnaire.ajoutTarif(1, "journee", 20, TarifEnumeration.Duree);
+		gestionnaire.ajouterTarif(1, "journee", 20, TarifEnumeration.Duree);
 		assertTrue(gestionnaire.getListeTarif().get(0).getCode() == 1);
 		assertTrue(gestionnaire.getListeTarif().get(0).getLibelle().equals("journee"));
 		assertTrue(gestionnaire.getListeTarif().get(0).getTarif() == 20);
@@ -74,23 +74,23 @@ public class TestGestionnaireTarifs {
 	
 	@Test(expected = Exception.class)
 	public void testAjoutDureeExistante() throws Exception{
-		gestionnaire.ajoutTarif(1, "journee", 20, TarifEnumeration.Duree);
-		gestionnaire.ajoutTarif(1, "journee", 20, TarifEnumeration.Duree);
+		gestionnaire.ajouterTarif(1, "journee", 20, TarifEnumeration.Duree);
+		gestionnaire.ajouterTarif(1, "journee", 20, TarifEnumeration.Duree);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testAjoutDureeNegatif() throws Exception{
-		gestionnaire.ajoutTarif(1, "journee", -1, TarifEnumeration.Duree);
+		gestionnaire.ajouterTarif(1, "journee", -1, TarifEnumeration.Duree);
 	}
 	
 	@Test
 	public void testCalculTarif() throws Exception{
-		gestionnaire.ajoutTarif(1, "duree", 20, TarifEnumeration.Duree);
-		gestionnaire.ajoutTarif(2, "titre", 20, TarifEnumeration.Titre);
-		gestionnaire.ajoutTarif(3, "origine", 20, TarifEnumeration.Origine);
-		gestionnaire.ajoutTarif(4, "manifestation", 20, TarifEnumeration.Manifestation);
-		gestionnaire.ajoutTarif(5, "typeSalle", 20, TarifEnumeration.TypeSalle);
-		gestionnaire.ajoutTarif(6, "typeMateriel", 20, TarifEnumeration.TypeMateriel);
+		gestionnaire.ajouterTarif(1, "duree", 20, TarifEnumeration.Duree);
+		gestionnaire.ajouterTarif(2, "titre", 20, TarifEnumeration.Titre);
+		gestionnaire.ajouterTarif(3, "origine", 20, TarifEnumeration.Origine);
+		gestionnaire.ajouterTarif(4, "manifestation", 20, TarifEnumeration.Manifestation);
+		gestionnaire.ajouterTarif(5, "typeSalle", 20, TarifEnumeration.TypeSalle);
+		gestionnaire.ajouterTarif(6, "typeMateriel", 20, TarifEnumeration.TypeMateriel);
 		Duree duree = (Duree) gestionnaire.getListeTarif().get(0);
 		Titre titre = (Titre) gestionnaire.getListeTarif().get(1);
 		Origine origine = (Origine) gestionnaire.getListeTarif().get(2);
@@ -102,7 +102,7 @@ public class TestGestionnaireTarifs {
 		materielF.setSalle(salle);
 		salle.ajoutMateriel(materielF);
 		Demandeur demandeur = new Demandeur(1, "geoffrey", new Adresse("1","rue du foix", "37000", "Tours"), origine, titre);;
-		Reservation reservation = new Reservation("resa_1", new Date(), 2, salle, 36000, duree, manifestation, demandeur);
+		Reservation reservation = new Reservation(1, new Date(), 2, salle, 36000, duree, manifestation, demandeur);
 		assertTrue(gestionnaire.calculTarif(reservation) == 120);
 		salle.ajoutMateriel(materielF);
 		assertTrue(gestionnaire.calculTarif(reservation) == 140);
