@@ -7,7 +7,7 @@ import fr.unantes.dao.DAOFactory;
 
 public class Batiment {
 	
-	private int no_bat;
+	private int noBat;
 	private String nom;
 	private Adresse adresse;
 	private ArrayList<Salle> listeSalle;
@@ -18,26 +18,26 @@ public class Batiment {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Batiment(int no_bat, String nom, Adresse adresse, ArrayList<Salle> listeSalle) {
+	public Batiment(int noBat, String nom, Adresse adresse, ArrayList<Salle> listeSalle) {
 		super();
-		this.no_bat = no_bat;
+		this.noBat = noBat;
 		this.nom = nom;
 		this.adresse = adresse;
 		this.listeSalle = listeSalle;
 	}
 	
-	public Batiment(int no_bat, String nom, Adresse adresse){
+	public Batiment(int noBat, String nom, Adresse adresse){
 		super();
-		this.no_bat = no_bat;
+		this.noBat = noBat;
 		this.nom = nom;
 		this.adresse = adresse;
 		this.listeSalle = new ArrayList<Salle>();
 	}
-	public int getNo_bat() {
-		return no_bat;
+	public int getNoBat() {
+		return noBat;
 	}
-	public void setNo_bat(int no_bat) {
-		this.no_bat = no_bat;
+	public void setNoBat(int noBat) {
+		this.noBat = noBat;
 	}
 	public String getNom() {
 		return nom;
@@ -60,40 +60,141 @@ public class Batiment {
 		this.listeSalle = listeSalle;
 	}
 	
-	 //Ajoute une salle au batiment
-	  public void ajoutSalle(Salle salle){
+	 /**
+	  * Ajouter une salle au batiment
+	  * @param salle
+	  */
+	  public void ajouterSalle(Salle salle){
 		  if(this.listeSalle == null){
 			  this.listeSalle = new ArrayList<Salle>();
 		  }
 		  this.listeSalle.add(salle);
 	  }
 
-	  //Retire une salle au batiment
-	  public void enleveSalle(Salle salle){
+	  /**
+	   * Retirer une salle au batiment
+	   * @param salle
+	   */
+	  public void supprimerSalle(Salle salle){
 		salle.getListeMateriel().clear();
 		salle.getListeReservation().clear();
 	  	this.listeSalle.remove(salle);
 	  }
 	  
-	  public Salle getSalle(int no_etage, int no_salle) throws Exception{
-		  for(int i=0; i<this.listeSalle.size(); i++){
-			  if(this.listeSalle.get(i).getNo_salle() == no_salle
-					  && this.listeSalle.get(i).getNo_etage() == no_etage){
-				  return this.listeSalle.get(i);
+	  /**
+	   * 
+	   * @param no_etage
+	   * @param no_salle
+	   * @return
+	   * @throws Exception
+	   */
+	  public Salle getSalle(int noEtage, int noSalle) throws Exception{
+		  for(Salle each : this.listeSalle){
+			  if(each.getNoSalle() == noSalle && each.getNoEtage() == noEtage){
+				  return each;
 			  }
 		  }
 		  throw new Exception("Salle inexistante");
 	  }
+	  
+	  /**
+	   * 
+	   * @param type
+	   * @return
+	   */
+	  public ArrayList getSalles(TypeSalle type){
+		  ArrayList<Salle> liste = new ArrayList();
+		  for(Salle each : this.listeSalle){
+			  if(each.getType().equals(type)){
+				  liste.add(each);
+			  }
+		  }
+		  return liste;
+	  }
+	  
+	  /**
+	   * 
+	   * @param etage
+	   * @return
+	   */
+	  public ArrayList getSallesParEtage(int noEtage){
+		  ArrayList<Salle> liste = new ArrayList();
+		  for(Salle each : this.listeSalle){
+			  if(each.getNoEtage() == noEtage){
+				  liste.add(each);
+			  }
+		  }
+		  return liste;
+	  }
+	  
+	  /**
+	   * 
+	   * @param noSalle
+	   * @return
+	   */
+	  public ArrayList getSallesParNo(int noSalle){
+		  ArrayList<Salle> liste = new ArrayList();
+		  for(Salle each : this.listeSalle){
+			  if(each.getNoSalle() == noSalle){
+				  liste.add(each);
+			  }
+		  }
+		  return liste;
+	  }
+	  
+	/**
+	 * 
+	 * @param noSalle
+	 * @param noEtage
+	 * @return
+	 */
+	public boolean salleExists(int noSalle, int noEtage){
+		for(Salle each : this.listeSalle){
+			if (each.getNoEtage() == noEtage && each.getNoSalle() == noSalle){
+				return true;
+			}
+		}
+		return false;
+	}
+		
+	  /**
+	   * 
+	   * @param codeInv
+	   * @return
+	   */
 	  public boolean materielExists(int codeInv){
-		  for(Salle s: this.listeSalle){
-			  if(s.MaterielExists(codeInv)){
+		  for(Salle each : this.listeSalle){
+			  if(each.MaterielExists(codeInv)){
 				  return true;
 			  }
 		  }
 		  return false;
 	  }
 	  
+	  public MaterielFixe getMateriel(int codeInv) throws Exception{
+		  for(Salle each : this.listeSalle){
+			return each.getMateriel(codeInv);
+		  }
+		  throw new Exception("Aucun matériel avec ce codeInv");
+	  }
 	  
+	  /**
+	   * 
+	   * @param no
+	   * @param adresse
+	   * @param code
+	   * @param ville
+	   * @return
+	   */
+	  public boolean adresseExists(String no, String adresse, String code,
+			String ville){
+		  if(this.adresse.adresseExists(no, adresse, code, ville)){
+			  return true;
+		  }
+		  return false;
+		  }
 	  
 	 
+	  
+	  
 }

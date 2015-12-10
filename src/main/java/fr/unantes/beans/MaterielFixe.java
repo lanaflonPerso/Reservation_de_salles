@@ -9,13 +9,13 @@ public class MaterielFixe extends Materiel{
 		// TODO Auto-generated constructor stub
 	}
 
-	public MaterielFixe(int code_inv, String nom, TypeMateriel type) {
-		super(code_inv, nom, type);
+	public MaterielFixe(int codeInv, String nom, TypeMateriel type) {
+		super(codeInv, nom, type);
 		// TODO Auto-generated constructor stub
 	}
 
-	public MaterielFixe(int code_inv, String nom, TypeMateriel type, Salle salle) {
-		super(code_inv, nom, type);
+	public MaterielFixe(Salle salle) {
+		super();
 		this.salle = salle;
 	}
 
@@ -26,7 +26,5 @@ public class MaterielFixe extends Materiel{
 	public void setSalle(Salle salle) {
 		this.salle = salle;
 	}
-	
-	
 
 }

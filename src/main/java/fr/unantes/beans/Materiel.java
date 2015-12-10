@@ -2,37 +2,46 @@ package fr.unantes.beans;
 
 public abstract class Materiel {
 
-	private int code_inv;
+	private int codeInv;
 	private String nom;
 	private TypeMateriel type;
-	public Materiel(int code_inv, String nom, TypeMateriel type) {
-		super();
-		this.code_inv = code_inv;
-		this.nom = nom;
-		this.type = type;
-	}
+	
 	public Materiel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public int getCode_inv() {
-		return code_inv;
+
+	public Materiel(int codeInv, String nom, TypeMateriel type) {
+		super();
+		this.codeInv = codeInv;
+		this.nom = nom;
+		this.type = type;
 	}
-	public void setCode_inv(int code_inv) {
-		this.code_inv = code_inv;
+
+	public int getCodeInv() {
+		return codeInv;
 	}
+
+	public void setCodeInv(int codeInv) {
+		this.codeInv = codeInv;
+	}
+
 	public String getNom() {
 		return nom;
 	}
+
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+
 	public TypeMateriel getType() {
 		return type;
 	}
+
 	public void setType(TypeMateriel type) {
 		this.type = type;
 	}
+
 	public double calculerTarif(){
 		return this.type.getTarif();
 	}

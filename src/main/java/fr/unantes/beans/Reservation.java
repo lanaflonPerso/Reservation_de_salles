@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Reservation {
-	private int ref_resa;
-	private Date date_resa;
+	private int refResa;
+	private Date dateResa;
 	private double montant;
 	private Salle salle;
 	private long temps;
@@ -21,12 +21,12 @@ public class Reservation {
 	}
 
 
-	public Reservation(int ref_resa, Date date_resa, double montant,
+	public Reservation(int refResa, Date dateResa, double montant,
 			Salle salle, long temps, ArrayList<MaterielMobile> listeMateriels,
 			Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
-		this.ref_resa = ref_resa;
-		this.date_resa = date_resa;
+		this.refResa = refResa;
+		this.dateResa = dateResa;
 		this.montant = montant;
 		this.salle = salle;
 		this.temps = temps;
@@ -36,11 +36,11 @@ public class Reservation {
 		this.demandeur = demandeur;
 	}
 	
-	public Reservation(int ref_resa, Date date_resa, double montant,
+	public Reservation(int refResa, Date dateResa, double montant,
 			Salle salle, long temps, Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
-		this.ref_resa = ref_resa;
-		this.date_resa = date_resa;
+		this.refResa = refResa;
+		this.dateResa = dateResa;
 		this.montant = montant;
 		this.salle = salle;
 		this.temps = temps;
@@ -50,24 +50,25 @@ public class Reservation {
 		this.demandeur = demandeur;
 	}
 
+	
 
-	public int getRef_resa() {
-		return ref_resa;
+	public int getRefResa() {
+		return refResa;
 	}
 
 
-	public void setRef_resa(int ref_resa) {
-		this.ref_resa = ref_resa;
+	public void setRefResa(int refResa) {
+		this.refResa = refResa;
 	}
 
 
-	public Date getDate_resa() {
-		return date_resa;
+	public Date getDateResa() {
+		return dateResa;
 	}
 
 
-	public void setDate_resa(Date date_resa) {
-		this.date_resa = date_resa;
+	public void setDateResa(Date dateResa) {
+		this.dateResa = dateResa;
 	}
 
 
@@ -125,7 +126,11 @@ public class Reservation {
 		return manifestation;
 	}
 
-	
+
+	public void setManifestation(Manifestation manifestation) {
+		this.manifestation = manifestation;
+	}
+
 
 	public Demandeur getDemandeur() {
 		return demandeur;
@@ -137,11 +142,7 @@ public class Reservation {
 	}
 
 
-	public void setManifestation(Manifestation manifestation) {
-		this.manifestation = manifestation;
-	}
-
-	public void ajoutMateriel(MaterielMobile materiel){
+	public void ajouterMateriel(MaterielMobile materiel){
 		this.listeMateriels.add(materiel);
 	}
 	
@@ -149,7 +150,7 @@ public class Reservation {
 		this.listeMateriels.remove(materiel);
 	}
 	
-	public void annuler(){
+	public void annulerReservation(){
 		this.salle.retirerReservation(this);
 	}
 	

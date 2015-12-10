@@ -8,7 +8,7 @@ import fr.unantes.dao.DAOFactory;
 
 public class Demandeur {
 	
-	private int no_dem;
+	private int noDem;
 	private String nom;
 	private Adresse adresse;
 	private Origine origine;
@@ -21,34 +21,23 @@ public class Demandeur {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Demandeur(int no_dem, String nom, Adresse adresse, Origine origine,
+	public Demandeur(int noDem, String nom, Adresse adresse, Origine origine,
 			Titre titre, ArrayList<Reservation> listeReservation) {
 		super();
-		this.no_dem = no_dem;
+		this.noDem = noDem;
 		this.nom = nom;
 		this.adresse = adresse;
 		this.origine = origine;
 		this.titre = titre;
 		this.listeReservation = listeReservation;
 	}
-	
-	public Demandeur(int no_dem, String nom, Adresse adresse, Origine origine,
-			Titre titre) {
-		super();
-		this.no_dem = no_dem;
-		this.nom = nom;
-		this.adresse = adresse;
-		this.origine = origine;
-		this.titre = titre;
-		this.listeReservation = new ArrayList();
+
+	public int getNoDem() {
+		return noDem;
 	}
 
-	public int getNo_dem() {
-		return no_dem;
-	}
-
-	public void setNo_dem(int no_dem) {
-		this.no_dem = no_dem;
+	public void setNoDem(int noDem) {
+		this.noDem = noDem;
 	}
 
 	public String getNom() {
@@ -90,7 +79,7 @@ public class Demandeur {
 	public void setListeReservation(ArrayList<Reservation> listeReservation) {
 		this.listeReservation = listeReservation;
 	}
-	
+
 	public double tarifOrigine(){
 		return origine.getTarif();
 	}

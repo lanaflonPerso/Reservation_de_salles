@@ -43,7 +43,7 @@ public class TestGestionnaireLocaux{
 		batiment = new Batiment(1, "Faculté", adresse);
 		typeSalle = (TypeSalle) gestionnaireT.getListeTarif().get(0);
 		salle = new Salle(2, 23, 1, 60, typeSalle);
-		batiment.ajoutSalle(salle);
+		batiment.ajouterSalle(salle);
 		gestionnaire.getListeBatiments().add(batiment);
 		
 		//Données à emprunter
@@ -68,7 +68,7 @@ public class TestGestionnaireLocaux{
 	
 	@Test
 	public void testAjoutSalle() throws Exception{
-		batiment.ajoutSalle(new Salle(2, 24, 1, 60, typeSalle));
+		batiment.ajouterSalle(new Salle(2, 24, 1, 60, typeSalle));
 	}
 
 	@Test(expected = Exception.class)

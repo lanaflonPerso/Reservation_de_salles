@@ -52,14 +52,10 @@ private static volatile GestionnaireLocaux instance = null;
 
 
 	@Override
-	public boolean adresseExists(String no, String adresse, String code,
-			String ville) {
+	public boolean adresseExists(String no, String adresse, String code, String ville) {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			if (listeBatiments.get(i).getAdresse().getAdresse().equals(adresse)
-					&& listeBatiments.get(i).getAdresse().getCode().equals(code)
-					&& listeBatiments.get(i).getAdresse().getNo().equals(no)
-					&& listeBatiments.get(i).getAdresse().getVille().equals(ville)) {
+		for (Batiment each : listeBatiments) {
+			if (each.adresseExists(no, adresse, code, ville)) {
 				return true;
 			}
 		}
@@ -81,10 +77,10 @@ private static volatile GestionnaireLocaux instance = null;
 	}
 
 	@Override
-	public boolean batimentExists(int no_bat) {
+	public boolean batimentExists(int noBat) {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			if (no_bat == listeBatiments.get(i).getNo_bat()) {
+		for(Batiment each : listeBatiments){
+			if(each.getNoBat() == noBat){
 				return true;
 			}
 		}
@@ -92,22 +88,22 @@ private static volatile GestionnaireLocaux instance = null;
 	}
 
 	@Override
-	public Batiment getBatiment(int no_bat) throws Exception {
+	public Batiment getBatiment(int noBat) throws Exception {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			if (listeBatiments.get(i).getNo_bat() == no_bat) {
-				return listeBatiments.get(i);
+		for(Batiment each : listeBatiments){
+			if(each.getNoBat() == noBat){
+				return each;
 			}
 		}
-		throw new Exception("Aucun batiment avec ce numéro");
+		throw new Exception("Aucun batiment avec ce numéro");	
 	}
 
 	@Override
 	public Batiment getBatiment(Adresse adresse) throws Exception {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			if (listeBatiments.get(i).getAdresse().equals(adresse)) {
-				return listeBatiments.get(i);
+		for(Batiment each : listeBatiments){
+			if(each.getAdresse().equals(adresse)){
+				return each;
 			}
 		}
 		throw new Exception("Aucun batiment avec cette adresse");
@@ -117,83 +113,66 @@ private static volatile GestionnaireLocaux instance = null;
 	public ArrayList<Batiment> getBatiments(String nom) {
 		// TODO Auto-generated method stub
 		ArrayList<Batiment> liste = new ArrayList();
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			if (listeBatiments.get(i).getNom().equals(nom)) {
-				liste.add(listeBatiments.get(i));
+		for(Batiment each : listeBatiments){
+			if(each.getNom().equals(nom)){
+				liste.add(each);
 			}
 		}
 		return liste;
 	}
 
 	@Override
-	public void ajouterBatiment(int no_bat, String nom, Adresse adresse)
+	public void ajouterBatiment(int noBat, String nom, Adresse adresse)
 			throws Exception {
 		// TODO Auto-generated method stub
-		if (batimentExists(no_bat)) {
+		if (batimentExists(noBat)) {
 			throw new Exception("Batiment déjà existant");
 		}
 		if(adresseExists(adresse.getNo(), adresse.getAdresse(), adresse.getCode(), adresse.getVille())){
 			throw new Exception("Un batiment possède déjà cette adresse");
 		}
-		Batiment batiment = new Batiment(no_bat, nom, adresse);
+		Batiment batiment = new Batiment(noBat, nom, adresse);
 		listeBatiments.add(batiment);
 	}
 
 	@Override
-	public void supprimerBatiment(int no_bat) throws Exception {
+	public void supprimerBatiment(int noBat) throws Exception {
 		// TODO Auto-generated method stub
-		if (!batimentExists(no_bat)) {
+		if (!batimentExists(noBat)) {
 			throw new Exception("Batiment inexistant");
 		}
-		listeBatiments.remove(getBatiment(no_bat));
+		listeBatiments.remove(getBatiment(noBat));
 	}
 
 	@Override
-	public void modifierBatiment(int no_bat, String nom) throws Exception {
-		Batiment b = this.getBatiment(no_bat);
-		b.setNom(nom);
+	public void modifierBatiment(int noBat, String nom) throws Exception {
 		// TODO Auto-generated method stub
-		
+		Batiment batiment = this.getBatiment(noBat);
+		batiment.setNom(nom);
 	}
 	
 	@Override
-	public boolean salleExists(int no_etage, int no_salle, int no_batiment) {
+	public boolean salleExists(int noEtage, int noSalle, int noBatiment) {
 		// TODO Auto-generated method stub
-		if(!batimentExists(no_batiment)){
+		if(!batimentExists(noBatiment)){
 			return false;
 		}
-		
-		for(int i=0; i<listeBatiments.size(); i++){
-			if(listeBatiments.get(i).getNo_bat() == no_batiment){
-				Batiment batiment = listeBatiments.get(i);
-				for(int j=0; j<batiment.getListeSalle().size(); j++){
-					if(batiment.getListeSalle().get(j).getNo_etage() == no_etage
-							&& batiment.getListeSalle().get(j).getNo_salle() == no_salle){
-						return true;
-					}
-				}
+		for(Batiment each : listeBatiments){
+			if(each.salleExists(noSalle, noEtage)){
+				return true;
 			}
 		}
 		return false;
 	}
 
 	@Override
-	public Salle getSalle(int no_etage, int no_salle, int no_batiment)
-			throws Exception {
+	public Salle getSalle(int noEtage, int noSalle, int noBatiment) throws Exception {
 		// TODO Auto-generated method stub
-		if(batimentExists(no_batiment)){
+		if(batimentExists(noBatiment)){
 			throw new Exception("Cette salle n'existe pas");
 		}
-		for(int i=0; i<listeBatiments.size(); i++){
-			if(listeBatiments.get(i).getNo_bat() == no_batiment){
-				Batiment batiment = listeBatiments.get(i);
-				for(int j=0; j<batiment.getListeSalle().size(); j++){
-					if(batiment.getListeSalle().get(j).getNo_etage() == no_etage 
-							&& batiment.getListeSalle().get(j).getNo_salle() == no_salle){
-						return batiment.getListeSalle().get(j);
-					}
-				}
-			}
+		for(Batiment each : listeBatiments){
+			return each.getSalle(noEtage, noSalle);
 		}
 		throw new Exception("Salle innexistante");
 	}
@@ -202,148 +181,109 @@ private static volatile GestionnaireLocaux instance = null;
 	public ArrayList<Salle> getSalles(TypeSalle type) {
 		// TODO Auto-generated method stub
 		ArrayList<Salle> liste = new ArrayList();
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
-				if(listeBatiments.get(i).getListeSalle().get(j).getType().equals(type)){
-					liste.add(listeBatiments.get(i).getListeSalle().get(j));
-				}
-			}
+		for(Batiment each : listeBatiments){
+			liste.addAll(each.getSalles(type));
 		}
 		return liste;
 	}
 
 	@Override
-	public ArrayList<Salle> getSallesParBatiment(int no_bat) {
+	public ArrayList<Salle> getSallesParBatiment(int noBat) {
 		// TODO Auto-generated method stub
 		ArrayList<Salle> liste = new ArrayList();
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
-				if(listeBatiments.get(i).getListeSalle().get(j).getNo_bat() == no_bat){
-					liste.add(listeBatiments.get(i).getListeSalle().get(j));
-				}
-			}
+		try {
+			liste.addAll(getBatiment(noBat).getListeSalle());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return liste;
 	}
 
 	@Override
-	public ArrayList<Salle> getSallesParEtage(int no_etage) {
+	public ArrayList<Salle> getSallesParEtage(int noEtage) {
 		// TODO Auto-generated method stub
 		ArrayList<Salle> liste = new ArrayList();
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
-				if(listeBatiments.get(i).getListeSalle().get(j).getNo_etage() == no_etage){
-					liste.add(listeBatiments.get(i).getListeSalle().get(j));
-				}
-			}
+		for(Batiment each : listeBatiments){
+			liste.addAll(each.getSallesParEtage(noEtage));
 		}
 		return liste;
 	}
 
 	@Override
-	public ArrayList<Salle> getSallesParNumero(int no_salle) {
+	public ArrayList<Salle> getSallesParNumero(int noSalle) {
 		// TODO Auto-generated method stub
 		ArrayList<Salle> liste = new ArrayList();
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
-				if(listeBatiments.get(i).getListeSalle().get(j).getNo_salle() == no_salle){
-					liste.add(listeBatiments.get(i).getListeSalle().get(j));
-				}
-			}
+		for(Batiment each : listeBatiments){
+			liste.addAll(each.getSallesParNo(noSalle));
 		}
 		return liste;
 	}
 
 	@Override
-	public void ajouterSalle(int no_etage, int no_salle, int no_bat,
+	public void ajouterSalle(int noEtage, int noSalle, int noBat,
 			int superficie, TypeSalle type) throws Exception {
 		// TODO Auto-generated method stub
-		if(!batimentExists(no_bat)){
+		if(!batimentExists(noBat)){
 			throw new Exception("Batiment inexistant");
+		}
+		if(salleExists(noEtage, noSalle, noBat)){
+			throw new Exception("Cette salle existe déjà");
 		}
 		if(superficie <= 0){
 			throw new Exception("Superficie impossible");
 		}
 
-		Salle salle = new Salle(no_etage, no_salle, no_bat, superficie, type);	
-		
-		ArrayList<Salle> listeSalle = getSallesParBatiment(no_bat);
-		if(!listeSalle.isEmpty()){
-			for(int i=0; i<listeSalle.size(); i++){
-				if(listeSalle.get(i).compareSalle(salle)){
-					throw new Exception("Cette salle existe déjà");
-				}
-			}			
-		}
-		
-		Batiment batiment = getBatiment(no_bat);
-		batiment.ajoutSalle(salle);
+		Salle salle = new Salle(noEtage, noSalle, noBat, superficie, type);	
+		getBatiment(noBat).ajouterSalle(salle);
 	}
 
 	@Override
-	public void supprimerSalle(int no_etage, int no_salle, int no_batiment)
+	public void supprimerSalle(int noEtage, int noSalle, int noBatiment)
 			throws Exception {
 		// TODO Auto-generated method stub
-		if(!salleExists(no_etage, no_salle, no_batiment)){
+		if(!salleExists(noEtage, noSalle, noBatiment)){
 			throw new Exception("Cette salle n'existe pas");
 		}
-		for (int i = 0; i < listeBatiments.size(); i++) {
-			if (listeBatiments.get(i).getNo_bat() == no_batiment) {
-				Salle salle = getSalle(no_etage, no_salle, no_batiment);
-				listeBatiments.get(i).enleveSalle(salle);
-			}
-		}
+		getBatiment(noBatiment).supprimerSalle(getSalle(noEtage, noSalle, noBatiment));
 	}
 
 	@Override
-	public void modifierSalle(int no_etage, int no_salle, int no_batiment,
+	public void modifierSalle(int noEtage, int noSalle, int noBatiment,
 			int superficie, TypeSalle type) {
+		// TODO Auto-generated method stub
 		try {
-			Salle s  = getSalle(no_etage, no_salle, no_batiment);
+			Salle s  = getSalle(noEtage, noSalle, noBatiment);
 			s.setSuperficie(superficie);
 			s.setType(type);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
 	public boolean materielExists(int condInv) {
-		
-		
-		for(Batiment each : listeBatiments) {
-			
+		for(Batiment each : listeBatiments) {		
 			if(each.materielExists(condInv)){
 				return true;
 			}
 		}
-		
-	
 		return false;
 	}
 
 	@Override
-	public MaterielFixe getMaterielFixe(int code_inv) throws Exception {
-		if(materielExists(code_inv)){
-			for(Batiment b: this.listeBatiments){
-				for(Salle s : b.getListeSalle()){
-					for(MaterielFixe m : s.getListeMateriel()){
-						return m;
-					}
-				}
-			}	
-						
-		}
-		else{
-			throw new Exception("Cette salle n'est pas disponible");
-			
-		}
+	public MaterielFixe getMaterielFixe(int codeInv){
 		// TODO Auto-generated method stub
+		for(Batiment each : listeBatiments){
+			try {
+				return each.getMateriel(codeInv);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return null;
-		
 	}
 
 	@Override
@@ -359,32 +299,32 @@ private static volatile GestionnaireLocaux instance = null;
 	}
 
 	@Override
-	public void ajouterMaterielFixe(int code_inv, String nom, Salle salle, TypeMateriel type)
+	public void ajouterMaterielFixe(int codeInv, String nom, Salle salle, TypeMateriel type)
 			throws Exception {
 		// TODO Auto-generated method stub
-		if(materielExists(code_inv)){
+		if(materielExists(codeInv)){
 			throw new Exception("Materiel déjà existant");
 		}
-		MaterielFixe materiel = new MaterielFixe(code_inv, nom, type);
+		MaterielFixe materiel = new MaterielFixe(codeInv, nom, type);
 		salle.ajoutMateriel(materiel);
 	}
 
 	@Override
-	public void supprimerMaterielFixe(int code_inv) throws Exception {
+	public void supprimerMaterielFixe(int codeInv) throws Exception {
 		// TODO Auto-generated method stub
-		if(!materielExists(code_inv)){
+		if(!materielExists(codeInv)){
 			throw new Exception("Ce materiel n'existe pas");
 		}
-		MaterielFixe materiel = getMaterielFixe(code_inv);
+		MaterielFixe materiel = getMaterielFixe(codeInv);
 		materiel.getSalle().retirerMateriel(materiel);
 	}
 
 	
 
 	@Override
-	public MaterielMobile getMaterielMobile(int code_inv) {
+	public MaterielMobile getMaterielMobile(int codeInv) {
 		// TODO Auto-generated method stub
-		MaterielMobile m = this.getMaterielMobile(code_inv);
+		MaterielMobile m = this.getMaterielMobile(codeInv);
 		return m;
 	}
 
@@ -397,14 +337,14 @@ private static volatile GestionnaireLocaux instance = null;
 
 
 	@Override
-	public void ajouterMaterielMobile(int code_inv, String nom,
+	public void ajouterMaterielMobile(int codeInv, String nom,
 			TypeMateriel type) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void supprimerMaterielMobile(int code_inv) throws Exception {
+	public void supprimerMaterielMobile(int codeInv) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

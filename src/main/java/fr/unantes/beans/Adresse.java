@@ -75,54 +75,15 @@ public class Adresse {
 		return s;
 	}
 	
-	//Crée une adresse en base
-	public Adresse insert(){
-		try{
-			DAO<Adresse> adresseDao = DAOFactory.getAdresseDAO();
-			adresseDao.create(this);
+	public boolean adresseExists(String no, String adresse, String code,
+			String ville){
+		if(this.no.equals(no)
+				&& this.adresse.equals(adresse)
+				&& this.code.equals(code)
+				&& this.ville.equals(ville)){
+			return true;
 		}
-		catch(Exception e){
-			e.getMessage();
-		}
-		return this;
+		return false;
 	}
-	
-	//Supprime une adresse en base
-	public void delete(){
-		try{
-			DAO<Adresse> adresseDao = DAOFactory.getAdresseDAO();
-			adresseDao.delete(this);
-		}
-		catch(Exception e){
-			e.getMessage();
-		}
-	}
-	
-	//Met a jout une adresse en base
-	public Adresse update(){
-		try{
-			DAO<Adresse> adresseDao = DAOFactory.getAdresseDAO();
-			adresseDao.update(this);
-		}
-		catch(Exception e){
-			e.getMessage();
-		}
-		return this;
-	}
-	
-	//Selectionne une adresse en base selon son ID
-	public Adresse select(){
-		try{
-			DAO<Adresse> adresseDao = DAOFactory.getAdresseDAO();
-			//adresseDao.find(this.getId());
-		}
-		catch(Exception e){
-			e.getMessage();
-		}
-		return this;
-	}
-	
-	
-	
 	
 }

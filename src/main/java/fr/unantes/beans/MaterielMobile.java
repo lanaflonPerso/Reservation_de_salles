@@ -9,14 +9,13 @@ public class MaterielMobile extends Materiel{
 		// TODO Auto-generated constructor stub
 	}
 
-	public MaterielMobile(int code_inv, String nom, TypeMateriel type) {
-		super(code_inv, nom, type);
+	public MaterielMobile(int codeInv, String nom, TypeMateriel type) {
+		super(codeInv, nom, type);
 		// TODO Auto-generated constructor stub
 	}
 
-	public MaterielMobile(int code_inv, String nom, TypeMateriel type,
-			Reservation reservation) {
-		super(code_inv, nom, type);
+	public MaterielMobile(Reservation reservation) {
+		super();
 		this.reservation = reservation;
 	}
 
@@ -27,6 +26,8 @@ public class MaterielMobile extends Materiel{
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
+
+	
 
 
 	
