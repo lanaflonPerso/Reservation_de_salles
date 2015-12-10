@@ -1,6 +1,7 @@
 package fr.unantes.beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import fr.unantes.dao.DAO;
 import fr.unantes.dao.DAOFactory;
@@ -152,6 +153,10 @@ public class Salle {
 		return "salle n° "+ this.noEtage + this.noSalle + " du batiment " + this.noBat;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public double calculerTarif(){
 		double tarif = 0;
 		for(int i=0; i<this.listeMateriel.size(); i++){
@@ -160,10 +165,20 @@ public class Salle {
 		return this.type.getTarif() + tarif;
 	}
 	
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 */
 	public boolean compareSalle(Salle s){
 		return (this.noSalle == s.getNoSalle() && this.noBat == s.getNoBat() && this.noEtage == s.getNoEtage());
 	}
 	
+	/**
+	 * 
+	 * @param codeInv
+	 * @return
+	 */
 	public boolean MaterielExists(int codeInv){
 		for(MaterielFixe each : this.listeMateriel){
 			if (each.getCodeInv() == codeInv){
@@ -173,6 +188,12 @@ public class Salle {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param codeInv
+	 * @return
+	 * @throws Exception
+	 */
 	public MaterielFixe getMateriel(int codeInv) throws Exception{
 		for(MaterielFixe each : this.listeMateriel){
 			if (each.getCodeInv() == codeInv){
@@ -180,6 +201,47 @@ public class Salle {
 			}
 		}
 		throw new Exception("Aucun matériel avec ce codeInv");
+	}
+	
+	
+	/**
+	 * renvoie true si la salle est disponible pour une réservation à une date et pour une durée précise.
+	 * @param date la date à laquelle on veut savoir la disponibilité.
+	 * @param duree la durée pour laquelle on veut savoir si la salle est disponible.
+	 * @return true si la salle est disponible, false sinon.
+	 * On compare les dates et durées de réservation pour savoir si la salle possède déjà une réservation pour un créneau donné.
+	 */
+	public boolean salleDisponible(Date date, long duree) throws Exception{
+		if(duree < 0){
+			throw new Exception("Durée négative");
+		}
+		if(this.listeReservation.isEmpty()){
+			return true;
+		}
+		
+		//Créneaux de notre nouvelle réservation
+		long debutCreation = date.getTime();
+		long finCreation = date.getTime() + duree;
+
+		for(Reservation each : this.listeReservation){
+			//Créneau d'une réservation déjà existante
+			long finExistante = each.debut() + each.getTemps();
+			long debutExistante = each.debut();
+
+			//Si la nouvelle réservation se finit après le début d'une ancienne
+			if(finCreation >= debutExistante && debutCreation <= debutExistante){
+				return false;
+			}
+			//Si la nouvelle réservation commence avant la fin d'une ancienne
+			if(debutCreation <= finExistante && finCreation >= finExistante){
+				return false;
+			}
+			//Si la nouvelle réservation est en plein dans une réservation existante
+			if(debutCreation >= debutExistante && finCreation <= finExistante){
+				return false;
+			}
+		}	
+		return true;
 	}
 
 

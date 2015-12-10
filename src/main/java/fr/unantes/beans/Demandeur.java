@@ -32,6 +32,17 @@ public class Demandeur {
 		this.listeReservation = listeReservation;
 	}
 
+	public Demandeur(int noDem, String nom, Adresse adresse,
+			Origine origine, Titre titre) {
+		// TODO Auto-generated constructor stub
+		super();
+		this.noDem = noDem;
+		this.nom = nom;
+		this.adresse = adresse;
+		this.origine = origine;
+		this.titre = titre;
+	}
+
 	public int getNoDem() {
 		return noDem;
 	}
@@ -90,6 +101,12 @@ public class Demandeur {
 	
 	public void annulerReservation(Reservation reservation){
 		this.listeReservation.remove(reservation);
+	}
+	
+	public void annulerReservations(){
+		for(Reservation each : this.listeReservation){
+			each.annulerReservation();
+		}
 	}
 	
 	public double calculTarif(){

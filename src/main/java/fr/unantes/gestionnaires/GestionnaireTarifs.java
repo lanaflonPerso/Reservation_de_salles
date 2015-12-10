@@ -51,32 +51,43 @@ private static volatile GestionnaireTarifs instance = null;
 	@Override
 	public boolean tarifExists(int code) {
 		// TODO Auto-generated method stub
-		for(int i=0; i<listeTarif.size(); i++){
-			if(listeTarif.get(i).getCode() == code){
+		for(Tarif each : listeTarif){
+			if(each.getCode() == code){
 				return true;
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param code le code tarifaire sur lequel rechercher.
+	 * @return le tarif correspondant au code tarifaire.
+	 * @throws Exception Si aucun tarife ne correspond au code tarifaire.
+	 */
 	@Override
 	public Tarif getTarif(int code) throws Exception {
 		// TODO Auto-generated method stub
-		for(int i=0; i<listeTarif.size(); i++){
-			if(listeTarif.get(i).getCode() == code){
-				return listeTarif.get(i);
+		for(Tarif each : listeTarif){
+			if(each.getCode() == code){
+				return each;
 			}
 		}
 		throw new Exception("Aucun tarif avec ce code tarifaire");
 	}
 
+	/**
+	 * 
+	 * @param type le type de tarif.
+	 * @return la liste des tarifs ayant pour type le paramètre d'entrée.
+	 */
 	@Override
 	public ArrayList<Tarif> getTarifs(TarifEnumeration type) {
 		// TODO Auto-generated method stub
 		ArrayList liste = new ArrayList();
-		for(int i=0; i<listeTarif.size(); i++){
-			if(listeTarif.get(i).getClass().getName().equals(type.name())){
-				liste.add(listeTarif.get(i));
+		for(Tarif each : listeTarif){
+			if(each.getClass().getName().equals(type.name())){
+				liste.add(each);
 			}
 		}
 		return liste;
@@ -121,6 +132,11 @@ private static volatile GestionnaireTarifs instance = null;
 		}
 	}
 
+	/**
+	 * 
+	 * @param code le code tarifaire du tarif à supprimer.
+	 * @throws Exception si le tarif n'existe pas.
+	 */
 	@Override
 	public void supprimerTarif(int code) throws Exception {
 		// TODO Auto-generated method stub
@@ -130,6 +146,13 @@ private static volatile GestionnaireTarifs instance = null;
 		listeTarif.remove(getTarif(code));
 	}
 
+	/**
+	 * Modifie le libelle et le prix d'un tarif en fonction de son code tarifaire.
+	 * @param code le code tarifaire du tarif à modifier.
+	 * @param libelle le libelle du tarif.
+	 * @param tarif le prix du tarif.
+	 * @throws Exception si le tarif n'existe pas ou si le prix est négatif.
+	 */
 	@Override
 	public void modifierTarif(int code, String libelle, double tarif)
 			throws Exception {
@@ -145,9 +168,9 @@ private static volatile GestionnaireTarifs instance = null;
 	}
 
 	/**
-	 * 
-	 * @param reservation la réservation a calculer le prix
-	 * @return le prix de la réservation
+	 * Calcul le prix d'une réservation en fonction de ses tarifs.
+	 * @param reservation la réservation a calculer le prix.
+	 * @return le prix de la réservation.
 	 */
 	@Override
 	public double calculTarif(Reservation reservation) {

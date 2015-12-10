@@ -151,7 +151,13 @@ public class Reservation {
 	}
 	
 	public void annulerReservation(){
+		this.listeMateriels.clear();
 		this.salle.retirerReservation(this);
+		
+	}
+	
+	public long debut(){
+		return this.dateResa.getTime();
 	}
 	
 	public double calculTarif(){

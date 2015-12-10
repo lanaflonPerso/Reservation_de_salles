@@ -58,7 +58,7 @@ public interface InterfaceTarifs {
 	
 	/**
 	 * Calcul le prix d'une réseervation
-	 * @param ref_resa la référence de la réservation
+	 * @param refResa la référence de la réservation
 	 * @return le prix de la réservation
 	 */
 	public double calculTarif(Reservation reservation);
