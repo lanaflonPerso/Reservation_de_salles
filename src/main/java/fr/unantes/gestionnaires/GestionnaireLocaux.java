@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
+import fr.unantes.beans.Materiel;
 import fr.unantes.beans.MaterielFixe;
+import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Salle;
 import fr.unantes.beans.TypeMateriel;
 import fr.unantes.beans.TypeSalle;
@@ -14,8 +16,8 @@ public class GestionnaireLocaux implements InterfaceLocaux{
 	
 private static volatile GestionnaireLocaux instance = null;
 	
-	private static ArrayList<Batiment> listeBatiments;
-	
+	private ArrayList<Batiment> listeBatiments;
+	private ArrayList<MaterielMobile> listeMateriauxMobiles; 
 	/**
 	 * 
 	 * @return une instance du gestionnaire de locaux si elle n'existe pas
@@ -37,14 +39,15 @@ private static volatile GestionnaireLocaux instance = null;
 	 */
 	private GestionnaireLocaux(){
 		listeBatiments = new ArrayList<Batiment>();
+		listeMateriauxMobiles = new ArrayList<MaterielMobile>();
 	}
 
-	public static ArrayList<Batiment> getListeBatiments() {
+	public ArrayList<Batiment> getListeBatiments() {
 		return listeBatiments;
 	}
 
-	public static void setListeBatiments(ArrayList<Batiment> listeBatiments) {
-		GestionnaireLocaux.listeBatiments = listeBatiments;
+	public void setListeBatimentsFixes(ArrayList<Batiment> listeBatiments) {
+		this.listeBatiments = listeBatiments;
 	}
 
 
@@ -147,6 +150,8 @@ private static volatile GestionnaireLocaux instance = null;
 
 	@Override
 	public void modifierBatiment(int no_bat, String nom) throws Exception {
+		Batiment b = this.getBatiment(no_bat);
+		b.setNom(nom);
 		// TODO Auto-generated method stub
 		
 	}
@@ -293,46 +298,68 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public void modifierSalle(int no_etage, int no_salle, int no_batiment,
 			int superficie, TypeSalle type) {
+		try {
+			Salle s  = getSalle(no_etage, no_salle, no_batiment);
+			s.setSuperficie(superficie);
+			s.setType(type);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public boolean materielExists(int code_inv) {
-		// TODO Auto-generated method stub
-		//On recherche dans toutes les salles de tous les batiments
-		for(int i=0; i<listeBatiments.size(); i++){
-			for(int j=0; j<listeBatiments.get(i).getListeSalle().size(); j++){
-				for(int k=0; k<listeBatiments.get(j).getListeSalle().get(j).getListeMateriel().size(); k++){
-					if(listeBatiments.get(j).getListeSalle().get(j).getListeMateriel().get(k).getCode_inv() == code_inv){
-						return true;
-					}
-				}
+	public boolean materielExists(int condInv) {
+		
+		
+		for(Batiment each : listeBatiments) {
+			
+			if(each.materielExists(condInv)){
+				return true;
 			}
 		}
+		
+	
 		return false;
 	}
 
 	@Override
-	public MaterielFixe getMateriel(int code_inv) throws Exception {
+	public MaterielFixe getMaterielFixe(int code_inv) throws Exception {
+		if(materielExists(code_inv)){
+			for(Batiment b: this.listeBatiments){
+				for(Salle s : b.getListeSalle()){
+					for(MaterielFixe m : s.getListeMateriel()){
+						return m;
+					}
+				}
+			}	
+						
+		}
+		else{
+			throw new Exception("Cette salle n'est pas disponible");
+			
+		}
+		// TODO Auto-generated method stub
+		return null;
+		
+	}
+
+	@Override
+	public ArrayList<MaterielFixe> getMateriauxFixes(TypeMateriel type) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<MaterielFixe> getMateriaux(TypeMateriel type) {
+	public ArrayList<MaterielFixe> getMateriauxFixes(Salle salle) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<MaterielFixe> getMateriaux(Salle salle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void ajouterMateriel(int code_inv, String nom, Salle salle, TypeMateriel type)
+	public void ajouterMaterielFixe(int code_inv, String nom, Salle salle, TypeMateriel type)
 			throws Exception {
 		// TODO Auto-generated method stub
 		if(materielExists(code_inv)){
@@ -343,13 +370,43 @@ private static volatile GestionnaireLocaux instance = null;
 	}
 
 	@Override
-	public void supprimerMateriel(int code_inv) throws Exception {
+	public void supprimerMaterielFixe(int code_inv) throws Exception {
 		// TODO Auto-generated method stub
 		if(!materielExists(code_inv)){
 			throw new Exception("Ce materiel n'existe pas");
 		}
-		MaterielFixe materiel = getMateriel(code_inv);
+		MaterielFixe materiel = getMaterielFixe(code_inv);
 		materiel.getSalle().retirerMateriel(materiel);
+	}
+
+	
+
+	@Override
+	public MaterielMobile getMaterielMobile(int code_inv) {
+		// TODO Auto-generated method stub
+		MaterielMobile m = this.getMaterielMobile(code_inv);
+		return m;
+	}
+
+	@Override
+	public ArrayList<MaterielMobile> getMateriauxMobiles(TypeMateriel type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void ajouterMaterielMobile(int code_inv, String nom,
+			TypeMateriel type) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void supprimerMaterielMobile(int code_inv) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -84,6 +84,14 @@ public class Batiment {
 		  }
 		  throw new Exception("Salle inexistante");
 	  }
+	  public boolean materielExists(int codeInv){
+		  for(Salle s: this.listeSalle){
+			  if(s.MaterielExists(codeInv)){
+				  return true;
+			  }
+		  }
+		  return false;
+	  }
 	  
 	  
 	  

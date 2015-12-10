@@ -148,6 +148,14 @@ public class Salle {
 		return (this.no_salle == s.getNo_salle() && this.no_bat == s.getNo_bat() && this.no_etage == s.getNo_etage());
 	}
 	
+	public boolean MaterielExists(int codeInv){
+		for(MaterielFixe m : this.listeMateriel){
+			if (m.getCode_inv() == codeInv){
+				return true;
+			}
+		}
+		return false;
+	}
 
 
 }

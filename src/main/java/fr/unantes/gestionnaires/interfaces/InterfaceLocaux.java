@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
 import fr.unantes.beans.MaterielFixe;
+import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Salle;
 import fr.unantes.beans.TypeMateriel;
 import fr.unantes.beans.TypeSalle;
@@ -187,21 +188,36 @@ public interface InterfaceLocaux {
 	 * @return le matériel fixe qui correspond au code_inv
 	 * @throws Exception si le matériel n'existe pas
 	 */
-	public MaterielFixe getMateriel(int code_inv) throws Exception;
+	public MaterielFixe getMaterielFixe(int code_inv) throws Exception;
+	
+	/**
+	 * 
+	 * @param code_inv le code du matériel à rechercher
+	 * @return le matériel fixe qui correspond au code_inv
+	 * @throws Exception si le matériel n'existe pas
+	 */
+	public MaterielMobile getMaterielMobile(int code_inv) throws Exception;
 	
 	/**
 	 * 
 	 * @param type le type de matériel sur lequel rechercher
 	 * @return la liste de matériaux fixes qui ont pour type de matériel le type passé en paramètre
 	 */
-	public ArrayList<MaterielFixe> getMateriaux(TypeMateriel type);
+	public ArrayList<MaterielFixe> getMateriauxFixes(TypeMateriel type);
 	
 	/**
 	 * 
 	 * @param salle la salle dans laquelle rechercher les matériaux
 	 * @return la liste des matériaux fixes dans la salle passée en paramètre
 	 */
-	public ArrayList<MaterielFixe> getMateriaux(Salle salle);
+	public ArrayList<MaterielFixe> getMateriauxFixes(Salle salle);
+
+	/**
+	 * 
+	 * @param type le type de matériel sur lequel rechercher
+	 * @return la liste de matériaux mobiles qui ont pour type de matériel le type passé en paramètre
+	 */
+	public ArrayList<MaterielMobile> getMateriauxMobiles(TypeMateriel type);
 	
 	/**
 	 * 
@@ -211,14 +227,30 @@ public interface InterfaceLocaux {
 	 * @param type le type de matériel
 	 * @throws Exception si le matériel existe déjà
 	 */
-	public void ajouterMateriel(int code_inv, String nom, Salle salle, TypeMateriel type) throws Exception;
+	public void ajouterMaterielFixe(int code_inv, String nom, Salle salle, TypeMateriel type) throws Exception;
 	
 	/**
 	 * 
 	 * @param code_inv le code du matériel à supprimer
 	 * @throws Exception si le matériel n'existe pas
 	 */
-	public void supprimerMateriel(int code_inv) throws Exception;
+	public void supprimerMaterielFixe(int code_inv) throws Exception;
+	
+	/**
+	 * 
+	 * @param code_inv le code du matériel à ajouter
+	 * @param nom ne nom du matériel
+	 * @param type le type de matériel
+	 * @throws Exception si le matériel existe déjà
+	 */
+	public void ajouterMaterielMobile(int code_inv, String nom, TypeMateriel type) throws Exception;
+	
+	/**
+	 * 
+	 * @param code_inv le code du matériel à supprimer
+	 * @throws Exception si le matériel n'existe pas
+	 */
+	public void supprimerMaterielMobile(int code_inv) throws Exception;
 
 
 }
