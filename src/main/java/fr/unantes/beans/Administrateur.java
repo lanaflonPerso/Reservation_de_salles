@@ -2,8 +2,7 @@ package fr.unantes.beans;
 
 import java.util.ArrayList;
 
-import fr.unantes.dao.DAO;
-import fr.unantes.dao.DAOFactory;
+
 
 public class Administrateur extends Demandeur {
 

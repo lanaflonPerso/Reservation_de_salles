@@ -44,7 +44,7 @@ public class Reservation {
 		this.montant = montant;
 		this.salle = salle;
 		this.temps = temps;
-		this.listeMateriels = listeMateriels;
+		this.listeMateriels = new ArrayList<MaterielMobile>();
 		this.duree = duree;
 		this.manifestation = manifestation;
 		this.demandeur = demandeur;

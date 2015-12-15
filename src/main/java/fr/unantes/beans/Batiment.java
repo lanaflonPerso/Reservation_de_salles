@@ -2,8 +2,6 @@ package fr.unantes.beans;
 
 import java.util.ArrayList;
 
-import fr.unantes.dao.DAO;
-import fr.unantes.dao.DAOFactory;
 
 public class Batiment {
 	
@@ -102,8 +100,8 @@ public class Batiment {
 	   * @param type
 	   * @return
 	   */
-	  public ArrayList getSalles(TypeSalle type){
-		  ArrayList<Salle> liste = new ArrayList();
+	  public ArrayList<Salle> getSalles(TypeSalle type){
+		  ArrayList<Salle> liste = new ArrayList<Salle>();
 		  for(Salle each : this.listeSalle){
 			  if(each.getType().equals(type)){
 				  liste.add(each);
@@ -117,8 +115,8 @@ public class Batiment {
 	   * @param etage
 	   * @return
 	   */
-	  public ArrayList getSallesParEtage(int noEtage){
-		  ArrayList<Salle> liste = new ArrayList();
+	  public ArrayList<Salle> getSallesParEtage(int noEtage){
+		  ArrayList<Salle> liste = new ArrayList<Salle>();
 		  for(Salle each : this.listeSalle){
 			  if(each.getNoEtage() == noEtage){
 				  liste.add(each);
@@ -132,8 +130,8 @@ public class Batiment {
 	   * @param noSalle
 	   * @return
 	   */
-	  public ArrayList getSallesParNo(int noSalle){
-		  ArrayList<Salle> liste = new ArrayList();
+	  public ArrayList<Salle> getSallesParNo(int noSalle){
+		  ArrayList<Salle> liste = new ArrayList<Salle>();
 		  for(Salle each : this.listeSalle){
 			  if(each.getNoSalle() == noSalle){
 				  liste.add(each);
@@ -193,6 +191,28 @@ public class Batiment {
 		  }
 		  return false;
 		  }
+
+	public ArrayList<MaterielFixe> getMateriel(TypeMateriel type){
+		// TODO Auto-generated method stub
+		ArrayList<MaterielFixe> res;
+		res = new ArrayList<MaterielFixe>();
+		for(Salle s : listeSalle){
+			res.addAll(s.getListeMateriel(type));
+		}
+		return res;
+	}
+
+	public ArrayList<MaterielFixe> getMateriel(Salle salle) {
+		// TODO Auto-generated method stub
+		ArrayList<MaterielFixe> res;
+		res = new ArrayList<MaterielFixe>();
+		for(Salle s : listeSalle){
+			if(s.equals(salle)){
+				res.addAll(s.getListeMateriel());
+			}
+		}
+		return res;
+	}
 	  
 	 
 	  

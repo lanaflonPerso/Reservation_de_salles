@@ -1,6 +1,6 @@
 package fr.unantes.beans;
 
-import fr.unantes.gestionnaires.GestionnaireTarifs;
+
 
 public class Titre extends Tarif{
 	

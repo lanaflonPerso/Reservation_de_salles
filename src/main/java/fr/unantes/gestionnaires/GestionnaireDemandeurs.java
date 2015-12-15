@@ -3,12 +3,12 @@ package fr.unantes.gestionnaires;
 import java.util.ArrayList;
 
 import fr.unantes.beans.Adresse;
-import fr.unantes.beans.Batiment;
+
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Origine;
-import fr.unantes.beans.Reservation;
+
 import fr.unantes.beans.Titre;
-import fr.unantes.beans.TypeSalle;
+
 import fr.unantes.gestionnaires.interfaces.InterfaceDemandeurs;
 
 public class GestionnaireDemandeurs implements InterfaceDemandeurs{
@@ -37,7 +37,7 @@ public class GestionnaireDemandeurs implements InterfaceDemandeurs{
 	 * initialise les listes de données
 	 */
 	private GestionnaireDemandeurs(){
-		listeDemandeurs = new ArrayList();
+		listeDemandeurs = new ArrayList<Demandeur>();
 	}
 	
 	public ArrayList<Demandeur> getListeDemandeurs() {
@@ -89,7 +89,7 @@ public class GestionnaireDemandeurs implements InterfaceDemandeurs{
 	@Override
 	public ArrayList<Demandeur> getDemandeurs(Titre titre) {
 		// TODO Auto-generated method stub
-		ArrayList<Demandeur> liste = new ArrayList();
+		ArrayList<Demandeur> liste = new ArrayList<Demandeur>();
 		for(Demandeur each : listeDemandeurs){
 			if(each.getTitre().equals(titre)){
 				liste.add(each);
@@ -105,7 +105,7 @@ public class GestionnaireDemandeurs implements InterfaceDemandeurs{
 	@Override
 	public ArrayList<Demandeur> getDemandeurs(Origine origine) {
 		// TODO Auto-generated method stub
-		ArrayList<Demandeur> liste = new ArrayList();
+		ArrayList<Demandeur> liste = new ArrayList<Demandeur>();
 		for(Demandeur each : listeDemandeurs){
 			if(each.getOrigine().equals(origine)){
 				liste.add(each);

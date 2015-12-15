@@ -1,8 +1,5 @@
 package fr.unantes.beans;
 
-import fr.unantes.dao.DAO;
-import fr.unantes.dao.DAOFactory;
-import gestion.salle.App;
 
 public class Adresse {
 

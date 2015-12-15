@@ -1,8 +1,7 @@
 package fr.unantes.gestionnaires;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 
 
@@ -40,7 +39,7 @@ private static volatile GestionnaireTarifs instance = null;
 	}
 	
 	private GestionnaireTarifs(){
-		listeTarif = new ArrayList();
+		listeTarif = new ArrayList<Tarif>();
 	}
 
 	/**
@@ -84,7 +83,7 @@ private static volatile GestionnaireTarifs instance = null;
 	@Override
 	public ArrayList<Tarif> getTarifs(TarifEnumeration type) {
 		// TODO Auto-generated method stub
-		ArrayList liste = new ArrayList();
+		ArrayList<Tarif> liste = new ArrayList<Tarif>();
 		for(Tarif each : listeTarif){
 			if(each.getClass().getName().equals(type.name())){
 				liste.add(each);

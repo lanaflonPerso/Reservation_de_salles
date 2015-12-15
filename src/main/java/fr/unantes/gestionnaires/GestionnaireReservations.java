@@ -2,24 +2,22 @@ package fr.unantes.gestionnaires;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Duree;
 import fr.unantes.beans.Manifestation;
-import fr.unantes.beans.Materiel;
 import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Reservation;
 import fr.unantes.beans.Salle;
-import fr.unantes.beans.TypeMateriel;
 import fr.unantes.gestionnaires.interfaces.InterfaceReservations;
 
 public class GestionnaireReservations implements InterfaceReservations{
 
 	private static volatile GestionnaireReservations instance = null;
 
-	private static ArrayList<Reservation> listeReservation;
-	private static int refResa;
+	private ArrayList<Reservation> listeReservation;
+	private int refResa;
 	
 	/**
 	 * MÃ©thode qui crÃ©er une instance de GestionReservation s'il n'en existe pas et retourne l'instance existante sinon (il ne peut y avoir qu'une seul instance de la classe GestionReservation 
@@ -43,12 +41,12 @@ public class GestionnaireReservations implements InterfaceReservations{
 		listeReservation = new ArrayList<Reservation>();
 	}
 
-	public static ArrayList<Reservation> getListeReservation() {
+	public ArrayList<Reservation> getListeReservation() {
 		return listeReservation;
 	}
 
-	public static void setListeReservation(ArrayList<Reservation> listeReservation) {
-		GestionnaireReservations.listeReservation = listeReservation;
+	public void setListeReservation(ArrayList<Reservation> listeReservation) {
+		this.listeReservation = listeReservation;
 	}
 
 

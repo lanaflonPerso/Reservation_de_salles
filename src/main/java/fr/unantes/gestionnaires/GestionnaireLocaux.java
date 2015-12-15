@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
-import fr.unantes.beans.Materiel;
+
 import fr.unantes.beans.MaterielFixe;
 import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Salle;
@@ -112,7 +112,7 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<Batiment> getBatiments(String nom) {
 		// TODO Auto-generated method stub
-		ArrayList<Batiment> liste = new ArrayList();
+		ArrayList<Batiment> liste = new ArrayList<Batiment>();
 		for(Batiment each : listeBatiments){
 			if(each.getNom().equals(nom)){
 				liste.add(each);
@@ -180,7 +180,7 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<Salle> getSalles(TypeSalle type) {
 		// TODO Auto-generated method stub
-		ArrayList<Salle> liste = new ArrayList();
+		ArrayList<Salle> liste = new ArrayList<Salle>();
 		for(Batiment each : listeBatiments){
 			liste.addAll(each.getSalles(type));
 		}
@@ -190,7 +190,7 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<Salle> getSallesParBatiment(int noBat) {
 		// TODO Auto-generated method stub
-		ArrayList<Salle> liste = new ArrayList();
+		ArrayList<Salle> liste = new ArrayList<Salle>();
 		try {
 			liste.addAll(getBatiment(noBat).getListeSalle());
 		} catch (Exception e) {
@@ -203,7 +203,7 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<Salle> getSallesParEtage(int noEtage) {
 		// TODO Auto-generated method stub
-		ArrayList<Salle> liste = new ArrayList();
+		ArrayList<Salle> liste = new ArrayList<Salle>();
 		for(Batiment each : listeBatiments){
 			liste.addAll(each.getSallesParEtage(noEtage));
 		}
@@ -213,7 +213,7 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<Salle> getSallesParNumero(int noSalle) {
 		// TODO Auto-generated method stub
-		ArrayList<Salle> liste = new ArrayList();
+		ArrayList<Salle> liste = new ArrayList<Salle>();
 		for(Batiment each : listeBatiments){
 			liste.addAll(each.getSallesParNo(noSalle));
 		}
@@ -289,13 +289,24 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<MaterielFixe> getMateriauxFixes(TypeMateriel type) {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<MaterielFixe> res;
+		res = new ArrayList<MaterielFixe>();
+		for(Batiment each: listeBatiments){
+			res.addAll(each.getMateriel(type));
+		}
+		return res;
+		
 	}
 
 	@Override
 	public ArrayList<MaterielFixe> getMateriauxFixes(Salle salle) {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<MaterielFixe> res;
+		res = new ArrayList<MaterielFixe>();
+		for(Batiment each : listeBatiments){
+			res.addAll(each.getMateriel(salle));
+		}
+		return res;
 	}
 
 	@Override
@@ -331,23 +342,44 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public ArrayList<MaterielMobile> getMateriauxMobiles(TypeMateriel type) {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<MaterielMobile> res;
+		res = new ArrayList<MaterielMobile>();
+		for(MaterielMobile mm: listeMateriauxMobiles){
+			if (mm.getType().equals(type)){
+				res.add(mm);
+			}
+		}
+		return res;
+		
 	}
 
 
 
 	@Override
-	public void ajouterMaterielMobile(int codeInv, String nom,
-			TypeMateriel type) throws Exception {
+	public void ajouterMaterielMobile(int codeInv, String nom,TypeMateriel type) throws Exception {
 		// TODO Auto-generated method stub
-		
+		listeMateriauxMobiles.add(new MaterielMobile(codeInv,nom,type));
 	}
 
 	@Override
 	public void supprimerMaterielMobile(int codeInv) throws Exception {
 		// TODO Auto-generated method stub
+		//boolean pour savoir si le materiel a été trouvé
+		boolean trouve = false;
+		for(int i=0;i<listeMateriauxMobiles.size();++i){
+			if (listeMateriauxMobiles.get(i).getCodeInv() == codeInv){
+				listeMateriauxMobiles.remove(i);
+				trouve = true;
+			}
+		}
+		//S'il n'a pas été trouvé on lève une exception
+		if(!trouve){
+			throw new Exception ("Auncun Materiel avec ce codeInv"); 
+		}
 		
 	}
+
+	
 
 
 

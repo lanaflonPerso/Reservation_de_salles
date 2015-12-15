@@ -3,8 +3,7 @@ package fr.unantes.beans;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fr.unantes.dao.DAO;
-import fr.unantes.dao.DAOFactory;
+
 
 public class Salle {
 	
@@ -242,6 +241,24 @@ public class Salle {
 			}
 		}	
 		return true;
+	}
+
+
+
+	public ArrayList<MaterielFixe> getListeMateriel(TypeMateriel type2) {
+		// TODO Auto-generated method stub
+		ArrayList<MaterielFixe> res;
+		res = new ArrayList<MaterielFixe>();
+		for (MaterielFixe mf : listeMateriel){
+			if (mf.getType().equals(type2) ){
+				res.add(mf);
+			}
+		}
+		return (res);
+	}
+
+	public boolean equals(Salle s){
+		return (s.getNoSalle() == noSalle && s.getNoEtage() == noEtage && s.getNoBat() == noBat );
 	}
 
 

@@ -1,9 +1,6 @@
 package fr.unantes.beans;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class Origine extends Tarif{
 	
