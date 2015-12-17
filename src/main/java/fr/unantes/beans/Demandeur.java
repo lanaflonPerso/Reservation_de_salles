@@ -38,6 +38,7 @@ public class Demandeur {
 		this.adresse = adresse;
 		this.origine = origine;
 		this.titre = titre;
+		this.listeReservation = new ArrayList<Reservation>();
 	}
 
 	public int getNoDem() {
@@ -96,16 +97,63 @@ public class Demandeur {
 		return titre.getTarif();
 	}
 	
-	public void annulerReservation(Reservation reservation){
-		this.listeReservation.remove(reservation);
+	/**
+	 * Ajoute une réservation à la liste des réservations du demandeur.
+	 * @param reservation la réservation à ajouter.
+	 * @throws Exception si le demandeur possède déjà une réservation +/- dans les 24h.
+	 */
+	public void reserver(Reservation reservation) throws Exception{
+		for(Reservation each : this.listeReservation){
+			if(each.equals(reservation)){
+				throw new Exception("Réservation déjà existante");
+			}
+			if(each.debut() <= reservation.debut() && each.debut() +86400000 >= reservation.debut()){
+				throw new Exception("Vous ne pouvez pas réserver deux salles dans la même journée.");
+			}
+			if(each.debut() >= reservation.debut() && each.debut()+86400000 <= reservation.debut()+86400000){
+				throw new Exception("Vous ne pouvez pas réserver deux salles dans la même journée.");
+			}
+			if(each.debut()<=reservation.debut()+86400000 && each.debut()+86400000 >= reservation.debut()+86400000){
+				throw new Exception("Vous ne pouvez pas réserver deux salles dans la même journée.");
+			}
+		}
+		this.listeReservation.add(reservation);
 	}
 	
-	public void annulerReservations(){
+	
+	/**
+	 * Annule la réservation passée en paramètre
+	 * @param reservation la réservation à annuler
+	 * @throws Exception si la réservation n'appartient pas au demandeur
+	 */
+	public void annulerReservation(Reservation reservation) throws Exception{
+		if(this.listeReservation.isEmpty()){
+			throw new Exception("Cette réservation n'appartient pas à ce demandeur");
+		}
 		for(Reservation each : this.listeReservation){
-			each.annulerReservation();
+			if(each.equals(reservation)){
+				reservation.annuler();
+				break;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Annule toutes les réservations du demandeur
+	 * @throws Exception 
+	 */
+	public void annulerReservations() throws Exception{
+		for(Reservation each : this.listeReservation){
+			this.listeReservation.remove(each);
+			each.annuler();
 		}
 	}
 	
+	/**
+	 * Calcul le tarif qu'a ce demandeur
+	 * @return le tarif calculé à partie de son origine et de son titre
+	 */
 	public double calculTarif(){
 		return this.origine.getTarif() + this.titre.getTarif();
 	}

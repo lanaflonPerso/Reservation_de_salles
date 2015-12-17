@@ -22,7 +22,7 @@ public interface InterfaceReservations {
 	
 	public ArrayList<Reservation> getReservations(Demandeur demandeur);
 	
-	public void reserver(long temps,  Demandeur demandeur, Salle salle, Date dateResa, Duree duree, Manifestation manifestation, double prix) throws Exception;
+	public void reserver(long temps,  Demandeur demandeur, Salle salle, Date dateResa, Duree duree, Manifestation manifestation) throws Exception;
 
 	public void annuler(int refResa) throws Exception;
 

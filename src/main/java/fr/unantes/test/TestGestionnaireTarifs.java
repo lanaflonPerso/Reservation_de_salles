@@ -102,7 +102,7 @@ public class TestGestionnaireTarifs {
 		materielF.setSalle(salle);
 		salle.ajoutMateriel(materielF);
 		Demandeur demandeur = new Demandeur(1, "geoffrey", new Adresse("1","rue du foix", "37000", "Tours"), origine, titre);;
-		Reservation reservation = new Reservation(1, new Date(), 2, salle, 36000, duree, manifestation, demandeur);
+		Reservation reservation = new Reservation(1, new Date(), salle, 36000, duree, manifestation, demandeur);
 		assertTrue(gestionnaire.calculTarif(reservation) == 120);
 		salle.ajoutMateriel(materielF);
 		assertTrue(gestionnaire.calculTarif(reservation) == 140);

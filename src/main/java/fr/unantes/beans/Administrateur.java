@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Administrateur extends Demandeur {
 
-	private final String motDePasse = "admin";
-	private final String login = "admin";
+	private final String PASSWORD = "admin";
+	private final String LOGIN = "admin";
 
 	public Administrateur() {
 		super();
@@ -21,20 +21,22 @@ public class Administrateur extends Demandeur {
 		// TODO Auto-generated constructor stub
 	}
 
-	// Identifier l'administrateur
+	/**
+	 * Identifie l'administrateur
+	 * @param login
+	 * @param motDePasse
+	 * @return
+	 */
 	public boolean identification(String login, String motDePasse) {
-		boolean result;
-		if (login.equals(this.login) && motDePasse.equals(this.motDePasse)) {
-			result = true;
-			System.out.println("Vous êtes admin");
-		} else {
-			result = false;
-			System.out.println("Vous n'êtes pas admin");
+		if (login.equals(this.LOGIN) && motDePasse.equals(this.PASSWORD)) {
+			return true;
 		}
-		return result;
+		return false;
 	}
 
+	public void supprimerSalle(Salle salle){
 
+	}
 
 
 }

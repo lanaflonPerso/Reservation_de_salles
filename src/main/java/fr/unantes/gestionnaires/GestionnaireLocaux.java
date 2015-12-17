@@ -62,19 +62,6 @@ private static volatile GestionnaireLocaux instance = null;
 		return false;
 	}
 
-	@Override
-	public Adresse getAdresse(String no, String adresse, String code,
-			String ville) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void ajouterAdresse(String no, String adresse, String code,
-			String ville) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public boolean batimentExists(int noBat) {
@@ -140,6 +127,10 @@ private static volatile GestionnaireLocaux instance = null;
 		// TODO Auto-generated method stub
 		if (!batimentExists(noBat)) {
 			throw new Exception("Batiment inexistant");
+		}
+		Batiment batiment = getBatiment(noBat);
+		for(Salle each : batiment.getListeSalle()){
+			batiment.supprimerSalle(each);
 		}
 		listeBatiments.remove(getBatiment(noBat));
 	}
@@ -253,9 +244,9 @@ private static volatile GestionnaireLocaux instance = null;
 			int superficie, TypeSalle type) {
 		// TODO Auto-generated method stub
 		try {
-			Salle s  = getSalle(noEtage, noSalle, noBatiment);
-			s.setSuperficie(superficie);
-			s.setType(type);
+			Salle salle  = getSalle(noEtage, noSalle, noBatiment);
+			salle.setSuperficie(superficie);
+			salle.setType(type);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

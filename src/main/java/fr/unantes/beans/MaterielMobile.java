@@ -26,10 +26,13 @@ public class MaterielMobile extends Materiel{
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
+	
+	public boolean disponible(){
+		if(this.reservation == null){
+			return true;
+		}
+		return false;
+	}
 
 	
-
-
-	
-
 }

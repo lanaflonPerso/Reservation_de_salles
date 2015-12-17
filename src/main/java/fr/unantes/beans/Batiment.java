@@ -61,22 +61,35 @@ public class Batiment {
 	 /**
 	  * Ajouter une salle au batiment
 	  * @param salle
+	 * @throws Exception 
 	  */
-	  public void ajouterSalle(Salle salle){
+	  public void ajouterSalle(Salle salle) throws Exception{
 		  if(this.listeSalle == null){
 			  this.listeSalle = new ArrayList<Salle>();
 		  }
+		  if(salle.getNoBat() != this.noBat){
+			  throw new Exception("NoBat incorrect");
+		  }
 		  this.listeSalle.add(salle);
+		  
 	  }
 
 	  /**
 	   * Retirer une salle au batiment
 	   * @param salle
 	   */
-	  public void supprimerSalle(Salle salle){
-		salle.getListeMateriel().clear();
-		salle.getListeReservation().clear();
-	  	this.listeSalle.remove(salle);
+	  public void supprimerSalle(Salle salle) throws Exception{
+		  if(this.listeSalle.isEmpty() || salle.getNoBat() != this.noBat){
+			  throw new Exception("Salle inexistante dans ce batiment");
+		  }
+		for(Salle each : this.listeSalle){
+			if(each.equals(salle)){
+				salle.supprimer();
+				this.listeSalle.remove(salle);
+				break;
+			}
+		}
+		
 	  }
 	  
 	  /**
@@ -191,6 +204,7 @@ public class Batiment {
 		  }
 		  return false;
 		  }
+	  
 
 	public ArrayList<MaterielFixe> getMateriel(TypeMateriel type){
 		// TODO Auto-generated method stub

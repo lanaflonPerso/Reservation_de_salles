@@ -21,33 +21,33 @@ public class Reservation {
 	}
 
 
-	public Reservation(int refResa, Date dateResa, double montant,
+	public Reservation(int refResa, Date dateResa,
 			Salle salle, long temps, ArrayList<MaterielMobile> listeMateriels,
 			Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
 		this.refResa = refResa;
 		this.dateResa = dateResa;
-		this.montant = montant;
 		this.salle = salle;
 		this.temps = temps;
 		this.listeMateriels = listeMateriels;
 		this.duree = duree;
 		this.manifestation = manifestation;
 		this.demandeur = demandeur;
+		this.montant = this.calculTarif();
 	}
 	
-	public Reservation(int refResa, Date dateResa, double montant,
+	public Reservation(int refResa, Date dateResa,
 			Salle salle, long temps, Duree duree, Manifestation manifestation, Demandeur demandeur) {
 		super();
 		this.refResa = refResa;
 		this.dateResa = dateResa;
-		this.montant = montant;
 		this.salle = salle;
 		this.temps = temps;
 		this.listeMateriels = new ArrayList<MaterielMobile>();
 		this.duree = duree;
 		this.manifestation = manifestation;
 		this.demandeur = demandeur;
+		this.montant = this.calculTarif();
 	}
 
 	
@@ -141,25 +141,67 @@ public class Reservation {
 		this.demandeur = demandeur;
 	}
 
-
-	public void ajouterMateriel(MaterielMobile materiel){
+	/**
+	 * Méthode qui permet d'ajouter un materiel à une réservation.
+	 * @param materiel le materiel à ajouter.
+	 * @throws Exception si le materiel est indisponible.
+	 */
+	public void ajouterMateriel(MaterielMobile materiel) throws Exception{
+		if(!materiel.disponible()){
+			throw new Exception("materiel indisponible");
+		}
+		materiel.setReservation(this);
 		this.listeMateriels.add(materiel);
 	}
 	
-	public void retirerMateriel(MaterielMobile materiel){
-		this.listeMateriels.remove(materiel);
-	}
-	
-	public void annulerReservation(){
-		this.listeMateriels.clear();
-		this.salle.retirerReservation(this);
+	/**
+	 * Permet de retirer un materiel à une réservation.
+	 * @param materiel le materiel à retirer.
+	 * @throws Exception
+	 */
+	public void retirerMateriel(MaterielMobile materiel) throws Exception{
+		if(this.listeMateriels.isEmpty()){
+			throw new Exception("Cette réservation ne contient aucun materiel");
+		}
+		for(MaterielMobile each : this.listeMateriels){
+			if(materiel.equals(each)){
+				materiel.setReservation(null);
+				this.listeMateriels.remove(materiel);
+			}
+		}
 		
 	}
 	
+	public void reserver(Salle salle) throws Exception{
+		if(salle.disponible(this.dateResa, this.temps)){
+			salle.ajoutReservation(this);
+		}
+	}
+	
+	/**
+	 * Annule une réservation.
+	 * @throws Exception 
+	 */
+	public void annuler() throws Exception{
+		for(MaterielMobile each : this.listeMateriels){
+			each.setReservation(null);
+		}
+		salle.retirerReservation(this);
+		demandeur.annulerReservation(this);
+	}
+	
+	/**
+	 * Calcul le début de la réservation en millisecondes depuis 1970.
+	 * @return le debut de la réservation (en millisecondes)
+	 */
 	public long debut(){
 		return this.dateResa.getTime();
 	}
 	
+	/**
+	 * Calcule le tarif de la réservation 
+	 * @return le tarif total de la réservation
+	 */
 	public double calculTarif(){
 		return this.manifestation.getTarif() + this.duree.getTarif();
 	}

@@ -50,11 +50,19 @@ public class GestionnaireReservations implements InterfaceReservations{
 	}
 
 
-
+	/**
+	 * Ajouter un matériel mobile à une réservation
+	 * @param materiel le materiel a ajouter
+	 * @param refResa le code de réservation
+	 * @exception si le materiel possède déjà une réservation
+	 */
 	@Override
 	public void ajouterMateriel(MaterielMobile materiel, int refResa) throws Exception {
 		// TODO Auto-generated method stub
-	
+		if(!materiel.getReservation().equals(null)){
+			throw new Exception("materiel déjà utilisé");
+		}
+		getReservation(refResa).ajouterMateriel(materiel);
 	}
 	
 	/**
@@ -98,17 +106,17 @@ public class GestionnaireReservations implements InterfaceReservations{
 	 */
 	@Override
 	public void reserver(long temps, Demandeur demandeur, Salle salle,
-			Date dateResa, Duree duree, Manifestation manifestation, double prix)
+			Date dateResa, Duree duree, Manifestation manifestation)
 			throws Exception {
 		// TODO Auto-generated method stub
-		if(salle.salleDisponible(dateResa, temps)){
+		if(!salle.disponible(dateResa, temps)){
 			throw new Exception("Salle indisponible");
 		}
 		this.refResa ++;
 		if(reservationExists(refResa)){
 			throw new Exception("Réservation déjà existante");
 		}
-		Reservation reservation = new Reservation(refResa, dateResa, prix, salle, temps, duree, manifestation, demandeur);
+		Reservation reservation = new Reservation(refResa, dateResa, salle, temps, duree, manifestation, demandeur);
 		salle.ajoutReservation(reservation);
 		listeReservation.add(reservation);
 	}
@@ -123,7 +131,7 @@ public class GestionnaireReservations implements InterfaceReservations{
 			throw new Exception("Cette réservation n'existe pas");
 		}	
 		Reservation reservation = getReservation(refResa);
-		reservation.annulerReservation();
+		reservation.annuler();
 		listeReservation.remove(reservation);
 	
 	}

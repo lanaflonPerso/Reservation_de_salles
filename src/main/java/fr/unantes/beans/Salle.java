@@ -44,6 +44,8 @@ public class Salle {
 		this.noBat = noBat;
 		this.superficie = superficie;
 		this.type = type;
+		this.listeMateriel = new ArrayList<MaterielFixe>();
+		this.listeReservation = new ArrayList<Reservation>();
 	}
 
 	
@@ -144,34 +146,35 @@ public class Salle {
 		this.listeReservation.add(reservation);
 	}
 	
-	public void retirerReservation(Reservation reservation){
-		this.listeReservation.remove(reservation);
+	/**
+	 * Retire une réservation à cette salle.
+	 * @param reservation la réservation à retirer.
+	 * @throws Exception si la réservation ne concerne pas cette salle.
+	 */
+	public void retirerReservation(Reservation reservation) throws Exception{
+		if(this.listeReservation.isEmpty()){
+			throw new Exception("Aucune réservation pour cette salle");
+		}
+		for(Reservation each : this.listeReservation){
+			if(each.equals(reservation)){
+				this.listeReservation.remove(reservation);
+				break;
+			}
+		}
+		
+	}
+	
+	public void supprimer() throws Exception{
+		for(Reservation each : this.listeReservation){
+			each.annuler();
+		}
 	}
 	
 	public String toString(){
 		return "salle n° "+ this.noEtage + this.noSalle + " du batiment " + this.noBat;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public double calculerTarif(){
-		double tarif = 0;
-		for(int i=0; i<this.listeMateriel.size(); i++){
-			tarif = tarif + this.listeMateriel.get(i).calculerTarif();
-		}
-		return this.type.getTarif() + tarif;
-	}
-	
-	/**
-	 * 
-	 * @param s
-	 * @return
-	 */
-	public boolean compareSalle(Salle s){
-		return (this.noSalle == s.getNoSalle() && this.noBat == s.getNoBat() && this.noEtage == s.getNoEtage());
-	}
+
 	
 	/**
 	 * 
@@ -210,7 +213,7 @@ public class Salle {
 	 * @return true si la salle est disponible, false sinon.
 	 * On compare les dates et durées de réservation pour savoir si la salle possède déjà une réservation pour un créneau donné.
 	 */
-	public boolean salleDisponible(Date date, long duree) throws Exception{
+	public boolean disponible(Date date, long duree) throws Exception{
 		if(duree < 0){
 			throw new Exception("Durée négative");
 		}
@@ -257,8 +260,25 @@ public class Salle {
 		return (res);
 	}
 
+	/**
+	 * Regarde si deux salles sont égales.
+	 * @param s la salle à comparer.
+	 * @return true si la salle est identique, false sinon.
+	 */
 	public boolean equals(Salle s){
 		return (s.getNoSalle() == noSalle && s.getNoEtage() == noEtage && s.getNoBat() == noBat );
+	}
+	
+	/**
+	 * Calcul le tarif d'une salle grâce à son type et ses materiaux fixes.
+	 * @return le tarif de la salle.
+	 */
+	public double calculerTarif(){
+		double tarif = 0;
+		for(int i=0; i<this.listeMateriel.size(); i++){
+			tarif = tarif + this.listeMateriel.get(i).calculerTarif();
+		}
+		return this.type.getTarif() + tarif;
 	}
 
 

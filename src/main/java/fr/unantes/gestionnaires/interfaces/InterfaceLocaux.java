@@ -22,26 +22,6 @@ public interface InterfaceLocaux {
 	 */
 	public boolean adresseExists(String no, String adresse, String code, String ville);
 	
-	/**
-	 * 
-	 * @param no le numero de la rue
-	 * @param adresse le nom de la rue
-	 * @param code le code postal
-	 * @param ville la ville de l'adresse
-	 * @return l'adresse correpondant aux paramètres
-	 * @throws Exception si l'adresse n'existe pas
-	 */
-	public Adresse getAdresse(String no, String adresse, String code, String ville) throws Exception;
-	
-	/**
-	 * 
-	 * @param no le numero de la rue
-	 * @param adresse le nom de la rue
-	 * @param code le code postal
-	 * @param ville la ville de l'adresse
-	 * @throws Exception si l'adresse est déjà liée à un batiment
-	 */
-	public void ajouterAdresse(String no, String adresse, String code, String ville) throws Exception;
 	
 	
 	/**
