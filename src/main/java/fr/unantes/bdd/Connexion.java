@@ -5,15 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import fr.unantes.beans.Adresse;
-import fr.unantes.beans.Origine;
-import fr.unantes.beans.Titre;
 
 
 
 public class Connexion {
 	
-	private static String driver = "com.mysql.jdbc.Driver";
+	//private static String driver = "com.mysql.jdbc.Driver";
 	private static String url = "jdbc:mysql://localhost";
 	private static String user = "root";
 	private static String password = "root";
@@ -38,7 +35,7 @@ public class Connexion {
 	
 	//Crée la base de données si elle n'existe pas
 	public static void creationBDD() {
-		Connection conn = getInstance();
+		Connection connect = getInstance();
 		Statement stmt = null;
 
 		try 
@@ -57,7 +54,7 @@ public class Connexion {
 
 	public static void insertionTables() {
 		// La connexion
-		Connection conn = getInstance();
+		Connection connect = getInstance();
 		Statement stmt = null;
 
 		try 
@@ -80,14 +77,14 @@ public class Connexion {
 			stmt.executeUpdate(bdd);
 			
 			System.out.println("Création des tables....");
-			//stmt.executeUpdate(adresse);
-			//stmt.executeUpdate(batiment);
-			//stmt.executeUpdate(batiment_salle);
-			//stmt.executeUpdate(demandeur);
-			//stmt.executeUpdate(materiel);
-			//stmt.executeUpdate(reservation);
-			//stmt.executeUpdate(salle);
-			//stmt.executeUpdate(type_salle);
+			stmt.executeUpdate(adresse);
+			stmt.executeUpdate(batiment);
+			stmt.executeUpdate(batiment_salle);
+			stmt.executeUpdate(demandeur);
+			stmt.executeUpdate(materiel);
+			stmt.executeUpdate(reservation);
+			stmt.executeUpdate(salle);
+			stmt.executeUpdate(type_salle);
 			System.out.println("Tables crées avec succès");
 
 		} 

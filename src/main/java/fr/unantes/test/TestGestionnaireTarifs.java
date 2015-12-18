@@ -3,14 +3,13 @@ package fr.unantes.test;
 import static org.junit.Assert.*;
 
 import java.util.Date;
-import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
-import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Duree;
 import fr.unantes.beans.Manifestation;
@@ -27,24 +26,14 @@ import fr.unantes.gestionnaires.GestionnaireTarifs;
 public class TestGestionnaireTarifs {
 
 	GestionnaireTarifs gestionnaire = GestionnaireTarifs.getInstance();
-	/*
-	Titre titre;
-	Origine origine;
-	TypeMateriel typeMateriel;
-	TypeSalle typeSalle;
-	Manifestation manifestation;
-	Duree duree;
-	*/
+	
+	@BeforeClass
+	public static void init() throws Exception{
+		System.out.println("Test de la classe GestionnaireTarifs");
+	}
+	
 	@Before
 	public void setUp() throws Exception {
-		/*
-		titre = new Titre(1, "directeur", 2);
-		origine = new Origine(1,"europeen", 2);
-		typeMateriel = new TypeMateriel(1, "meuble", 2);
-		typeSalle = new TypeSalle(1, "reunion", 2);
-		manifestation = new Manifestation(1, "anniversaire", 2);
-		duree = new Duree(1, "jour", 2);
-		*/
 	}
 
 	@After

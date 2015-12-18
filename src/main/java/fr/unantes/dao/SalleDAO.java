@@ -1,17 +1,10 @@
 package fr.unantes.dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import fr.unantes.beans.Adresse;
-import fr.unantes.beans.Batiment;
-import fr.unantes.beans.Materiel;
-import fr.unantes.beans.Reservation;
 import fr.unantes.beans.Salle;
-import fr.unantes.beans.TypeSalle;
+
 
 public class SalleDAO extends DAO<Salle>{
 

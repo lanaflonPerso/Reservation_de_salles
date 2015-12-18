@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
@@ -26,6 +27,11 @@ public class TestReservation {
 	Reservation reservation;
 	Salle salle;
 	MaterielMobile materiel;
+	
+	@BeforeClass
+	public static void init() throws Exception{
+		System.out.println("Test de la classe Reservation");
+	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -69,17 +75,16 @@ public class TestReservation {
 		assertTrue(salle.getListeReservation().contains(reservation));
 	}
 	
-	@Test(expected = Exception.class)
-	public void testAnnulerNull() throws Exception{
-		reservation.annuler();
-	}
 	
 	@Test
 	public void testAnnuler() throws Exception{
 		reservation.reserver(salle);
 		reservation.annuler();
-		assertTrue(reservation.getSalle().equals(null));
-		assertFalse(salle.getListeReservation().contains(reservation));
+	}
+	
+	@Test
+	public void testCalculTarif(){
+		assertTrue(reservation.calculTarif() == 20);
 	}
 	
 }

@@ -1,7 +1,6 @@
 package fr.unantes.test;
 
 import static org.junit.Assert.*;
-import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,16 +10,12 @@ import org.junit.Test;
 import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Salle;
-import fr.unantes.beans.TarifEnumeration;
 import fr.unantes.beans.TypeSalle;
 import fr.unantes.gestionnaires.GestionnaireLocaux;
-import fr.unantes.gestionnaires.GestionnaireReservations;
-import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 
 public class TestGestionnaireLocaux{
 	GestionnaireLocaux gestionnaire = GestionnaireLocaux.getInstance();
-	static GestionnaireTarifs gestionnaireT = GestionnaireTarifs.getInstance();
 
 	Adresse adresse;
 	Adresse adresse2;
@@ -31,9 +26,7 @@ public class TestGestionnaireLocaux{
 	@BeforeClass
 	public static void init() throws Exception{
 		System.out.println("Test de la classe GestionnaireLocaux");
-		gestionnaireT.ajouterTarif(1, "reunion", 30, TarifEnumeration.TypeSalle);
-		gestionnaireT.ajouterTarif(2, "meuble", 4, TarifEnumeration.TypeMateriel);
-		gestionnaireT.ajouterTarif(3, "electronique", 6, TarifEnumeration.TypeMateriel);
+		
 	}
 	
 	@Before
@@ -41,7 +34,7 @@ public class TestGestionnaireLocaux{
 		//Objets existants
 		adresse = new Adresse("13", "Boulevard Michelet Sciences", "44000", "Nantes");
 		batiment = new Batiment(1, "Faculté", adresse);
-		typeSalle = (TypeSalle) gestionnaireT.getListeTarif().get(0);
+		typeSalle = new TypeSalle(1, "reunion", 30);
 		salle = new Salle(2, 23, 1, 60, typeSalle);
 		batiment.ajouterSalle(salle);
 		gestionnaire.getListeBatiments().add(batiment);
@@ -179,7 +172,7 @@ public class TestGestionnaireLocaux{
 		assertTrue(salle == gestionnaire.getSallesParBatiment(1).get(0));
 	}
 	
-	@Test
+	@Test(expected = Exception.class)
 	public void testAucunRechercheSalleParBatiment() throws Exception{
 		assertTrue(gestionnaire.getSallesParBatiment(12).isEmpty());
 	}
@@ -212,6 +205,16 @@ public class TestGestionnaireLocaux{
 	@Test
 	public void testAucunRechercheSalleParType() throws Exception{
 		assertTrue(gestionnaire.getSalles(new TypeSalle()).isEmpty());
+	}
+	
+	@Test
+	public void testSupprimerSalle() throws Exception{
+		gestionnaire.supprimerSalle(2, 23, 1);
+	}
+	
+	@Test(expected = Exception.class)
+	public void testSupprimerSalleInnexistante() throws Exception{
+		gestionnaire.supprimerSalle(1, 1, 1);
 	}
 	
 }

@@ -1,16 +1,10 @@
 package fr.unantes.dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Demandeur;
-import fr.unantes.beans.Origine;
-import fr.unantes.beans.Reservation;
-import fr.unantes.beans.Titre;
+
 
 public class DemandeurDAO extends DAO<Demandeur> {
 

@@ -174,7 +174,7 @@ private static volatile GestionnaireTarifs instance = null;
 	@Override
 	public double calculTarif(Reservation reservation) {
 		// TODO Auto-generated method stub
-		return reservation.getSalle().calculerTarif() + reservation.getDemandeur().calculTarif() + reservation.calculTarif();
+		return reservation.calculTarif();
 	}
 	
 

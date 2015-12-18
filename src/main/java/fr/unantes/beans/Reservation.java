@@ -6,7 +6,6 @@ import java.util.Date;
 public class Reservation {
 	private int refResa;
 	private Date dateResa;
-	private double montant;
 	private Salle salle;
 	private long temps;
 	private ArrayList<MaterielMobile> listeMateriels;
@@ -33,7 +32,6 @@ public class Reservation {
 		this.duree = duree;
 		this.manifestation = manifestation;
 		this.demandeur = demandeur;
-		this.montant = this.calculTarif();
 	}
 	
 	public Reservation(int refResa, Date dateResa,
@@ -47,7 +45,6 @@ public class Reservation {
 		this.duree = duree;
 		this.manifestation = manifestation;
 		this.demandeur = demandeur;
-		this.montant = this.calculTarif();
 	}
 
 	
@@ -69,16 +66,6 @@ public class Reservation {
 
 	public void setDateResa(Date dateResa) {
 		this.dateResa = dateResa;
-	}
-
-
-	public double getMontant() {
-		return montant;
-	}
-
-
-	public void setMontant(double montant) {
-		this.montant = montant;
 	}
 
 
@@ -163,13 +150,16 @@ public class Reservation {
 		if(this.listeMateriels.isEmpty()){
 			throw new Exception("Cette réservation ne contient aucun materiel");
 		}
+		boolean retirer = false;
 		for(MaterielMobile each : this.listeMateriels){
 			if(materiel.equals(each)){
-				materiel.setReservation(null);
-				this.listeMateriels.remove(materiel);
+				retirer = true;
 			}
 		}
-		
+		if(retirer){
+			materiel.setReservation(null);
+			this.listeMateriels.remove(materiel);
+		}
 	}
 	
 	public void reserver(Salle salle) throws Exception{
@@ -186,8 +176,6 @@ public class Reservation {
 		for(MaterielMobile each : this.listeMateriels){
 			each.setReservation(null);
 		}
-		salle.retirerReservation(this);
-		demandeur.annulerReservation(this);
 	}
 	
 	/**
@@ -203,6 +191,6 @@ public class Reservation {
 	 * @return le tarif total de la réservation
 	 */
 	public double calculTarif(){
-		return this.manifestation.getTarif() + this.duree.getTarif();
+		return this.manifestation.getTarif() + this.duree.getTarif() + this.salle.calculerTarif() + this.demandeur.calculTarif();
 	}
 }

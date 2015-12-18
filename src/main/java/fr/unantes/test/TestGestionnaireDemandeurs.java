@@ -8,15 +8,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
-import fr.unantes.beans.Batiment;
 import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.Origine;
-import fr.unantes.beans.Salle;
-import fr.unantes.beans.TarifEnumeration;
 import fr.unantes.beans.Titre;
-import fr.unantes.beans.TypeSalle;
 import fr.unantes.gestionnaires.GestionnaireDemandeurs;
-import fr.unantes.gestionnaires.GestionnaireTarifs;
 
 public class TestGestionnaireDemandeurs {
 	
@@ -77,7 +72,6 @@ public class TestGestionnaireDemandeurs {
 	
 	@Test(expected = Exception.class)
 	public void testSupprimerDemandeurInexistant() throws Exception{
-		Demandeur demandeur2 = new Demandeur(2, "ugo", adresse, origine, titre);
 		gestionnaire.supprimerDemandeur(2);
 		assertTrue(gestionnaire.getListeDemandeurs().size()==1);
 	}
@@ -91,7 +85,9 @@ public class TestGestionnaireDemandeurs {
 	
 	@Test
 	public void testModifierDemandeur() throws Exception{
-		gestionnaire.modifierDemandeur(1, new Adresse("1","rue de l'ecole","44000","Nantes"));
+		Adresse a = new Adresse("1","rue de l'ecole","44000","Nantes");
+		gestionnaire.modifierDemandeur(1,a);
+		assertTrue(gestionnaire.getListeDemandeurs().get(0).getAdresse().equals(a));
 	}
 	
 	@Test(expected = Exception.class)

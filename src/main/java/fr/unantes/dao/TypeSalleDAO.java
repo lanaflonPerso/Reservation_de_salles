@@ -1,13 +1,8 @@
 package fr.unantes.dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import fr.unantes.beans.Adresse;
-import fr.unantes.beans.Batiment;
 import fr.unantes.beans.TypeSalle;
 
 public class TypeSalleDAO extends DAO<TypeSalle>{

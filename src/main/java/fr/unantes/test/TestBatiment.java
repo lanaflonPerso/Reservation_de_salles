@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
@@ -18,6 +19,11 @@ public class TestBatiment {
 	Adresse adresse;
 	Salle salle;
 	TypeSalle typeSalle;
+	
+	@BeforeClass
+	public static void init() throws Exception{
+		System.out.println("Test de la classe Batiment");
+	}
 	
 	@Before
 	public void setUp() throws Exception {

@@ -3,8 +3,6 @@ package fr.unantes.dao;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import fr.unantes.bdd.Connexion;
-
 public abstract class DAO<T> {
 
 	protected Connection connect = null;

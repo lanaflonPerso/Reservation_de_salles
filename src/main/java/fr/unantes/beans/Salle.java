@@ -132,79 +132,6 @@ public class Salle {
 		this.type = type;
 	}
 
-
-
-	public void ajoutMateriel(MaterielFixe materiel){
-		this.listeMateriel.add(materiel);
-	}
-	
-	public void retirerMateriel(MaterielFixe materiel){
-		this.listeMateriel.remove(materiel);		
-	}
-	
-	public void ajoutReservation(Reservation reservation){
-		this.listeReservation.add(reservation);
-	}
-	
-	/**
-	 * Retire une réservation à cette salle.
-	 * @param reservation la réservation à retirer.
-	 * @throws Exception si la réservation ne concerne pas cette salle.
-	 */
-	public void retirerReservation(Reservation reservation) throws Exception{
-		if(this.listeReservation.isEmpty()){
-			throw new Exception("Aucune réservation pour cette salle");
-		}
-		for(Reservation each : this.listeReservation){
-			if(each.equals(reservation)){
-				this.listeReservation.remove(reservation);
-				break;
-			}
-		}
-		
-	}
-	
-	public void supprimer() throws Exception{
-		for(Reservation each : this.listeReservation){
-			each.annuler();
-		}
-	}
-	
-	public String toString(){
-		return "salle n° "+ this.noEtage + this.noSalle + " du batiment " + this.noBat;
-	}
-	
-
-	
-	/**
-	 * 
-	 * @param codeInv
-	 * @return
-	 */
-	public boolean MaterielExists(int codeInv){
-		for(MaterielFixe each : this.listeMateriel){
-			if (each.getCodeInv() == codeInv){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @param codeInv
-	 * @return
-	 * @throws Exception
-	 */
-	public MaterielFixe getMateriel(int codeInv) throws Exception{
-		for(MaterielFixe each : this.listeMateriel){
-			if (each.getCodeInv() == codeInv){
-				return each;
-			}
-		}
-		throw new Exception("Aucun matériel avec ce codeInv");
-	}
-	
 	
 	/**
 	 * renvoie true si la salle est disponible pour une réservation à une date et pour une durée précise.
@@ -245,9 +172,89 @@ public class Salle {
 		}	
 		return true;
 	}
+	
+	public void ajoutReservation(Reservation reservation){
+		this.listeReservation.add(reservation);
+	}
+	
+	/**
+	 * Retire une réservation à cette salle.
+	 * @param reservation la réservation à retirer.
+	 * @throws Exception si la réservation ne concerne pas cette salle.
+	 */
+	public void retirerReservation(Reservation reservation) throws Exception{
+		if(this.listeReservation.isEmpty()){
+			throw new Exception("Aucune réservation pour cette salle");
+		}
+		boolean trouve = false;
+		for(Reservation each : this.listeReservation){
+			if(each.equals(reservation)){
+				trouve = true;
+				break;
+			}
+		}
+		if(trouve){
+			this.listeReservation.remove(reservation);
+		}
+		
+	}
+	
+	/**
+	 * Méthode servant à vider la salle de ses réservations avant supression.
+	 * @throws Exception
+	 */
+	public void retirerReservations() throws Exception{
+		if(!this.listeReservation.isEmpty()){
+			for(Reservation each : this.listeReservation){
+				each.annuler();
+			}
+		}
+		
+	}
+	
+	public void ajoutMateriel(MaterielFixe materiel){
+		this.listeMateriel.add(materiel);
+	}
+	
+	public void retirerMateriel(MaterielFixe materiel){
+		this.listeMateriel.remove(materiel);		
+	}
 
+	/**
+	 * 
+	 * @param codeInv le code du materiel.
+	 * @return true si le materiel existe, false sinon.
+	 */
+	public boolean MaterielExists(int codeInv){
+		for(MaterielFixe each : this.listeMateriel){
+			if (each.getCodeInv() == codeInv){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param codeInv le code du materiel à rechercher.
+	 * @return le materiel recherché.
+	 * @throws Exception si le materiel n'existe pas.
+	 */
+	public MaterielFixe getMateriel(int codeInv) throws Exception{
+		for(MaterielFixe each : this.listeMateriel){
+			if (each.getCodeInv() == codeInv){
+				return each;
+			}
+		}
+		throw new Exception("Aucun matériel avec ce codeInv");
+	}
+	
 
-
+	/**
+	 * Recherche tous les materiaux selon leurs types.
+	 * @param type2 le type de materiel fixe à rechercher.
+	 * @return la liste des materieux fixes de la salle ayant pour type de materiel type2.
+	 */
 	public ArrayList<MaterielFixe> getListeMateriel(TypeMateriel type2) {
 		// TODO Auto-generated method stub
 		ArrayList<MaterielFixe> res;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import fr.unantes.beans.Adresse;
 import fr.unantes.beans.Batiment;
-
 import fr.unantes.beans.MaterielFixe;
 import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Salle;
@@ -159,7 +158,7 @@ private static volatile GestionnaireLocaux instance = null;
 	@Override
 	public Salle getSalle(int noEtage, int noSalle, int noBatiment) throws Exception {
 		// TODO Auto-generated method stub
-		if(batimentExists(noBatiment)){
+		if(!batimentExists(noBatiment)){
 			throw new Exception("Cette salle n'existe pas");
 		}
 		for(Batiment each : listeBatiments){
@@ -179,16 +178,9 @@ private static volatile GestionnaireLocaux instance = null;
 	}
 
 	@Override
-	public ArrayList<Salle> getSallesParBatiment(int noBat) {
+	public ArrayList<Salle> getSallesParBatiment(int noBat) throws Exception {
 		// TODO Auto-generated method stub
-		ArrayList<Salle> liste = new ArrayList<Salle>();
-		try {
-			liste.addAll(getBatiment(noBat).getListeSalle());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return liste;
+		return getBatiment(noBat).getListeSalle();
 	}
 
 	@Override

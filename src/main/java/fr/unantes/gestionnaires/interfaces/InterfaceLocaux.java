@@ -108,8 +108,9 @@ public interface InterfaceLocaux {
 	 * 
 	 * @param noBat le numero de batiment dans lequel rechercher
 	 * @return la liste des salles du batiment ayant pour numero no_bat
+	 * @throws Exception si le batiment n'existe pas.
 	 */
-	public ArrayList<Salle> getSallesParBatiment(int noBat);
+	public ArrayList<Salle> getSallesParBatiment(int noBat) throws Exception;
 	
 	/**
 	 * 

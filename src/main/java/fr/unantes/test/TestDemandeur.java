@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.unantes.beans.Adresse;
@@ -13,7 +14,6 @@ import fr.unantes.beans.Demandeur;
 import fr.unantes.beans.MaterielMobile;
 import fr.unantes.beans.Origine;
 import fr.unantes.beans.Reservation;
-import fr.unantes.beans.Salle;
 import fr.unantes.beans.Titre;
 
 public class TestDemandeur {
@@ -23,6 +23,11 @@ public class TestDemandeur {
 	Adresse adresse;
 	Origine origine;
 	Titre titre;
+	
+	@BeforeClass
+	public static void init() throws Exception{
+		System.out.println("Test de la classe Demandeur");
+	}
 	
 	@Before
 	public void setUp() throws Exception {

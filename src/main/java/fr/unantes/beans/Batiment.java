@@ -84,7 +84,7 @@ public class Batiment {
 		  }
 		for(Salle each : this.listeSalle){
 			if(each.equals(salle)){
-				salle.supprimer();
+				salle.retirerReservations();
 				this.listeSalle.remove(salle);
 				break;
 			}

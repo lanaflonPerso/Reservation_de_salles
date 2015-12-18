@@ -130,11 +130,16 @@ public class Demandeur {
 		if(this.listeReservation.isEmpty()){
 			throw new Exception("Cette réservation n'appartient pas à ce demandeur");
 		}
+		boolean trouve = false;
 		for(Reservation each : this.listeReservation){
 			if(each.equals(reservation)){
-				reservation.annuler();
+				trouve = true;
 				break;
 			}
+		}
+		if(trouve){
+			this.listeReservation.remove(reservation);
+			reservation.annuler();
 		}
 		
 	}
